@@ -112,8 +112,8 @@ void UART_Handler(void)
 	// Check the interrupt status, transmit or receive ?
 	uint32_t status = UART->UART_SR;
 	
-	// Transmit data from buffer
-	if (status & UART_SR_TXRDY)
+	// Transmit data from buffer if the buffer contains data (TxStringHead > 0) 
+	if (TxStringHead && (status & UART_SR_TXRDY))
 	{
 		// Load the buffer character to transmitting register
 		UART->UART_THR = TxString[TxStringTail];
