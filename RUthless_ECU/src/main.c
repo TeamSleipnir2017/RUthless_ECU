@@ -50,6 +50,15 @@ int main (void)
 	sysclk_init();
 	board_init();
 	
+	pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
+	pio_clear(PIOC, IGN2_OUT);
+	// Initialize UART communication
+	uart_init();
+	// UART test, test interrupting to transmit data
+	uart_rx_interrupt_init();
+	uart_tx_interrupt_init();
+	
+	
 	// Initialize Debug pins
 	/************************************************************************/
 	/* pio_set(PIOx, Pin)
@@ -58,7 +67,7 @@ int main (void)
 	pmc_enable_periph_clk(ID_PIOC);
 	// Configure pin as output
 	pio_set_output(PIOC, IGN1_OUT, LOW, FALSE, FALSE);
-	pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
+	//pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
 	
 	pio_clear(PIOC, IGN1_OUT);
 	pio_clear(PIOC, IGN2_OUT);
@@ -66,8 +75,7 @@ int main (void)
 	
 	// Initialize necessary global parameters
 	global_init();
-	// Initialize UART communication
-	uart_init();
+	
 	// Initialize Analog to Digital Converter
 	adc_initialize();
 	uint8_t channel_number[NR_OF_ACTIVE_ADC_CHANNELS] = {4, 6, 1, 2, 12};
@@ -80,14 +88,18 @@ int main (void)
 	
 	
 	
-	// UART test, test interrupting to transmit data
-	uart_tx_interrupt_init();
-	uart_rx_interrupt_init();
+	
+	
 	
 	while (1)
 	{
-		uart_rx_read_buffer();
-		waste_of_time_delay(10000);
+		if (RxFlag)
+		{
+			uart_rx_read_buffer();
+			RxFlag = LOW;
+		}
+		
+		//waste_of_time_delay(10000);
 		//uart_print_string("RxStringHead "); uart_print_int(RxStringHead); uart_new_line();
 		//uart_print_string("RxStringTail "); uart_print_int(RxStringTail); uart_new_line();
 		

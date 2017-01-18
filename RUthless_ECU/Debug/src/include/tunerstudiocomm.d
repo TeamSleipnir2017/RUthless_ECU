@@ -1,4 +1,5 @@
-src/include/global.d src/include/global.o: ../src/include/global.c \
+src/include/tunerstudiocomm.d src/include/tunerstudiocomm.o: \
+ ../src/include/tunerstudiocomm.c ../src/include/tunerstudiocomm.h \
  ../src/include/global.h ../src/include/interrupts.h ../src/asf.h \
  ../src/ASF/sam/drivers/adc/adc.h ../src/ASF/sam/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\5.3.1\include\stddef.h \
@@ -131,8 +132,9 @@ src/include/global.d src/include/global.o: ../src/include/global.c \
  ../src/ASF/common/services/clock/sam3x/pll.h \
  ../src/ASF/sam/drivers/pmc/sleep.h ../src/ASF/sam/drivers/tc/tc.h \
  ../src/ASF/sam/drivers/pio/pio_handler.h ../src/include/uart.h \
- ../src/include/timers.h ../src/include/ADC.h \
- ../src/include/tunerstudiocomm.h
+ ../src/include/timers.h ../src/include/ADC.h
+
+../src/include/tunerstudiocomm.h:
 
 ../src/include/global.h:
 
@@ -417,5 +419,3 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/include/timers.h:
 
 ../src/include/ADC.h:
-
-../src/include/tunerstudiocomm.h:

@@ -131,7 +131,8 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/sam/drivers/pmc/sleep.h ../src/ASF/sam/drivers/tc/tc.h \
  ../src/ASF/sam/drivers/pio/pio_handler.h ../src/include/global.h \
  ../src/include/interrupts.h ../src/include/global.h \
- ../src/include/uart.h ../src/include/timers.h ../src/include/ADC.h
+ ../src/include/uart.h ../src/include/timers.h ../src/include/ADC.h \
+ ../src/include/tunerstudiocomm.h
 
 ../src/asf.h:
 
@@ -418,3 +419,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/include/timers.h:
 
 ../src/include/ADC.h:
+
+../src/include/tunerstudiocomm.h:

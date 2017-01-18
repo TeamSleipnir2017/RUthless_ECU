@@ -38,6 +38,7 @@ void uart_tx_interrupt_init(void)
 	// Initialize Transmit/receive buffer iterator for array
 	TxStringHead = TxStringTail = 0;
 	RxStringHead = RxStringTail = 0;
+	RxFlag = LOW;
 }
 
 void uart_interrupt_transfer(char * str)
@@ -61,11 +62,9 @@ void uart_rx_read_buffer(void)
 		RxStringTail = RxStringHead = 0;
 		return;
 	}
-	uint8_t read = RxString[RxStringTail++];
-	if (read == 'A')
-	{
-		uart_interrupt_transfer("ER");
-	}
+	tunerstudio_command(RxString[RxStringTail++]);
+	//uint8_t read = RxString[RxStringTail++];
+	
 }
 
 void uart_transfer(uint8_t transmit)
@@ -148,5 +147,7 @@ void UART_Handler(void)
 		{
 			RxStringHead = 0;
 		}
+		
+		RxFlag = HIGH;
 	}
 }

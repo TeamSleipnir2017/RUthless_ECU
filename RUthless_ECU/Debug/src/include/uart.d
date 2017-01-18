@@ -132,7 +132,7 @@ src/include/uart.d src/include/uart.o: ../src/include/uart.c \
  ../src/ASF/common/services/clock/sam3x/pll.h \
  ../src/ASF/sam/drivers/pmc/sleep.h ../src/ASF/sam/drivers/tc/tc.h \
  ../src/ASF/sam/drivers/pio/pio_handler.h ../src/include/timers.h \
- ../src/include/ADC.h
+ ../src/include/ADC.h ../src/include/tunerstudiocomm.h
 
 ../src/include/uart.h:
 
@@ -417,3 +417,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/include/timers.h:
 
 ../src/include/ADC.h:
+
+../src/include/tunerstudiocomm.h:

@@ -102,6 +102,7 @@ C_SRCS +=  \
 ../src/include/global.c \
 ../src/include/interrupts.c \
 ../src/include/timers.c \
+../src/include/tunerstudiocomm.c \
 ../src/include/uart.c \
 ../src/main.c
 
@@ -131,6 +132,7 @@ src/include/ADC.o \
 src/include/global.o \
 src/include/interrupts.o \
 src/include/timers.o \
+src/include/tunerstudiocomm.o \
 src/include/uart.o \
 src/main.o
 
@@ -153,6 +155,7 @@ src/include/ADC.o \
 src/include/global.o \
 src/include/interrupts.o \
 src/include/timers.o \
+src/include/tunerstudiocomm.o \
 src/include/uart.o \
 src/main.o
 
@@ -175,6 +178,7 @@ src/include/ADC.d \
 src/include/global.d \
 src/include/interrupts.d \
 src/include/timers.d \
+src/include/tunerstudiocomm.d \
 src/include/uart.d \
 src/main.d
 
@@ -197,6 +201,7 @@ src/include/ADC.d \
 src/include/global.d \
 src/include/interrupts.d \
 src/include/timers.d \
+src/include/tunerstudiocomm.d \
 src/include/uart.d \
 src/main.d
 
@@ -215,6 +220,8 @@ LINKER_SCRIPT_DEP+=  \
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

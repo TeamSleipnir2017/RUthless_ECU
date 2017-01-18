@@ -24,6 +24,8 @@ volatile uint8_t RxString[RXBUFFERSIZE];
 volatile uint16_t RxStringHead;
 volatile uint16_t RxStringTail;
 
+volatile uint8_t RxFlag;
+
 void uart_init(void);
 void uart_tx_interrupt_init(void);
 void uart_interrupt_transfer(char* str);

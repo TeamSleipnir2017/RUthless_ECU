@@ -38,6 +38,8 @@ src\include\interrupts.c
 
 src\include\timers.c
 
+src\include\tunerstudiocomm.c
+
 src\include\uart.c
 
 src\main.c

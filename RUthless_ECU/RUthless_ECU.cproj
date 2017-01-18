@@ -936,6 +936,12 @@
     <Compile Include="src\include\timers.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\include\tunerstudiocomm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\tunerstudiocomm.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\include\uart.c">
       <SubType>compile</SubType>
     </Compile>
