@@ -175,25 +175,25 @@ void engine_config_init(void);	// Initialize all variables to 0
 
 /* DIGITAL OUTPUTS */
 // Injectors
-#define INJ1_OUT PIO_PC1		// DUE D33
-#define INJ2_OUT PIO_PD0		// DUE D25
-#define INJ3_OUT PIO_PC3		// DUE D35
-#define INJ4_OUT PIO_PC5		// DUE D37
-#define INJ5_OUT PIO_PC13		// DUE D50
-#define INJ6_OUT PIO_PC7		// DUE D39
-#define INJ7_OUT PIO_PC15		// DUE D48
-#define INJ8_OUT PIO_PC9		// DUE D41
-#define INJ_AUX_OUT PIO_PC11	// UNKNOWN
+#define INJ1_OUT PIO_PC1		// DUE Core pin 55  - D33
+#define INJ2_OUT PIO_PD0		// DUE Core pin 13  - D25
+#define INJ3_OUT PIO_PC3		// DUE Core pin 60  - D35
+#define INJ4_OUT PIO_PC5		// DUE Core pin 63  - D37
+#define INJ5_OUT PIO_PC13		// DUE Core pin 95  - D50
+#define INJ6_OUT PIO_PC7		// DUE Core pin 65  - D39
+#define INJ7_OUT PIO_PC15		// DUE Core pin 97  - D48
+#define INJ8_OUT PIO_PC9		// DUE Core pin 67  - D41
+#define INJ_AUX_OUT PIO_PC11	// DUE Core pin 93  - Unknown
 // Ignition coils
-#define IGN1_OUT PIO_PC17		// DUE D46
-#define IGN2_OUT PIO_PC23		// DUE D7
-#define IGN3_OUT PIO_PC19		// DUE D44
-#define IGN4_OUT PIO_PC28		// DUE D3
-#define IGN5_OUT PIO_PC25		// DUE D5
-#define IGN6_OUT PIO_PC30		// UNKNOWN
-#define IGN7_OUT PIO_PC29		// DUE D10
-#define IGN8_OUT PIO_PC27		// UNKNOWN
-#define IGN_AUX_OUT PIO_PC21	// DUE D9
+#define IGN1_OUT PIO_PC17		// DUE Core pin 108 - D46
+#define IGN2_OUT PIO_PC23		// DUE Core pin 114 - D7
+#define IGN3_OUT PIO_PC19		// DUE Core pin 110 - D44
+#define IGN4_OUT PIO_PC28		// DUE Core pin 44  - D3
+#define IGN5_OUT PIO_PC25		// DUE Core pin 116 - D5
+#define IGN6_OUT PIO_PC30		// DUE Core pin 42  - Unknown
+#define IGN7_OUT PIO_PC29		// DUE Core pin 41  - D10
+#define IGN8_OUT PIO_PC27		// DUE Core pin 43  - Unknown
+#define IGN_AUX_OUT PIO_PC21	// DUE Core pin 112 - D9
 
 /* COMMUNICATION */
 // Serial peripheral interface (SPI) (Future purposes logging to an sd card)
