@@ -16,6 +16,7 @@
 #include "timers.h"
 #include "ADC.h"
 #include "tunerstudiocomm.h"
+#include "table.h"
 #include <asf.h>
 
 void global_init(void);

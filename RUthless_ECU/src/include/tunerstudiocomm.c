@@ -7,6 +7,13 @@
 
 #include "tunerstudiocomm.h"
 
+// Initialization function
+void tunerstudio_init(void)
+{
+	CurrPage = 255;
+}
+
+// Function to decide what to do when an character is received by UART
 void tunerstudio_command(uint8_t character)
 {
 	switch (character)
@@ -36,6 +43,7 @@ void tunerstudio_command(uint8_t character)
 			uart_interrupt_transfer("speeduino 201612");
 			break;
 		case 'V':
+			send_page();
 			break;
 		case 'W':
 			break;
@@ -50,5 +58,22 @@ void tunerstudio_command(uint8_t character)
 		default:
 			break;
 	}
+	
+}
+
+// Function to send page according to the .ini file (CurrPage is used)
+void send_page(void)
+{
+	switch(CurrPage)
+	{
+		case VE_PAGE:
+			send_table()
+		default:
+			break;
+	}
+}
+
+void send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE])
+{
 	
 }
