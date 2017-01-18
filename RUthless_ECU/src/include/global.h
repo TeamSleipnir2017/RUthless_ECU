@@ -10,7 +10,7 @@
 #define GLOBAL_H_
 
 //#include "sensors.h"
-//#include "ignition.h"
+#include "ignition.h"
 #include "interrupts.h"
 #include "uart.h"
 #include "timers.h"

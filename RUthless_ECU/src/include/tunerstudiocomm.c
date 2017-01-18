@@ -73,7 +73,7 @@ void send_page(void)
 	}
 }
 
-void send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE])
+//void send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE])
 {
 	
 }

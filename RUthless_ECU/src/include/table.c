@@ -12,9 +12,9 @@
 void table_init(void)
 {
 	// Initialize VE array
-	for (uint8_t i = 0; i < VE_TABLE_SIZE; i++)
+	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++)
 	{
-		for (uint8_t j = 0; j < VE_TABLE_SIZE; j++)
+		for (uint8_t j = 0; j < THREE_D_TABLE_SIZE; j++)
 		{
 			VeTable[i][j] = 255; // READ EEPROM !!
 		}
