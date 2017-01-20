@@ -9,6 +9,9 @@
 #ifndef TABLE_H_
 #define TABLE_H_
 
+// Array size definitions
+#define THREE_D_TABLE_SIZE 16
+
 #include "global.h"
 
 /************************************************************************/
@@ -16,8 +19,7 @@
 ECU                                                                     */
 /************************************************************************/
 
-// Array size definitions
-#define THREE_D_TABLE_SIZE 16
+
 
 // Arrays
 // Volumetric Efficiency

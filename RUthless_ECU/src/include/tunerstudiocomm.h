@@ -9,6 +9,10 @@
 #ifndef TUNERSTUDIOCOMM_H_
 #define TUNERSTUDIOCOMM_H_
 
+// Page definitions from .ini file
+#define VE_PAGE 1
+
+#include "table.h" // Always compile error if removed not sure why JBB 20.1.17
 #include "global.h"
 /************************************************************************/
 /* This is a communication files using Megasquirt serial protocol for 
@@ -16,11 +20,9 @@ tuner studio.                                                                   
 /************************************************************************/
 
 
-// Page definitions from .ini file
-#define VE_PAGE 1
-
 // Current page variable (To send the correct page when character "V" arrives)
 uint8_t CurrPage;
+uint8_t NewPageFlag;
 
 // Initialization function
 void tunerstudio_init(void);
@@ -32,6 +34,6 @@ void tunerstudio_command(uint8_t character);
 void send_page(void);
 
 // Function to send a 16x16 table to tunerstudio
-//void send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE]);
+void send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE]);
 
 #endif /* TUNERSTUDIOCOMM_H_ */
