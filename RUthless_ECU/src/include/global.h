@@ -17,6 +17,7 @@
 #include "ADC.h"
 #include "tunerstudiocomm.h"
 #include "table.h"
+#include "eeprom.h"
 #include <asf.h>
 
 void global_init(void);

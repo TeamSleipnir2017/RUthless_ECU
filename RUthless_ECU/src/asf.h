@@ -59,6 +59,12 @@
 #include <compiler.h>
 #include <status_codes.h>
 
+// From module: Delay routines
+#include <delay.h>
+
+// From module: EEPROM AT24CXX
+#include <at24cxx.h>
+
 // From module: GPIO - General purpose Input/Output
 #include <gpio.h>
 
@@ -89,6 +95,15 @@
 
 // From module: TC - Timer Counter
 #include <tc.h>
+
+// From module: TWI - Two-Wire Interface - SAM implementation
+#include <sam_twi/twi_master.h>
+#include <sam_twi/twi_slave.h>
+#include <twi_master.h>
+#include <twi_slave.h>
+
+// From module: TWI - Two-wire Interface
+#include <twi.h>
 
 // From module: pio_handler support enabled
 #include <pio_handler.h>
