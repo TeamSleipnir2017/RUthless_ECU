@@ -138,6 +138,8 @@ struct engine_config_
 	
 	uint8_t CltFanTemp;			// Start temperature for the coolant fan
 	uint8_t CltFanTempHyst;		// Hysteresis threshold for turning off the coolant fan 
+
+	uint8_t TwiFault;			// Flag to indicate TWI fault, will screw up all the tuning maps VE, AFR, IGN... 
 	
 	/* REMEMBER WHEN ADDING A VARIABLE TO THIS STRUCT TO INITIALIZE IT (.c)*/
 }; 

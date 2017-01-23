@@ -7,6 +7,7 @@
 
  #include "eeprom.h"
 
+ // Initialization function
  void eeprom_init(void)
  {
 	pmc_enable_periph_clk(ID_TWI1);				// Enable peripheral clock
@@ -19,8 +20,25 @@
 	TWI_PERIPHERAL->PIO_PDR = TWI_CLOCK_PIN;
 	TWI_PERIPHERAL->PIO_ABSR &= ~TWI_DATA_PIN;	// Enable Peripheral A (TWI)
 	TWI_PERIPHERAL->PIO_ABSR &= ~TWI_CLOCK_PIN;
+	TWI_PERIPHERAL->PIO_PUER = TWI_DATA_PIN;
+	TWI_PERIPHERAL->PIO_PUER = TWI_CLOCK_PIN;
 	// Initialize TWI 
 	twi_options_t opt;
 	opt.master_clk = sysclk_get_cpu_hz(); opt.speed = 400000; // 400KHz clock frequency
 	twi_master_init(TWI1, &opt);
+ }
+
+ // More advanced function to read from the EEPROM
+ // It basicly checks for TWI comm. success and retries until it enables a Fault
+ uint8_t eeprom_read_byte(uint8_t address)
+ {
+	uint8_t result = 0;
+	// Try to read specific number of times otherwise FAULT
+	for (uint8_t i = 0; i < TWI_NUMBER_OF_TRIES; i++)
+		if (!(at24cxx_read_byte(address, &result) & AT24C_READ_FAIL))
+			return result;
+
+	// Let know that there is a fault on the Two wire interface
+	engine_config.TwiFault = TRUE;
+	return 1; // 1 is the safest number regarding IGN, VE and AFR map
  }

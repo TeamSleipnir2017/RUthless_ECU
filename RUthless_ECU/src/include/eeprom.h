@@ -28,13 +28,17 @@ The EEPROM used is AT24C256C-SSHL-T, and the addresses are as follows
 // 	#define BOARD_CLK_TWI_MUX_EEPROM PIOB
 #define BOARD_CLK_HZ 100000 // TWI Bus Clock 400kHz 
 #define MAX_EEPROM_BYTES 32768
+#define TWI_NUMBER_OF_TRIES 10 // Constant of number of tries to read from the EEPROM
 
 #include "global.h"
 
-uint8_t EepromReadAddress, EepromWriteAddress;
-
 // Initialization function
 void eeprom_init(void);
+// More advanced function to read from the EEPROM
+// It basicly checks for TWI comm. success and retries until it enables a Fault
+uint8_t eeprom_read_byte(uint8_t address);
+
+
 
 // Use Atmel software framework functions:
 // at24cxx_read_byte (uint32_t u32_address, uint8_t *p_rd_byte)

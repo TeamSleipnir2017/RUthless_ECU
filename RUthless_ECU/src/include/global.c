@@ -59,4 +59,6 @@ void engine_config_init(void)
 	
 	engine_config.CltFanTemp = 0;		
 	engine_config.CltFanTempHyst = 0;
+
+	engine_config.TwiFault = 0;
 }
