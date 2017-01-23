@@ -773,7 +773,6 @@ void pio_toggle_pin(uint32_t ul_pin)
 uint32_t pio_configure_pin(uint32_t ul_pin, const uint32_t ul_flags)
 {
 	Pio *p_pio = pio_get_pin_group(ul_pin);
-
 	/* Configure pins */
 	switch (ul_flags & PIO_TYPE_Msk) {
 	case PIO_TYPE_PIO_PERIPH_A:

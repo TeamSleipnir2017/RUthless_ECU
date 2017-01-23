@@ -21,10 +21,12 @@ The EEPROM used is AT24C256C-SSHL-T, and the addresses are as follows
  Write: x = 0                                                                 */
 /************************************************************************/
 
-#define BOARD_AT24C_ADDRESS 0b10100000
-#define BOARD_AT24C_TWI_INSTANCE TWI0
-#define BOARD_CLK_TWI_EEPROM 18 // PIO_PA18A_TWCK0
-#define BOARD_CLK_TWI_MUX_EEPROM PIOA
+// The address of the chip is stored in at24cxx.h
+// 	#define BOARD_AT24C_TWI_INSTANCE TWI1
+// 	#define BOARD_AT24C_ADDRESS 0x50
+// 	#define BOARD_CLK_TWI_EEPROM 13
+// 	#define BOARD_CLK_TWI_MUX_EEPROM PIOB
+#define BOARD_CLK_HZ 100000 // TWI Bus Clock 400kHz 
 #define MAX_EEPROM_BYTES 32768
 
 #include "global.h"

@@ -57,6 +57,11 @@ extern "C" {
 /**INDENT-ON**/
 /// @endcond
 
+#define BOARD_AT24C_TWI_INSTANCE TWI1 
+#define BOARD_AT24C_ADDRESS 0x50
+#define BOARD_CLK_TWI_EEPROM 13
+#define BOARD_CLK_TWI_MUX_EEPROM PIOB
+
 //! Checking board configuration of the AT24C EEPROM
 #if !defined(BOARD_AT24C_TWI_INSTANCE)
 # warning The AT24C TWI instance has not been defined. Using default settings.

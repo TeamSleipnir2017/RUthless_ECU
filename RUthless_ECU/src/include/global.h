@@ -77,7 +77,7 @@ uint16_t GlobalTimerFreqTelemetryScaler;
 #define UOTGHS_PRIORITY 13	// USB communication
 #define CAN0_PRIORITY 14	// Can bus communication
 #define USART1_PRIORITY 15	// Telemetry communication
-#define TWI0_PRIORITY 16	// I2C EEPROM communication
+#define TWI1_PRIORITY 16	// I2C EEPROM communication
 
 /************************************************************************/
 /* Struct definitions:                                                  */
