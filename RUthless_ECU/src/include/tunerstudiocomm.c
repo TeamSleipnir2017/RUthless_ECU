@@ -77,7 +77,7 @@ void send_page(void)
 	switch(CurrPage)
 	{
 		case VE_PAGE:
-			send_3d_table(VeTable, RpmBins, MapBins);
+			send_3d_table(VeTable, VeRpmBins, VeMapBins);
 			break;
 		case 2:
 			send_dummy_data(64, 255);
@@ -117,13 +117,13 @@ void send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_
 	// Load UART TX buffer with the Volumetric efficiency table 
 	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++)
 		for (uint8_t j = 0; j < THREE_D_TABLE_SIZE; j++)
-			transmit[transmit_index++] = VeTable[i][j];
+			transmit[transmit_index++] = table[i][j];
 	// Load UART TX buffer with the RPM values for the Volumetric efficiency table 		
 	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++)	
-		transmit[transmit_index++] = RpmBins[i];
+		transmit[transmit_index++] = xbin[i];
 	// Load UART TX buffer with the MAP values for the Volumetric efficiency table
 	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++)
-		transmit[transmit_index++] = MapBins[i];
+		transmit[transmit_index++] = ybin[i];
 	// Let know when to stop
 	transmit[transmit_index++] = NULL;
 	// Let the UART interrupt handle sending the buffer
