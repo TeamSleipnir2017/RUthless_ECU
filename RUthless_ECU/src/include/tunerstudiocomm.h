@@ -35,5 +35,7 @@ void send_page(void);
 
 // Function to send a 16x16 table to tunerstudio
 void send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE]);
+// Function to send dummy bytes to tunerstudio
+void send_dummy_data(uint16_t NumberOfBytes, uint8_t dummy);
 
 #endif /* TUNERSTUDIOCOMM_H_ */

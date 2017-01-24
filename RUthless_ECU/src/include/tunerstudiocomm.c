@@ -27,6 +27,7 @@ void tunerstudio_command(uint8_t character)
 	switch (character)
 	{
 		case 'A': // Real time data
+			send_dummy_data(37, 100);
 			break;
 		case 'B': // Burn command
 			break;
@@ -78,6 +79,30 @@ void send_page(void)
 		case VE_PAGE:
 			send_3d_table(VeTable, RpmBins, MapBins);
 			break;
+		case 2:
+			send_dummy_data(64, 255);
+			break;
+		case 3:
+			send_dummy_data(288, 255);
+			break;
+		case 4:
+			send_dummy_data(64, 255);
+			break;
+		case 5:
+			send_dummy_data(288, 255);
+			break;
+		case 6:
+			send_dummy_data(64, 255);
+			break;
+		case 7:
+			send_dummy_data(64, 255);
+			break;
+		case 8:
+			send_dummy_data(160, 255);
+			break;
+		case 9:
+			send_dummy_data(192, 255);
+			break;
 		default:
 			break;
 	}
@@ -103,4 +128,14 @@ void send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_
 	transmit[transmit_index++] = NULL;
 	// Let the UART interrupt handle sending the buffer
 	uart_interrupt_transfer(transmit);		
+}
+
+void send_dummy_data(uint16_t NumberOfBytes, uint8_t dummy)
+{
+	uint8_t transmit[NumberOfBytes];
+	uint16_t i = 0;
+	for (; i < NumberOfBytes; i++)
+		transmit[i] = dummy;
+	transmit[i++] = NULL;
+	uart_interrupt_transfer(transmit);
 }
