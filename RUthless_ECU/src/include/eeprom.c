@@ -30,7 +30,7 @@
 
  // More advanced function to read from the EEPROM
  // It basicly checks for TWI comm. success and retries until it enables a Fault
- uint8_t eeprom_read_byte(uint8_t address)
+ uint8_t eeprom_read_byte(uint16_t address)
  {
 	uint8_t result = 0;
 	// Try to read specific number of times otherwise FAULT

@@ -36,7 +36,7 @@ The EEPROM used is AT24C256C-SSHL-T, and the addresses are as follows
 void eeprom_init(void);
 // More advanced function to read from the EEPROM
 // It basicly checks for TWI comm. success and retries until it enables a Fault
-uint8_t eeprom_read_byte(uint8_t address);
+uint8_t eeprom_read_byte(uint16_t address);
 
 
 
