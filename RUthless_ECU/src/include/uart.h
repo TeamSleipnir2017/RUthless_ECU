@@ -29,6 +29,7 @@ volatile uint8_t RxFlag;
 void uart_init(void);
 void uart_tx_interrupt_init(void);
 void uart_interrupt_transfer(char* str);
+void uart_interrupt_transfer_specific(char * str, uint16_t BufferLength);
 void uart_rx_interrupt_init(void);
 void uart_rx_read_buffer(void);
 void uart_transfer(uint8_t transmit);

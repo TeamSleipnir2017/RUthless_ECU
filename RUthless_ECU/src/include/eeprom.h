@@ -30,6 +30,11 @@ The EEPROM used is AT24C256C-SSHL-T, and the addresses are as follows
 #define MAX_EEPROM_BYTES 32768
 #define TWI_NUMBER_OF_TRIES 10 // Constant of number of tries to read from the EEPROM
 
+// EEPROM address structure
+#define EEPROM_VE_INDEX		0*(THREE_D_TABLE_SIZE*THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE)
+#define EEPROM_AFR_INDEX	1*(THREE_D_TABLE_SIZE*THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE)
+#define EEPROM_IGN_INDEX	2*(THREE_D_TABLE_SIZE*THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE)
+
 #include "global.h"
 
 // Initialization function

@@ -14,6 +14,19 @@
 #define IGN_PAGE 3
 #define AFR_PAGE 5
 
+// Data definitions (see [OutputChannels] .ini file)
+#define NUMBER_OF_REAL_TIME_BYTES 37
+#define REALTIME_MAP_INDEX 4				// Manifold absolute pressure (kPa)
+#define REALTIME_IAT_INDEX 5				// Intake air temperature (°c + 40°c)
+#define REALTIME_CLT_INDEX 6				// Coolant temperature (°c + 40°c)
+#define REALTIME_BAT_INDEX 8				// Battery voltage (V)
+#define REALTIME_AFR_INDEX 9				// Air to fuel ratio (AFR)
+#define REALTIME_RPM_INDEX 13				// Rounds per minute (RPM)
+#define REALTIME_VE_INDEX 18				// Current volumetric efficiency value (after interpolation)
+#define REALTIME_PW_INDEX 20				// Pulse width (ms)
+#define REALTIME_IGN_INDEX 22				// Ignition advance (deg)
+#define REALTIME_TPS_INDEX 23				// Throttle position sensor (0-100)
+
 #include "table.h" // Always compile error if removed not sure why JBB 20.1.17
 #include "global.h"
 /************************************************************************/
@@ -47,6 +60,11 @@ void tunerstudio_send_dummy_data(uint16_t NumberOfBytes, uint8_t dummy);
 // Function to receive data and update array
 void tunerstudio_write_data(uint8_t data);
 // Helper function to write data to 3d table
-void tunerstudio_write_to_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE], uint8_t data);
-
+void tunerstudio_write_to_table(uint8_t data, uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE]);
+// Burn data of current page to eeprom
+void tunerstudio_burn_page_eeprom(void);
+// Helper function to write changed data to eeprom
+void tunerstudio_burn_table_eeporm(uint16_t EepromIndex, uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE]);
+// Send real time data to tunerstudio when character "A" is received
+void tunerstudio_send_real_time_data(void);
 #endif /* TUNERSTUDIOCOMM_H_ */

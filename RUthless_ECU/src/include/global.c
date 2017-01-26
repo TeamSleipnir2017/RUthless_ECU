@@ -13,6 +13,8 @@ void global_init(void)
 	GlobalTimerFreqADCScaler = 1;
 	GlobalTimerFreqUARTScaler = 1;
 	GlobalTimerFreqTelemetryScaler = 1;
+
+	engine_init();
 }
 
 void engine_init(void)
@@ -25,8 +27,11 @@ void engine_init(void)
 	engine.Iat = 0;				
 	engine.Clt = 0;				
 	engine.Batt = 0;				
-	engine.O2 = 0;			
+	engine.Afr = 0;			
 	engine.LaunchControl = OFF;	
+	engine.CurrVeTable = 0;
+	engine.CurrAfrTable = 0;
+	engine.CurrIgnTable = 0;
 	engine.CurrRpm = 0;	
 	engine.CurrSpeed = 0;			
 	engine.CurrGear = 0;			

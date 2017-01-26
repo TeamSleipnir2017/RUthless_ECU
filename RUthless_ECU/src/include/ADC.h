@@ -9,8 +9,6 @@
 #ifndef ADC_H_
 #define ADC_H_
 
-#include "global.h"
-
 
 #define ADC_CH0 0
 #define ADC_CH1 1
@@ -33,6 +31,12 @@
 /* Define active ADC channels, used for interrupts */
 #define NR_OF_ACTIVE_ADC_CHANNELS 5
 #define MAX_NR_OF_ADC_CHANNELS 15
+
+// Configure ADC resolution, Attention there is needed to configure registers to change it. This is used in calculations
+#define ADC_RESOLUTION 4096 // 2^12 ADC_12_BITS
+
+#include "global.h"
+
 /* Array for the ADC channel numbers */
 volatile uint8_t AdcChannels[NR_OF_ACTIVE_ADC_CHANNELS];
 

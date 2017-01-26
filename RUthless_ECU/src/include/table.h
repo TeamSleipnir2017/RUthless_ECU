@@ -44,7 +44,7 @@ uint8_t IgnMapBins[THREE_D_TABLE_SIZE];
 // TODO: READ FROM EEPROM
 void table_init(void);
 // Helper function
-void table_init_table(uint16_t * Index, uint8_t Table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t RpmBins[THREE_D_TABLE_SIZE], uint8_t MapBins[THREE_D_TABLE_SIZE]);
+void table_init_table(uint16_t Index, uint8_t Table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t RpmBins[THREE_D_TABLE_SIZE], uint8_t MapBins[THREE_D_TABLE_SIZE]);
 
 
 #endif /* TABLE_H_ */

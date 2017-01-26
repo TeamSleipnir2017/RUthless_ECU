@@ -34,6 +34,7 @@ void global_init(void);
 #define FALSE 0
 /* TODO: Read from EEPROM number of cylinders                           */
 #define NR_OF_CYL  4			// Number of cylinders
+#define INTAKE_AIR_TEMPERATURE_OFFSET 40 // IAT value from sensor - 40°C 
 
 /************************************************************************/
 /* Timer definitions:                                                   */
@@ -99,12 +100,15 @@ struct engine_
 	uint16_t Tps;				// Current ADC value of TPS sensor 1 (0 to 2^12-1)
 	uint16_t LastTps;			// Last ADC value of TPS sensor 1 (0 to 2^12-1)
 	//uint16_t Tps2;				// Current ADC value of TPS sensor 2 (0 to 2^12-1)
-	uint16_t Map;				// Current ADC value of Manifold Absolute Pressure sensor (0 to 2^12-1)
-	uint16_t Iat;				// Current ADC value of Intake Air Temperature sensor (0 to 2^12-1)
-	uint16_t Clt;				// Current ADC value of CooLant Temperature sensor (0 to 2^12-1) 
-	uint16_t Batt;				// Current ADC value of the Battery voltage (0 to 2^12-1)
-	uint16_t O2;				// Current ADC value of TPS sensor 1 (0 to 2^12-1)
+	uint16_t Map;				// Current kPa value of Manifold Absolute Pressure sensor 
+	uint16_t Iat;				// Current temperature value of Intake Air Temperature sensor (Offset by 40°C)
+	uint16_t Clt;				// Current temperature value of CooLant Temperature sensor (Offset by 40°C) 
+	uint8_t Batt;				// Current Voltage value of the Battery voltage (Offset by factor of 10, 12 V = 120)
+	uint8_t Afr;				// Current AFR value (Offset by factor of 10, 120 AFR = 12.0 AFR)
 	uint8_t LaunchControl;		// Launch Control button pressed (ON/OFF)
+	uint8_t CurrVeTable;		// Current volumetric efficiency value from table
+	uint8_t CurrAfrTable;		// Current air to fuel ratio from table
+	uint8_t CurrIgnTable;		// Current ignition advance from table
 	uint16_t CurrRpm;			// Current engine speed (RPM)
 	uint8_t CurrSpeed;			// Current vehicle speed (km/h)
 	int8_t CurrGear;			// Current vehicle gear (R(-1), N(0), 1, 2, 3, 4, 5, 6)

@@ -42,7 +42,9 @@ void waste_of_time_delay(uint32_t delay)
 	}
 }
 
-#define test 13
+#define TEST 13
+
+
 
 int main (void)
 {
@@ -50,11 +52,9 @@ int main (void)
 	sysclk_init();
 	board_init();
 	
-	pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
-	pio_clear(PIOC, IGN2_OUT);
 	// Initialize UART communication
 	uart_init();
-	// UART test, test interrupting to transmit data
+	// Initialize interrupts for UART
 	uart_rx_interrupt_init();
 	uart_tx_interrupt_init();
 	
@@ -67,11 +67,9 @@ int main (void)
 	pmc_enable_periph_clk(ID_PIOC);
 	// Configure pin as output
 	pio_set_output(PIOC, IGN1_OUT, LOW, FALSE, FALSE);
-	//pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
-	
+	pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
 	pio_clear(PIOC, IGN1_OUT);
 	pio_clear(PIOC, IGN2_OUT);
-	
 	
 	// Initialize necessary global parameters
 	global_init();
@@ -86,11 +84,16 @@ int main (void)
 	timer_init(GLOBAL_TIMER, TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_WAVE, TC_IER_COVFS | TC_IER_CPAS, TC8_PRIORITY);
 	tc_write_ra(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
 	
+	// Initialize TWI communication for EEPROM
+	eeprom_init();
 	
-	
-	
-	
-	
+	// TEST 
+	// Test tunerstudio comms
+	table_init();
+	tunerstudio_init();
+
+	uart_print_string("Init done\n");
+
 	while (1)
 	{
 		if (RxFlag)
@@ -98,7 +101,9 @@ int main (void)
 			uart_rx_read_buffer();
 			RxFlag = LOW;
 		}
+		//waste_of_time_delay(10000);
 		
+
 		//waste_of_time_delay(10000);
 		//uart_print_string("RxStringHead "); uart_print_int(RxStringHead); uart_new_line();
 		//uart_print_string("RxStringTail "); uart_print_int(RxStringTail); uart_new_line();
