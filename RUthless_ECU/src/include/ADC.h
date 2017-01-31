@@ -30,12 +30,12 @@
 // Channel 15 is temperature sensor
 
 /* Define active ADC channels, used for interrupts */
-#define NR_OF_ACTIVE_ADC_CHANNELS	5
+#define NR_OF_ACTIVE_ADC_CHANNELS	7
 #define MAX_NR_OF_ADC_CHANNELS		15
 
 // ADC median digital filter configuration (remember to use median function in math.c)
 #define ADC_MEDIAN_FILTER_LENGTH	3		// if this is more than 8 bit integer remember to configure the variable below
-volatile uint8_t AdcMedianCounter;
+volatile uint8_t AdcMedianCounter[MAX_NR_OF_ADC_CHANNELS];
 
 // Configure ADC resolution, Attention there is needed to configure registers to change it. This is used in calculations see math.c
 #define ADC_RESOLUTION				10 // 2^12 ADC_12_BITS 

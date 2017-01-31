@@ -21,6 +21,7 @@ void engine_init(void)
 {
 	engine.status = DEAD;				
 	engine.Tps = 0;	
+	engine.TpsAdc = 0;
 	engine.LastTps = 0;	
 	//engine.Tps2 = 0;				
 	engine.Map = 0;				

@@ -99,7 +99,8 @@ uint16_t GlobalTimerFreqTelemetryScaler;
 struct engine_
 {
 	uint8_t status;				// Uses the above mentioned defines
-	uint16_t Tps;				// Current ADC value of TPS sensor 1 (0 to 2^12-1)
+	uint16_t TpsAdc;				// Current ADC value of TPS sensor 1 (0 to 2^8-1)
+	uint8_t Tps;				// 0-100% value of TPS sensor 1
 	uint16_t LastTps;			// Last ADC value of TPS sensor 1 (0 to 2^12-1)
 	//uint16_t Tps2;				// Current ADC value of TPS sensor 2 (0 to 2^12-1)
 	uint16_t Map;				// Current kPa value of Manifold Absolute Pressure sensor 
@@ -139,7 +140,7 @@ struct engine_config_
 	
 	uint16_t Baro;				// Barometric pressure (Initial MAP value before the engine is turned on or secondary sensor)
 
-	uint16_t MapLow;			// Current lower ADC value of MAP sensor  (for calibration)
+	uint8_t MapLow;				// Current lower ADC value of MAP sensor  (for calibration)
 	uint16_t MapHigh;			// Current lower ADC value of MAP sensor  (for calibration)
 	
 	uint16_t RevLimit;			// Engine speed limit (RPM)

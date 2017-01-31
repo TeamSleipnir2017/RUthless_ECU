@@ -60,8 +60,7 @@ void tunerstudio_command(uint8_t character)
 	switch (character)
 	{
 		case 'A': // Real time data
-			tunerstudio_debug_global_function();
-			//tunerstudio_send_real_time_data();
+			tunerstudio_send_real_time_data();
 			//tunerstudio_send_dummy_data(37, 100);
 			break;
 		case 'B': // Burn command
@@ -202,10 +201,12 @@ void tunerstudio_write_data(uint16_t data)
 		case CONFIG_MAP_HIGH_OFFSET_FIRST_BYTE:
 			engine_config.MapHigh = data; break;
 		case CONFIG_MAP_HIGH_OFFSET_SECOND_BYTE:
-			engine_config.MapHigh = data; break;
+			engine_config.MapHigh |= data << 8; 
+			break;
 		default:
 			break;
 		}
+		uart_print_string("Her"); uart_print_int(engine_config.MapHigh);
 		break;
 	case IGN_PAGE:
 		tunerstudio_write_to_table(data, IgnTable, IgnRpmBins, IgnMapBins);
@@ -285,14 +286,11 @@ void tunerstudio_burn_config(void)
 {
 	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
 		return;
-	tunerstudio_burn_value_if_changed(engine_config.TpsLow & 0xFF	, EEPROM_TPS_INDEX);		// Write first byte
-	tunerstudio_burn_value_if_changed(engine_config.TpsLow >> 8		, EEPROM_TPS_INDEX + 1);	// Write second byte
-	tunerstudio_burn_value_if_changed(engine_config.TpsHigh & 0xFF	, EEPROM_TPS_INDEX + 2);	// Write first byte
-	tunerstudio_burn_value_if_changed(engine_config.TpsHigh >> 8	, EEPROM_TPS_INDEX + 3);	// Write second byte
-	tunerstudio_burn_value_if_changed(engine_config.MapLow & 0xFF	, EEPROM_MAP_INDEX);		// Write first byte
-	tunerstudio_burn_value_if_changed(engine_config.MapLow >> 8		, EEPROM_MAP_INDEX + 1);	// Write second byte
-	tunerstudio_burn_value_if_changed(engine_config.MapHigh & 0xFF	, EEPROM_MAP_INDEX + 2);	// Write first byte
-	tunerstudio_burn_value_if_changed(engine_config.MapHigh >> 8	, EEPROM_MAP_INDEX + 3);	// Write second byte
+	tunerstudio_burn_value_if_changed(engine_config.TpsLow			, EEPROM_TPS_LOW_INDEX);	
+	tunerstudio_burn_value_if_changed(engine_config.TpsHigh			, EEPROM_TPS_HIGH_INDEX);		
+	tunerstudio_burn_value_if_changed(engine_config.MapLow			, EEPROM_MAP_LOW_INDEX);	
+	tunerstudio_burn_value_if_changed(engine_config.MapHigh & 0xFF	, EEPROM_MAP_HIGH_INDEX);	// Write first byte
+	tunerstudio_burn_value_if_changed(engine_config.MapHigh >> 8	, EEPROM_MAP_HIGH_INDEX + 1);// Write second byte
 }
 
 void tunerstudio_send_real_time_data(void)
@@ -305,6 +303,7 @@ void tunerstudio_send_real_time_data(void)
 	transmit[REALTIME_MAP_INDEX] = engine.Map >> 1; // divide by 2
 	transmit[REALTIME_IAT_INDEX] = engine.Iat;
 	transmit[REALTIME_CLT_INDEX] = engine.Clt;
+	transmit[REALTIME_TPS_ADC_INDEX] = engine.TpsAdc;
 	transmit[REALTIME_BAT_INDEX] = engine.Batt;
 	transmit[REALTIME_AFR_INDEX] = engine.Afr;
 	transmit[REALTIME_RPM_INDEX] = engine.CurrRpm;
@@ -312,7 +311,7 @@ void tunerstudio_send_real_time_data(void)
 	transmit[REALTIME_VE_INDEX] = engine.CurrVeTable;
 	transmit[REALTIME_PW_INDEX] = engine.InjDuration / 100; // convert to ms (ex. 5.1 ms = 51)
 	transmit[REALTIME_IGN_INDEX] = engine.IgnTiming; 
-	transmit[REALTIME_TPS_INDEX] = math_map_adc(0, 100, engine.Tps);
+	transmit[REALTIME_TPS_INDEX] = engine.Tps;
 
 	// Transfer buffer
 	uart_interrupt_transfer_specific(transmit, NUMBER_OF_REAL_TIME_BYTES);

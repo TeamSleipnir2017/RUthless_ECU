@@ -47,5 +47,5 @@ uint16_t eeprom_read_int(uint16_t address)
 {
 	uint16_t FirstByte = eeprom_read_byte(address);
 	uint16_t SecondByte = eeprom_read_byte(address + 1);
-	return ((8 << SecondByte) | (FirstByte));
+	return (FirstByte | (SecondByte << 8));
 }

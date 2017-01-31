@@ -42,23 +42,12 @@ void waste_of_time_delay(uint32_t delay)
 	}
 }
 
-#define TEST 13
-
-
-
 int main (void)
 {
 	/* Insert system clock initialization code here (sysclk_init()). */
 	sysclk_init();
 	board_init();
-	
-	// Initialize UART communication
-	uart_init();
-	// Initialize interrupts for UART
-	uart_rx_interrupt_init();
-	uart_tx_interrupt_init();
-	
-	
+
 	// Initialize Debug pins
 	/************************************************************************/
 	/* pio_set(PIOx, Pin)
@@ -71,12 +60,18 @@ int main (void)
 	pio_clear(PIOC, IGN1_OUT);
 	pio_clear(PIOC, IGN2_OUT);
 	
+	// Initialize UART communication
+	uart_init();
+	// Initialize interrupts for UART
+	uart_enable_rx_interrupt();
+	uart_tx_interrupt_init();
+	
 	// Initialize necessary global parameters
 	global_init();
 	
 	// Initialize Analog to Digital Converter
 	adc_initialize();
-	uint8_t channel_number[NR_OF_ACTIVE_ADC_CHANNELS] = {4, 6, 1, 2, 12};
+	uint8_t channel_number[NR_OF_ACTIVE_ADC_CHANNELS] = {ADC_CLT_CH, ADC_IAT_CH, ADC_AFR_CH, ADC_MAP_CH, ADC_TPS_CH, ADC_BATT_CH, ADC_AFR_CH};
 	adc_turn_on_multiple_channels(channel_number, TRUE, ADC_PRIORITY);
 	adc_start(ADC);
 	// Initialize ADC timer frequency, how often ADC values are measured
@@ -86,41 +81,41 @@ int main (void)
 	
 	// Initialize TWI communication for EEPROM
 	eeprom_init();
-	
-	// TEST 
-	// Test tunerstudio comms
+
+	// Initialize tuning tables by reading them from EEPROM
 	table_init();
+	
+	// Initialize sensors look up vectors by reading them from EEPROM
+	sensors_init();
+
+	// Initialize communication with tunerstudio
 	tunerstudio_init();
 
-	uart_print_string("Init done\n");
+	// TEST 
+
+
+	uart_print_string("Init done"); uart_new_line();
 
 	while (1)
 	{
 		if (RxFlag)
-		{
+		{	
+			RxFlag = FALSE;
 			uart_rx_read_buffer();
-			RxFlag = LOW;
 		}
-		//waste_of_time_delay(10000);
-		
-
-		//waste_of_time_delay(10000);
-		//uart_print_string("RxStringHead "); uart_print_int(RxStringHead); uart_new_line();
-		//uart_print_string("RxStringTail "); uart_print_int(RxStringTail); uart_new_line();
 		
 		if (AdcFlag)
 		{
-			AdcFlag = FALSE;
-			for (uint8_t i = 0; i < NR_OF_ACTIVE_ADC_CHANNELS; i++)
-			{
-				//uart_print_string("Channel"); uart_print_int(channel_number[i]);uart_print_string(" :");uart_print_int(AdcData[AdcChannels[i]]); uart_new_line();
-				__asm__("nop");
-			}
+ 			AdcFlag = FALSE;
+			sensors_read_adc();
+// 			for (uint8_t i = 0; i < NR_OF_ACTIVE_ADC_CHANNELS; i++)
+// 			{
+// 			
+// 				uart_print_string("Channel"); uart_print_int(channel_number[i]);uart_print_string(" :");uart_print_int(math_find_median(AdcData[AdcChannels[i]], ADC_MEDIAN_FILTER_LENGTH)); uart_new_line();
+// 				__asm__("nop");
+// 			}
 		}
-// 		waste_of_time_delay(10000);
-// 		uart_print_string("Channel"); uart_print_int(channel_number[cnt]);uart_print_string(" :");uart_print_int(AdcData[AdcChannels[cnt]]); uart_new_line();
-// 		cnt = (cnt + 1) % NR_OF_ACTIVE_ADC_CHANNELS;
-// 		adc_start(ADC);
 	}
 	
 }
+

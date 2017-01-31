@@ -11,6 +11,12 @@ uint32_t math_map_adc(uint16_t min, uint16_t max, uint16_t value)
 {
 	return ((value * max) >> ADC_RESOLUTION) + min;
 }
+uint32_t math_map(uint16_t min, uint16_t max, int16_t value, uint16_t div)
+{
+	if (value < 0)
+		return 0;
+	return ((value * max) / div) + min;
+}
 
 // ATTENTION this will not work if the vector is not 16 bit, not sure how to make it global size since it is a pointer
 uint16_t math_find_median(uint16_t * Vector, uint16_t VectorLength)
