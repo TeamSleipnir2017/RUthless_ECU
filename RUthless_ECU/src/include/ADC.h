@@ -9,31 +9,36 @@
 #ifndef ADC_H_
 #define ADC_H_
 
+#include <asf.h> // Do not know why 30.1.17
 
-#define ADC_CH0 0
-#define ADC_CH1 1
-#define ADC_CH2 2
-#define ADC_CH3 3
-#define ADC_CH4 4
-#define ADC_CH5 5
-#define ADC_CH6 6
-#define ADC_CH7 7
-#define ADC_CH8 8
-#define ADC_CH9 9
-#define ADC_CH10 10
-#define ADC_CH11 11
-#define ADC_CH12 12
-#define ADC_CH13 13
-#define ADC_CH14 14
-#define ADC_CH15 15
+#define ADC_CH0						0
+#define ADC_CH1						1
+#define ADC_CH2						2
+#define ADC_CH3						3
+#define ADC_CH4						4
+#define ADC_CH5						5
+#define ADC_CH6						6
+#define ADC_CH7						7
+#define ADC_CH8						8
+#define ADC_CH9						9
+#define ADC_CH10					10
+#define ADC_CH11					11
+#define ADC_CH12					12
+#define ADC_CH13					13
+#define ADC_CH14					14
+#define ADC_CH15					15
 // Channel 15 is temperature sensor
 
 /* Define active ADC channels, used for interrupts */
-#define NR_OF_ACTIVE_ADC_CHANNELS 5
-#define MAX_NR_OF_ADC_CHANNELS 15
+#define NR_OF_ACTIVE_ADC_CHANNELS	5
+#define MAX_NR_OF_ADC_CHANNELS		15
 
-// Configure ADC resolution, Attention there is needed to configure registers to change it. This is used in calculations
-#define ADC_RESOLUTION 4096 // 2^12 ADC_12_BITS
+// ADC median digital filter configuration (remember to use median function in math.c)
+#define ADC_MEDIAN_FILTER_LENGTH	3		// if this is more than 8 bit integer remember to configure the variable below
+volatile uint8_t AdcMedianCounter;
+
+// Configure ADC resolution, Attention there is needed to configure registers to change it. This is used in calculations see math.c
+#define ADC_RESOLUTION				10 // 2^12 ADC_12_BITS 
 
 #include "global.h"
 
@@ -41,7 +46,7 @@
 volatile uint8_t AdcChannels[NR_OF_ACTIVE_ADC_CHANNELS];
 
 /* Data array for the configured active ADC channels */
-volatile uint16_t AdcData[MAX_NR_OF_ADC_CHANNELS];
+volatile uint16_t AdcData[MAX_NR_OF_ADC_CHANNELS][ADC_MEDIAN_FILTER_LENGTH];
 
 /* Global flag to indicate new results from interrupt */
 // NOT USED AT THE MOMENT, maybe unnecessary

@@ -57,10 +57,14 @@ void uart_interrupt_transfer_specific(char * str, uint16_t BufferLength)
 	}
 }
 
-void uart_rx_interrupt_init(void)
+void uart_enable_rx_interrupt(void)
 {
 	enable_interrupt_vector(UART_IRQn, UART_PRIORITY);
 	UART->UART_IER = UART_IER_RXRDY;
+}
+void uart_disable_rx_interrupt(void)
+{
+	UART->UART_IDR = UART_IDR_RXRDY;
 }
 
 void uart_rx_read_buffer(void)
@@ -72,7 +76,6 @@ void uart_rx_read_buffer(void)
 	}
 	tunerstudio_command(RxString[RxStringTail++]);
 	//uint8_t read = RxString[RxStringTail++];
-	
 }
 
 void uart_transfer(uint8_t transmit)
@@ -156,6 +159,12 @@ void UART_Handler(void)
 			RxStringHead = 0;
 		}
 		
-		RxFlag = HIGH;
+		RxFlag = TRUE;
 	}
+}
+
+uint8_t uart_receive(void)
+{
+	while (!(UART->UART_SR & UART_SR_RXRDY)); // Wait for character
+	return UART->UART_RHR;
 }

@@ -9,7 +9,8 @@
 #ifndef GLOBAL_H_
 #define GLOBAL_H_
 
-//#include "sensors.h"
+#include "sensors.h"
+#include "math.h"
 #include "ignition.h"
 #include "interrupts.h"
 #include "uart.h"
@@ -34,7 +35,8 @@ void global_init(void);
 #define FALSE 0
 /* TODO: Read from EEPROM number of cylinders                           */
 #define NR_OF_CYL  4			// Number of cylinders
-#define INTAKE_AIR_TEMPERATURE_OFFSET 40 // IAT value from sensor - 40°C 
+#define TEMPERATURE_OFFSET 40	// IAT value from sensor - 40°C 
+
 
 /************************************************************************/
 /* Timer definitions:                                                   */
@@ -128,7 +130,7 @@ struct cylinder_
 };
 volatile struct cylinder_ cylinder[NR_OF_CYL]; // Create an instance of the struct defined above 
 
-
+#define CONFIG_LENGTH	4		// Only start with storing MAP and TPS (low, high) in EEPROM
 struct engine_config_
 {
 	uint16_t TpsLow;			// Current lower ADC value of TPS sensor 1 (for calibration)
@@ -136,6 +138,9 @@ struct engine_config_
 	uint16_t TpsTimeDiff;		// Time difference between last TPS measurement
 	
 	uint16_t Baro;				// Barometric pressure (Initial MAP value before the engine is turned on or secondary sensor)
+
+	uint16_t MapLow;			// Current lower ADC value of MAP sensor  (for calibration)
+	uint16_t MapHigh;			// Current lower ADC value of MAP sensor  (for calibration)
 	
 	uint16_t RevLimit;			// Engine speed limit (RPM)
 	uint16_t LaunchControlRevLimit;	// Launch control engine speed limit (RPM)
@@ -161,17 +166,28 @@ void engine_config_init(void);	// Initialize all variables to 0
 /************************************************************************/
 
 /* ANALOG INPUTS */
-#define ADC_MAP PIO_PA16		// DUE A0, Channel 7
-#define ADC_IAT PIO_PA24		// DUE A1, Channel 6
-#define ADC_O2 PIO_PA23			// DUE A2, Channel 5
-#define ADC_CLT PIO_PA22		// DUE A3, Channel 4
-#define ADC_BARO PIO_PA6		// DUE A4, Channel 3
-//#define ADC_TPS2 PIO_PA4		// DUE A5, Channel 2
-#define ADC_TPS PIO_PA2			// DUE A7, Channel 0
-#define ADC_A8_AUX PIO_PB17		// DUE A9, Channel 10
-#define ADC_A9_AUX PIO_PB18		// DUE A9, Channel 11
-#define ADC_BATT PIO_PB19		// DUE A10, Channel 12
-#define ADC_A11_AUX PIO_PB20	// DUE A11, Channel 13
+#define ADC_MAP			PIO_PA16		// DUE A0, Channel 7
+#define ADC_MAP_CH		ADC_CH7
+#define ADC_IAT			PIO_PA24		// DUE A1, Channel 6
+#define ADC_IAT_CH		ADC_CH6
+#define ADC_AFR			PIO_PA23		// DUE A2, Channel 5
+#define ADC_AFR_CH		ADC_CH5
+#define ADC_CLT			PIO_PA22		// DUE A3, Channel 4
+#define ADC_CLT_CH		ADC_CH4
+#define ADC_BARO		PIO_PA6			// DUE A4, Channel 3
+#define ADC_BARO_CH		ADC_CH3
+//#define ADC_TPS2		PIO_PA4			// DUE A5, Channel 2
+//#define ADC_TPS2		ADC_CH2
+#define ADC_TPS			PIO_PA2			// DUE A7, Channel 0
+#define ADC_TPS_CH		ADC_CH0
+#define ADC_A8_AUX		PIO_PB17		// DUE A9, Channel 10
+#define ADC_A8_AUX_CH	ADC_CH10	
+#define ADC_A9_AUX		PIO_PB18		// DUE A9, Channel 11
+#define ADC_A9_AUX_CH	ADC_CH11	
+#define ADC_BATT		PIO_PB19		// DUE A10, Channel 12
+#define ADC_BATT_CH		ADC_CH12
+#define ADC_A11_AUX		PIO_PB20		// DUE A11, Channel 13
+#define ADC_A11_AUX_CH	ADC_CH13
 
 /* DIGITAL INPUTS */
 #define CRANK_SIGNAL PIO_PA7	// DUE D31

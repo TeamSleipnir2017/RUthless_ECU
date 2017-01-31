@@ -30,11 +30,13 @@ void uart_init(void);
 void uart_tx_interrupt_init(void);
 void uart_interrupt_transfer(char* str);
 void uart_interrupt_transfer_specific(char * str, uint16_t BufferLength);
-void uart_rx_interrupt_init(void);
+void uart_enable_rx_interrupt(void);
+void uart_disable_rx_interrupt(void);
 void uart_rx_read_buffer(void);
 void uart_transfer(uint8_t transmit);
 void uart_print_int(uint32_t data);
 void uart_new_line(void);
 void uart_print_string(char * data);
+uint8_t uart_receive(void);
 
 #endif /* UART_H_ */

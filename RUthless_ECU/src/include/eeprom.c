@@ -28,10 +28,10 @@
 	twi_master_init(TWI1, &opt);
  }
 
- // More advanced function to read from the EEPROM
- // It basicly checks for TWI comm. success and retries until it enables a Fault
- uint8_t eeprom_read_byte(uint16_t address)
- {
+// More advanced function to read from the EEPROM
+// It basicly checks for TWI comm. success and retries until it enables a Fault
+uint8_t eeprom_read_byte(uint16_t address)
+{
 	uint8_t result = 0;
 	// Try to read specific number of times otherwise FAULT
 	for (uint8_t i = 0; i < TWI_NUMBER_OF_TRIES; i++)
@@ -41,4 +41,11 @@
 	// Let know that there is a fault on the Two wire interface
 	engine_config.TwiFault = TRUE;
 	return 1; // 1 is the safest number regarding IGN, VE and AFR map
- }
+}
+
+uint16_t eeprom_read_int(uint16_t address)
+{
+	uint16_t FirstByte = eeprom_read_byte(address);
+	uint16_t SecondByte = eeprom_read_byte(address + 1);
+	return ((8 << SecondByte) | (FirstByte));
+}

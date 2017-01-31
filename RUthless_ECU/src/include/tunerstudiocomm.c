@@ -16,6 +16,11 @@ void tunerstudio_init(void)
 	Offset1 = 0;
 	Offset2 = 0;
 	OffsetFlag = FALSE;
+	TestFlag = FALSE;
+	for (uint16_t i = 0; i < DATA_LENGTH; i++)
+	{
+		TestBuffer[i] = 255;
+	}
 }
 
 // Function to decide what to do when an character is received by UART
@@ -40,12 +45,12 @@ void tunerstudio_command(uint8_t character)
 			OffsetFlag = 1;
 			return;
 		}
-		else if (OffsetFlag == 1){	// Receive second offset value
+		else if (CurrPage == VE_PAGE || CurrPage == AFR_PAGE || CurrPage == IGN_PAGE){	// Receive second offset value IF the current page is a table (VE, AFR, IGN)
 			Offset2 = character;
 			OffsetFlag = 2;
 			return;
 		}
-		else if (OffsetFlag == 2){	// Receive data to write
+		else if (OffsetFlag){	// Receive data to write
 			tunerstudio_write_data(character);
 			Offset1 = Offset2 = OffsetFlag = WriteFlag = 0;
 			return;
@@ -55,7 +60,8 @@ void tunerstudio_command(uint8_t character)
 	switch (character)
 	{
 		case 'A': // Real time data
-			tunerstudio_send_real_time_data();
+			tunerstudio_debug_global_function();
+			//tunerstudio_send_real_time_data();
 			//tunerstudio_send_dummy_data(37, 100);
 			break;
 		case 'B': // Burn command
@@ -93,8 +99,13 @@ void tunerstudio_command(uint8_t character)
 		case 'r':
 			break;
 		case 't':
+			uart_disable_rx_interrupt();			// Read manually from buffer simplifies this since it is not necessary to do this in realtime
+			tunerstudio_update_calib_vect();
 			break;
 		case '?':
+			break;
+		case 'D':
+			tunerstudio_debug_global_function();
 			break;
 		default:
 			break;
@@ -172,12 +183,29 @@ void tunerstudio_send_dummy_data(uint16_t NumberOfBytes, uint8_t dummy)
 	uart_interrupt_transfer(transmit);
 }
 
-void tunerstudio_write_data(uint8_t data)
+void tunerstudio_write_data(uint16_t data)
 {
 	switch (CurrPage)
 	{
 	case VE_PAGE:
 		tunerstudio_write_to_table(data, VeTable, VeRpmBins, VeMapBins);
+		break;
+	case CONFIG_PAGE:
+		switch (Offset1)
+		{
+		case CONFIG_TPS_LOW_OFFSET:
+			engine_config.TpsLow = data; break;
+		case CONFIG_TPS_HIGH_OFFSET:
+			engine_config.TpsHigh = data; break;
+		case CONFIG_MAP_LOW_OFFSET:
+			engine_config.MapLow = data; break;
+		case CONFIG_MAP_HIGH_OFFSET_FIRST_BYTE:
+			engine_config.MapHigh = data; break;
+		case CONFIG_MAP_HIGH_OFFSET_SECOND_BYTE:
+			engine_config.MapHigh = data; break;
+		default:
+			break;
+		}
 		break;
 	case IGN_PAGE:
 		tunerstudio_write_to_table(data, IgnTable, IgnRpmBins, IgnMapBins);
@@ -204,8 +232,6 @@ void tunerstudio_write_to_table(uint8_t data, uint8_t table[THREE_D_TABLE_SIZE][
 			ybin[Offset1 - THREE_D_TABLE_SIZE] = data;
 		}
 	}
-	// DEBUGG
-	//at24cxx_write_byte(Offset1, data);
 }
 
 void tunerstudio_burn_page_eeprom(void)
@@ -221,6 +247,9 @@ void tunerstudio_burn_page_eeprom(void)
 	case AFR_PAGE:
 		tunerstudio_burn_table_eeporm(EEPROM_AFR_INDEX, AfrTable, AfrRpmBins, AfrMapBins);
 		break;
+	case CONFIG_PAGE:
+		tunerstudio_burn_config();
+		break;
 	default:
 		break;
 	}
@@ -228,42 +257,46 @@ void tunerstudio_burn_page_eeprom(void)
 
 void tunerstudio_burn_table_eeporm(uint16_t EepromIndex, uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE])
 {
+	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
+		return;
+
 	// Compare current table with the data in EEPROM
-	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++) {
-		for (uint8_t j = 0; j < THREE_D_TABLE_SIZE; j++){
-			uint8_t EepromReadByte = eeprom_read_byte(EepromIndex++);
-			if (engine_config.TwiFault == TRUE){ // check if communication with EEPROM is okay
-				return;
-			} 
-			else if (EepromReadByte != table[i][j]){ // Compare current value with EEPROM value, update EEPROM if it is not the same
-				at24cxx_write_byte(EepromIndex - 1, table[i][j]);
-			}
-		}
-	}
+	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++) 
+		for (uint8_t j = 0; j < THREE_D_TABLE_SIZE; j++)
+			tunerstudio_burn_value_if_changed(table[i][j], EepromIndex++);
+
 	// Load UART TX buffer with the RPM values for the Volumetric efficiency table
-	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++) {
-		if (engine_config.TwiFault == TRUE){ // check if communication with EEPROM is okay
-			return;
-		}
-		else if (eeprom_read_byte(EepromIndex++) != xbin[i]){ // Compare current value with EEPROM value, update EEPROM if it is not the same
-			at24cxx_write_byte(EepromIndex - 1, xbin[i]);
-		}
-	}
+	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++) 
+		tunerstudio_burn_value_if_changed(xbin[i], EepromIndex++);
 
 	// Load UART TX buffer with the MAP values for the Volumetric efficiency table
-	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++) {
-		if (engine_config.TwiFault == TRUE){ // check if communication with EEPROM is okay
-			return;
-		}
-		else if (eeprom_read_byte(EepromIndex++) != ybin[i]){ // Compare current value with EEPROM value, update EEPROM if it is not the same
-			at24cxx_write_byte(EepromIndex - 1, ybin[i]);
-		}
+	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++) 
+		tunerstudio_burn_value_if_changed(ybin[i], EepromIndex++);
+}
+
+void tunerstudio_burn_value_if_changed(uint32_t TempValue, uint32_t EepromIndex)
+{
+	if (eeprom_read_byte(EepromIndex) != TempValue){ // Compare current value with EEPROM value, update EEPROM if it is not the same
+		at24cxx_write_byte(EepromIndex, TempValue);
 	}
+}
+
+void tunerstudio_burn_config(void)
+{
+	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
+		return;
+	tunerstudio_burn_value_if_changed(engine_config.TpsLow & 0xFF	, EEPROM_TPS_INDEX);		// Write first byte
+	tunerstudio_burn_value_if_changed(engine_config.TpsLow >> 8		, EEPROM_TPS_INDEX + 1);	// Write second byte
+	tunerstudio_burn_value_if_changed(engine_config.TpsHigh & 0xFF	, EEPROM_TPS_INDEX + 2);	// Write first byte
+	tunerstudio_burn_value_if_changed(engine_config.TpsHigh >> 8	, EEPROM_TPS_INDEX + 3);	// Write second byte
+	tunerstudio_burn_value_if_changed(engine_config.MapLow & 0xFF	, EEPROM_MAP_INDEX);		// Write first byte
+	tunerstudio_burn_value_if_changed(engine_config.MapLow >> 8		, EEPROM_MAP_INDEX + 1);	// Write second byte
+	tunerstudio_burn_value_if_changed(engine_config.MapHigh & 0xFF	, EEPROM_MAP_INDEX + 2);	// Write first byte
+	tunerstudio_burn_value_if_changed(engine_config.MapHigh >> 8	, EEPROM_MAP_INDEX + 3);	// Write second byte
 }
 
 void tunerstudio_send_real_time_data(void)
 {
-	uint32_t temp_calc = 0;
 	uint8_t transmit[NUMBER_OF_REAL_TIME_BYTES];
 	// Initialize array with constant, since all of the variables are not used
 	for (uint16_t i = 0; i < NUMBER_OF_REAL_TIME_BYTES; i++)
@@ -278,10 +311,79 @@ void tunerstudio_send_real_time_data(void)
 	transmit[REALTIME_RPM_INDEX + 1] = (engine.CurrRpm >> 8);
 	transmit[REALTIME_VE_INDEX] = engine.CurrVeTable;
 	transmit[REALTIME_PW_INDEX] = engine.InjDuration / 100; // convert to ms (ex. 5.1 ms = 51)
-	transmit[REALTIME_IGN_INDEX] = engine.IgnTiming;
-	temp_calc = (engine.Tps * 100) / ADC_RESOLUTION;
-	transmit[REALTIME_TPS_INDEX] = temp_calc;
+	transmit[REALTIME_IGN_INDEX] = engine.IgnTiming; 
+	transmit[REALTIME_TPS_INDEX] = math_map_adc(0, 100, engine.Tps);
 
 	// Transfer buffer
 	uart_interrupt_transfer_specific(transmit, NUMBER_OF_REAL_TIME_BYTES);
+}
+
+void tunerstudio_update_calib_vect(void)
+{
+	// Check if the interrupt buffer consists of data
+	if (RxStringTail != RxStringHead)
+	{
+		// TODO: Read the buffer and then continue, possibly not necessary
+		uart_print_string("ERROR");
+		RxStringTail = RxStringHead = 0;
+	}
+	else
+	{
+		uint8_t receive = uart_receive();
+		switch (receive)
+		{
+			case CONFIG_CLT:
+				tunerstudio_update_calib_vect_helper(2, EEPROM_CLT_ADC_INDEX);
+				break;
+			case CONFIG_IAT:
+				tunerstudio_update_calib_vect_helper(2, EEPROM_IAT_ADC_INDEX);
+				break;
+			case CONFIG_AFR:
+				tunerstudio_update_calib_vect_helper(1, EEPROM_AFR_ADC_INDEX);
+				break;
+			default:
+				break;
+		}
+	}
+	uart_enable_rx_interrupt();
+}
+void tunerstudio_update_calib_vect_helper(uint8_t NrOfBytes, uint32_t EepromIndex)
+{
+	uint8_t receive[2];			// Receiving buffer
+	receive[0] = receive[1] = 0;
+	int16_t TempValue = 0;		// Integer, the value can be negative
+	for (uint16_t i = 0; i < DATA_LENGTH; i++)
+	{
+		receive[0] = uart_receive();
+		if (NrOfBytes == 1) {		
+			TempValue = receive[0];		// AFR
+		}
+		else {
+			receive[1] = uart_receive();
+			TempValue = (int)((receive[1] << 8) | (receive[0]));// Put together the temperature value
+			TempValue = ((TempValue - 320)  * 5) / 9;			// Change to celsius from fahrenheit
+			TempValue /= 10;									// Tunerstudio sends the value scaled up by 10
+			TempValue += TEMPERATURE_OFFSET;					// Offset to discard the need of negative integer
+		}
+		if (TempValue > 255){ // Store only bytes in EEPROM
+			TempValue = 255;
+		} 
+		else if (TempValue < 0){ // For safety
+			TempValue = 0;
+		}
+		at24cxx_write_byte(EepromIndex++, TempValue);
+	}
+}
+
+void tunerstudio_debug_global_function(void)
+{
+	uart_print_string("MAP High: "); uart_print_int(engine_config.MapHigh); uart_new_line();
+	uart_print_string("MAP Low: "); uart_print_int(engine_config.MapLow); uart_new_line();
+	uart_print_string("TPS High: "); uart_print_int(engine_config.TpsHigh); uart_new_line();
+	uart_print_string("TPS Low: "); uart_print_int(engine_config.TpsLow); uart_new_line();
+	uart_print_string("CLT: "); uart_print_int(engine.Clt); uart_new_line();
+	uart_print_string("IAT: "); uart_print_int(engine.Iat); uart_new_line();
+	uart_print_string("AFR: "); uart_print_int(engine.Afr); uart_new_line();
+	uart_print_string("MAP: "); uart_print_int(engine.Map); uart_new_line();
+	uart_print_string("TPS: "); uart_print_int(engine.Tps); uart_new_line();
 }

@@ -26,14 +26,21 @@ The EEPROM used is AT24C256C-SSHL-T, and the addresses are as follows
 // 	#define BOARD_AT24C_ADDRESS 0x50
 // 	#define BOARD_CLK_TWI_EEPROM 13
 // 	#define BOARD_CLK_TWI_MUX_EEPROM PIOB
-#define BOARD_CLK_HZ 100000 // TWI Bus Clock 400kHz 
-#define MAX_EEPROM_BYTES 32768
-#define TWI_NUMBER_OF_TRIES 10 // Constant of number of tries to read from the EEPROM
+#define BOARD_CLK_HZ			100000			// TWI Bus Clock 400kHz 
+#define MAX_EEPROM_BYTES		32768			// Still not used 30.1.17 JBB
+#define TWI_NUMBER_OF_TRIES		10				// Constant of number of tries to read from the EEPROM
 
-// EEPROM address structure
-#define EEPROM_VE_INDEX		0*(THREE_D_TABLE_SIZE*THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE)
-#define EEPROM_AFR_INDEX	1*(THREE_D_TABLE_SIZE*THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE)
-#define EEPROM_IGN_INDEX	2*(THREE_D_TABLE_SIZE*THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE+THREE_D_TABLE_SIZE)
+// EEPROM address structure see excel document EEPROM_Management.xlsx
+#define EEPROM_VE_INDEX			0
+#define EEPROM_AFR_INDEX		288
+#define EEPROM_IGN_INDEX		576
+#define EEPROM_CLT_ADC_INDEX	864
+#define EEPROM_IAT_ADC_INDEX	1888
+#define EEPROM_AFR_ADC_INDEX	2912
+#define EEPROM_TPS_INDEX		3936
+#define EEPROM_MAP_INDEX		3940
+
+
 
 #include "global.h"
 
@@ -42,6 +49,7 @@ void eeprom_init(void);
 // More advanced function to read from the EEPROM
 // It basicly checks for TWI comm. success and retries until it enables a Fault
 uint8_t eeprom_read_byte(uint16_t address);
+uint16_t eeprom_read_int(uint16_t address);
 
 
 

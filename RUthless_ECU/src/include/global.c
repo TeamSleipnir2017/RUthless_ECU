@@ -57,7 +57,10 @@ void engine_config_init(void)
 	engine_config.TpsHigh = 0;			
 	engine_config.TpsTimeDiff = 0;		
 	
-	engine_config.Baro = 0;				
+	engine_config.Baro = 0;	
+	
+	engine_config.MapLow = 0;
+	engine_config.MapHigh = 0;			
 	
 	engine_config.RevLimit = 0;			
 	engine_config.LaunchControlRevLimit = 0;	
