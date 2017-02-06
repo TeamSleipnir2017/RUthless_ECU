@@ -92,7 +92,7 @@ int main (void)
 	tunerstudio_init();
 
 	// TEST 
-
+	interrupts_enable_pio(ID_PIOA, CRANK_SIGNAL, PIOA_PRIORITY, INTERRUPT_RISING_EDGE_MODE);
 
 	uart_print_string("Init done"); uart_new_line();
 
@@ -114,6 +114,21 @@ int main (void)
 // 				uart_print_string("Channel"); uart_print_int(channel_number[i]);uart_print_string(" :");uart_print_int(math_find_median(AdcData[AdcChannels[i]], ADC_MEDIAN_FILTER_LENGTH)); uart_new_line();
 // 				__asm__("nop");
 // 			}
+		}
+		// TEST
+		if (CrankSignalFlag)
+		{
+			CrankSignalFlag = FALSE;
+			if (!(CrankTooth % TachPulse))
+			{
+				uint32_t CalcRpm = GLOBAL_TIMER_FREQ / CrankCurrCycleCounts * 60 / TRIGGER_WHEEL;
+				engine.CurrRpm = CalcRpm;
+				if (CrankTooth >= 24)
+				{
+					CrankTooth = 1;
+				}
+			}
+			
 		}
 	}
 	

@@ -213,10 +213,10 @@ uint32_t pio_handler_set_pin(uint32_t ul_pin, uint32_t ul_flag,
  * \brief Parallel IO Controller A interrupt handler.
  * Redefined PIOA interrupt handler for NVIC interrupt table.
  */
-void PIOA_Handler(void)
-{
-	pio_handler_process(PIOA, ID_PIOA);
-}
+// void PIOA_Handler(void)
+// {
+// 	pio_handler_process(PIOA, ID_PIOA);
+// }
 #endif
 
 #ifdef ID_PIOB
@@ -224,10 +224,10 @@ void PIOA_Handler(void)
  * \brief Parallel IO Controller B interrupt handler
  * Redefined PIOB interrupt handler for NVIC interrupt table.
  */
-void PIOB_Handler(void)
-{
-    pio_handler_process(PIOB, ID_PIOB);
-}
+// void PIOB_Handler(void)
+// {
+//     pio_handler_process(PIOB, ID_PIOB);
+// }
 #endif
 
 #ifdef ID_PIOC
@@ -235,10 +235,10 @@ void PIOB_Handler(void)
  * \brief Parallel IO Controller C interrupt handler.
  * Redefined PIOC interrupt handler for NVIC interrupt table.
  */
-void PIOC_Handler(void)
-{
-	pio_handler_process(PIOC, ID_PIOC);
-}
+// void PIOC_Handler(void)
+// {
+// 	pio_handler_process(PIOC, ID_PIOC);
+// }
 #endif
 
 #ifdef ID_PIOD
@@ -246,10 +246,10 @@ void PIOC_Handler(void)
  * \brief Parallel IO Controller D interrupt handler.
  * Redefined PIOD interrupt handler for NVIC interrupt table.
  */
-void PIOD_Handler(void)
-{
-	pio_handler_process(PIOD, ID_PIOD);
-}
+// void PIOD_Handler(void)
+// {
+// 	pio_handler_process(PIOD, ID_PIOD);
+// }
 #endif
 
 #ifdef ID_PIOE

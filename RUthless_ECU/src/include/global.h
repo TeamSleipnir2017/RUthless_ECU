@@ -19,6 +19,7 @@
 #include "tunerstudiocomm.h"
 #include "table.h"
 #include "eeprom.h"
+#include "fuelcalc.h"
 #include <asf.h>
 
 void global_init(void);
@@ -36,6 +37,7 @@ void global_init(void);
 /* TODO: Read from EEPROM number of cylinders                           */
 #define NR_OF_CYL  4			// Number of cylinders
 #define TEMPERATURE_OFFSET 40	// IAT value from sensor - 40°C 
+#define TRIGGER_WHEEL 24		// Number of tooths
 
 
 /************************************************************************/
@@ -52,13 +54,22 @@ void global_init(void);
 #define CYLINDER_8_TIMER 7
 #define GLOBAL_TIMER 8
 
-TcChannel *GlobalTimer;
-
 #define GLOBAL_TIMER_FREQ 2625000
 
 uint16_t GlobalTimerFreqADCScaler;
 uint16_t GlobalTimerFreqUARTScaler;
 uint16_t GlobalTimerFreqTelemetryScaler;
+
+volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor
+volatile uint32_t CamCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for camshaft sensor
+volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
+volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
+volatile uint16_t CrankTooth;				// Variable storing current crank tooth 
+volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
+volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
+volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
+
+
 
 /************************************************************************/
 /* Nested vector interrupt priority definitions:                        */

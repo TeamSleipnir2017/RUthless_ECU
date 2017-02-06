@@ -85,7 +85,7 @@ void timer_init(uint32_t TimerChannel, uint32_t TimerMode, uint32_t InterruptMod
 		
 	tc_init(Timer, (TimerChannel%3), TimerMode);
 	
-	enable_interrupt_vector(TC0_IRQn + TimerChannel, TimerInterruptPriority);
+	interrupts_enable_interrupt_vector(TC0_IRQn + TimerChannel, TimerInterruptPriority);
 	
 	tc_enable_interrupt(Timer, (TimerChannel%3), InterruptMode);
 	

@@ -27,7 +27,7 @@ void uart_tx_interrupt_init(void)
 {
 	//UART->UART_IER = UART_IER_TXRDY;
 	
-	enable_interrupt_vector(UART_IRQn, UART_PRIORITY);
+	interrupts_enable_interrupt_vector(UART_IRQn, UART_PRIORITY);
 	
 	// Initialize Transmit buffer character array
 	for (uint16_t i = 0; i < TXBUFFERSIZE; i++)
@@ -59,7 +59,7 @@ void uart_interrupt_transfer_specific(char * str, uint16_t BufferLength)
 
 void uart_enable_rx_interrupt(void)
 {
-	enable_interrupt_vector(UART_IRQn, UART_PRIORITY);
+	interrupts_enable_interrupt_vector(UART_IRQn, UART_PRIORITY);
 	UART->UART_IER = UART_IER_RXRDY;
 }
 void uart_disable_rx_interrupt(void)

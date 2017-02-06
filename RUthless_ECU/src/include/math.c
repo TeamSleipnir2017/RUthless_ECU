@@ -43,3 +43,12 @@ uint16_t math_find_median(uint16_t * Vector, uint16_t VectorLength)
 	// Return median
 	return TempVector[(uint16_t)((VectorLength * 1.0 + 0.5) / 2.0)];
 }
+
+uint16_t math_interpolation(uint8_t Rpm, uint8_t Map, uint8_t Table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t RpmBins[THREE_D_TABLE_SIZE], uint8_t MapBins[THREE_D_TABLE_SIZE])
+{
+	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++)
+	{
+		
+	}
+	return 100;
+}

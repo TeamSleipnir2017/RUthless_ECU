@@ -10,11 +10,25 @@
 void global_init(void)
 {
 	// TODO: Read from EEPROM
+
+	// Frequency scalers for ADC, TODO: Finish telemetry
 	GlobalTimerFreqADCScaler = 1;
 	GlobalTimerFreqUARTScaler = 1;
 	GlobalTimerFreqTelemetryScaler = 1;
 
+	// Timer Variables
+	CrankCurrCycleCounts = 0;
+	CamCurrCycleCounts = 0;
+	CrankTimerCounts = 0;
+	CamTimerCounts = 0;
+	CrankTooth = 1;
+	CrankSignalFlag = FALSE;
+	CamSignalFlag = FALSE;
+	TachPulse = 4; // Calculate new RPM every quarter of the trigger wheel (4 cylinder)
+
 	engine_init();
+	cylinder_init();
+	engine_config_init();
 }
 
 void engine_init(void)

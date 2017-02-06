@@ -298,7 +298,7 @@ void tunerstudio_send_real_time_data(void)
 	uint8_t transmit[NUMBER_OF_REAL_TIME_BYTES];
 	// Initialize array with constant, since all of the variables are not used
 	for (uint16_t i = 0; i < NUMBER_OF_REAL_TIME_BYTES; i++)
-		transmit[i] = 100 ;
+		transmit[i] = 100;
 	// Load IAT value to transmission buffer and so on
 	transmit[REALTIME_MAP_INDEX] = engine.Map >> 1; // divide by 2
 	transmit[REALTIME_IAT_INDEX] = engine.Iat;
@@ -385,4 +385,5 @@ void tunerstudio_debug_global_function(void)
 	uart_print_string("AFR: "); uart_print_int(engine.Afr); uart_new_line();
 	uart_print_string("MAP: "); uart_print_int(engine.Map); uart_new_line();
 	uart_print_string("TPS: "); uart_print_int(engine.Tps); uart_new_line();
+	uart_print_string("RPM: "); uart_print_int(engine.CurrRpm); uart_new_line();
 }

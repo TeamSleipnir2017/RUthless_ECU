@@ -9,6 +9,12 @@
 #ifndef INTERRUPTS_H_
 #define INTERRUPTS_H_
 
+
+#define INTERRUPT_PIN_CHANGE_MODE		0
+#define INTERRUPT_RISING_EDGE_MODE		1
+#define INTERRUPT_FALLING_EDGE_MODE		2
+
+
 #include <asf.h>
 #include "global.h"
 
@@ -33,6 +39,7 @@
                                                                         */
 /************************************************************************/
 
-void enable_interrupt_vector(uint32_t irqn, uint32_t priority);
+void interrupts_enable_interrupt_vector(uint32_t IRQN, uint32_t Priority);
+void interrupts_enable_pio(uint32_t PeripheralID, uint32_t Pin, uint32_t Priority, uint8_t Mode);
 
 #endif /* INTERRUPTS_H_ */

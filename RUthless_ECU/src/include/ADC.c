@@ -42,7 +42,7 @@ void adc_turn_on_multiple_channels (uint8_t ChannelNumber[NR_OF_ACTIVE_ADC_CHANN
 	if (EnableAdcInterrupt)
 	{
 		adc_enable_interrupt(ADC, ADC_IER_DRDY);
-		enable_interrupt_vector(ADC_IRQn, AdcInterruptPriority);
+		interrupts_enable_interrupt_vector(ADC_IRQn, AdcInterruptPriority);
 	}
 }
 

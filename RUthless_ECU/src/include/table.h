@@ -9,17 +9,16 @@
 #ifndef TABLE_H_
 #define TABLE_H_
 
-// Array size definitions
-#define THREE_D_TABLE_SIZE 16
+
 
 #include "global.h"
+
+
 
 /************************************************************************/
 /* This file consists of all the tables(arrays) to configure or tune the
 ECU                                                                     */
 /************************************************************************/
-
-
 
 // Arrays
 // Volumetric Efficiency
