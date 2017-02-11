@@ -24,6 +24,9 @@
 
 void global_init(void);
 
+// DEBUG PARAMETERS
+uint32_t DebugCounter;
+
 /************************************************************************/
 /* Global definitions:                                                  */
 /************************************************************************/
@@ -36,8 +39,18 @@ void global_init(void);
 #define FALSE 0
 /* TODO: Read from EEPROM number of cylinders                           */
 #define NR_OF_CYL  4			// Number of cylinders
+#define RPM_SCALER 100
 #define TEMPERATURE_OFFSET 40	// IAT value from sensor - 40°C 
 #define TRIGGER_WHEEL 24		// Number of tooths
+#define CYL_DISPLACEMENT 600	// Cylinder displacement in cc
+// Define constants to calculate fuel constant
+#define INJECTOR_FLOW_RATE 200	// Should be a variable [cc/min]
+#define GASOLINE_DENSITY 740	// kg/m^3
+#define GAS_CONSTANT 287		// J/(Kg K)
+#define NR_OF_INJECTORS	4		// Should be a variable
+#define FUEL_CONST (CYL_DISPLACEMENT * 60 * 1000)/GASOLINE_DENSITY * 1000 / GAS_CONSTANT / NR_OF_INJECTORS * 1000 / INJECTOR_FLOW_RATE
+
+
 
 
 /************************************************************************/
@@ -120,13 +133,13 @@ struct engine_
 	uint8_t Batt;				// Current Voltage value of the Battery voltage (Offset by factor of 10, 12 V = 120)
 	uint8_t Afr;				// Current AFR value (Offset by factor of 10, 120 AFR = 12.0 AFR)
 	uint8_t LaunchControl;		// Launch Control button pressed (ON/OFF)
-	uint8_t CurrVeTable;		// Current volumetric efficiency value from table
-	uint8_t CurrAfrTable;		// Current air to fuel ratio from table
-	uint8_t CurrIgnTable;		// Current ignition advance from table
+	uint16_t CurrVeTable;		// Current volumetric efficiency value from table
+	uint16_t CurrAfrTable;		// Current air to fuel ratio from table
+	uint16_t CurrIgnTable;		// Current ignition advance from table
 	uint16_t CurrRpm;			// Current engine speed (RPM)
 	uint8_t CurrSpeed;			// Current vehicle speed (km/h)
 	int8_t CurrGear;			// Current vehicle gear (R(-1), N(0), 1, 2, 3, 4, 5, 6)
-	uint16_t InjDuration;		// Required injector duration (µs)
+	uint32_t InjDuration;		// Required injector duration (ns)
 	uint16_t IgnTiming;			// Required ignition spark timing (°)
 	uint16_t IgnDwell;			// Required ignition coil charging time (µs)
 };

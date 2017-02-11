@@ -9,10 +9,12 @@
 
 void global_init(void)
 {
+	// DEBUG
+	DebugCounter = 0;
 	// TODO: Read from EEPROM
 
 	// Frequency scalers for ADC, TODO: Finish telemetry
-	GlobalTimerFreqADCScaler = 1;
+	GlobalTimerFreqADCScaler = 50;
 	GlobalTimerFreqUARTScaler = 1;
 	GlobalTimerFreqTelemetryScaler = 1;
 

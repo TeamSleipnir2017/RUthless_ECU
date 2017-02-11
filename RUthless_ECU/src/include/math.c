@@ -44,11 +44,74 @@ uint16_t math_find_median(uint16_t * Vector, uint16_t VectorLength)
 	return TempVector[(uint16_t)((VectorLength * 1.0 + 0.5) / 2.0)];
 }
 
-uint16_t math_interpolation(uint8_t Rpm, uint8_t Map, uint8_t Table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t RpmBins[THREE_D_TABLE_SIZE], uint8_t MapBins[THREE_D_TABLE_SIZE])
+uint16_t math_interpolation_array(uint16_t Rpm, uint16_t Map, uint8_t Table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t RpmBins[THREE_D_TABLE_SIZE], uint8_t MapBins[THREE_D_TABLE_SIZE])
 {
-	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++)
-	{
-		
+	uint8_t RpmIndexLow = 0, MapIndexLow = 0;
+	uint8_t RpmIndexHigh = THREE_D_TABLE_SIZE - 1, MapIndexHigh = THREE_D_TABLE_SIZE - 1;
+	// Find where the engine is positioned in the 3D tables
+	math_find_interpolation_index(RpmBins, Rpm, &RpmIndexLow, &RpmIndexHigh, RPM_SCALER, THREE_D_TABLE_SIZE);
+	math_find_interpolation_index(MapBins, Map, &MapIndexLow, &MapIndexHigh, 1, THREE_D_TABLE_SIZE);
+
+	// Use the indexes to calculate a interpolated value
+	// Weighted average is first used
+	uint8_t RpmWeight = math_interpolation(Rpm, RpmBins[RpmIndexLow] * RPM_SCALER, RpmBins[RpmIndexHigh] * RPM_SCALER);
+// 	if (DebugCounter>= 100)
+// 	{
+// 		uart_print_string("Rpm "); uart_print_int(Rpm); uart_new_line();
+// 		uart_print_string("RpmL "); uart_print_int(RpmBins[RpmIndexLow] * RPM_SCALER); uart_new_line();
+// 		uart_print_string("RpmH "); uart_print_int(RpmBins[RpmIndexHigh] * RPM_SCALER); uart_new_line();
+// 		uart_print_string("RpmIndexLow "); uart_print_int(RpmIndexLow); uart_new_line();
+// 		uart_print_string("RpmIndexHigh "); uart_print_int(RpmIndexHigh); uart_new_line();
+// 		uart_print_string("Weight "); uart_print_int(RpmWeight); uart_new_line();
+// 		DebugCounter = 0;
+// 	}
+// 	DebugCounter = DebugCounter + 1;
+	
+	uint8_t MapWeight = math_interpolation(Map, MapBins[MapIndexLow], MapBins[MapIndexHigh]);
+	// Calculate interpolated value of the four values
+	/************************************************************************/
+	/* 
+	MAP	
+	x	calc3	calc4
+	x	calc1	calc2
+	RPM	x		x                                                           */
+	/************************************************************************/
+	uint32_t calc1 = (uint32_t)Table[MapIndexLow][RpmIndexLow] * (100 - MapWeight) * (100 - RpmWeight);
+	uint32_t calc2 = (uint32_t)Table[MapIndexLow][RpmIndexHigh] * (100 - MapWeight) * (RpmWeight);
+	uint32_t calc3 = (uint32_t)Table[MapIndexHigh][RpmIndexLow] * (MapWeight) * (100 - RpmWeight);
+	uint32_t calc4 = (uint32_t)Table[MapIndexHigh][RpmIndexHigh] * (MapWeight) * (RpmWeight);
+	
+	return (calc1 + calc2 + calc3 + calc4) / 10000;
+}
+void math_find_interpolation_index(uint8_t * Vector, uint16_t Value, uint8_t * Low, uint8_t * High, uint16_t Scaler, uint8_t Len)
+{
+	for (uint8_t Index = 0; Index < Len; Index++)
+	{	
+		uint16_t Temp = Vector[Index] * Scaler;
+		if (Value > Temp) {
+			*Low = Index;
+		} 
+		else if (Value < Temp) {
+			*High = Index;
+			break;
+		} 
+		else if (Value == Temp) {
+			*Low = Index;
+			*High = Index;
+			break;
+		}
 	}
-	return 100;
+}
+
+
+// Calculate the weight of the value compared to indexes x1 and x2
+uint8_t math_interpolation(uint16_t value, uint16_t x1, uint16_t x2)
+{
+	if (value <= x1) // below or equal to lower bound
+		return 0;
+
+	if (value >= x2) // above or equal to upper bounds
+		return 100;
+
+	return ((uint32_t)(value - x1) * 100)/((x2 - x1));
 }

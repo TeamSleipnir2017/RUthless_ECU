@@ -107,7 +107,9 @@ int main (void)
 		if (AdcFlag)
 		{
  			AdcFlag = FALSE;
+			// TODO: Maybe disable interrupts
 			sensors_read_adc();
+			// TODO: Enable interrupts
 // 			for (uint8_t i = 0; i < NR_OF_ACTIVE_ADC_CHANNELS; i++)
 // 			{
 // 			
@@ -121,8 +123,12 @@ int main (void)
 			CrankSignalFlag = FALSE;
 			if (!(CrankTooth % TachPulse))
 			{
+				// TODO: Disable Interrupts
 				uint32_t CalcRpm = GLOBAL_TIMER_FREQ / CrankCurrCycleCounts * 60 / TRIGGER_WHEEL;
+				// TODO: Enable Interrupts
+				// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
 				engine.CurrRpm = CalcRpm;
+				engine.InjDuration = fuelcalc_pulsewidth();
 				if (CrankTooth >= 24)
 				{
 					CrankTooth = 1;

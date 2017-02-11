@@ -45,7 +45,7 @@ void tunerstudio_command(uint8_t character)
 			OffsetFlag = 1;
 			return;
 		}
-		else if (CurrPage == VE_PAGE || CurrPage == AFR_PAGE || CurrPage == IGN_PAGE){	// Receive second offset value IF the current page is a table (VE, AFR, IGN)
+		else if ((CurrPage == VE_PAGE || CurrPage == AFR_PAGE || CurrPage == IGN_PAGE) && OffsetFlag != 2){	// Receive second offset value IF the current page is a table (VE, AFR, IGN)
 			Offset2 = character;
 			OffsetFlag = 2;
 			return;
@@ -100,6 +100,7 @@ void tunerstudio_command(uint8_t character)
 		case 't':
 			uart_disable_rx_interrupt();			// Read manually from buffer simplifies this since it is not necessary to do this in realtime
 			tunerstudio_update_calib_vect();
+			uart_enable_rx_interrupt();
 			break;
 		case '?':
 			break;
@@ -206,7 +207,6 @@ void tunerstudio_write_data(uint16_t data)
 		default:
 			break;
 		}
-		uart_print_string("Her"); uart_print_int(engine_config.MapHigh);
 		break;
 	case IGN_PAGE:
 		tunerstudio_write_to_table(data, IgnTable, IgnRpmBins, IgnMapBins);
@@ -260,7 +260,7 @@ void tunerstudio_burn_table_eeporm(uint16_t EepromIndex, uint8_t table[THREE_D_T
 {
 	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
 		return;
-
+	
 	// Compare current table with the data in EEPROM
 	for (uint8_t i = 0; i < THREE_D_TABLE_SIZE; i++) 
 		for (uint8_t j = 0; j < THREE_D_TABLE_SIZE; j++)
@@ -308,8 +308,9 @@ void tunerstudio_send_real_time_data(void)
 	transmit[REALTIME_AFR_INDEX] = engine.Afr;
 	transmit[REALTIME_RPM_INDEX] = engine.CurrRpm;
 	transmit[REALTIME_RPM_INDEX + 1] = (engine.CurrRpm >> 8);
-	transmit[REALTIME_VE_INDEX] = engine.CurrVeTable;
-	transmit[REALTIME_PW_INDEX] = engine.InjDuration / 100; // convert to ms (ex. 5.1 ms = 51)
+	transmit[REALTIME_CURRVE_INDEX] = engine.CurrVeTable;
+	transmit[REALTIME_CURRAFR_INDEX] = engine.CurrAfrTable;
+	transmit[REALTIME_PW_INDEX] = engine.InjDuration / 100000; // convert to ms * 10
 	transmit[REALTIME_IGN_INDEX] = engine.IgnTiming; 
 	transmit[REALTIME_TPS_INDEX] = engine.Tps;
 
@@ -344,7 +345,6 @@ void tunerstudio_update_calib_vect(void)
 				break;
 		}
 	}
-	uart_enable_rx_interrupt();
 }
 void tunerstudio_update_calib_vect_helper(uint8_t NrOfBytes, uint32_t EepromIndex)
 {
@@ -386,4 +386,6 @@ void tunerstudio_debug_global_function(void)
 	uart_print_string("MAP: "); uart_print_int(engine.Map); uart_new_line();
 	uart_print_string("TPS: "); uart_print_int(engine.Tps); uart_new_line();
 	uart_print_string("RPM: "); uart_print_int(engine.CurrRpm); uart_new_line();
+	uart_print_string("TWIFault: "); uart_print_int(engine_config.TwiFault); uart_new_line();
+	uart_print_string("Fuel Const: "); uart_print_int(FUEL_CONST); uart_new_line();
 }

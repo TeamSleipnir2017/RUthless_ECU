@@ -24,10 +24,12 @@
 #define REALTIME_BAT_INDEX			8				// Battery voltage (V)
 #define REALTIME_AFR_INDEX			9				// Air to fuel ratio (AFR)
 #define REALTIME_RPM_INDEX			13				// Rounds per minute (RPM)
-#define REALTIME_VE_INDEX			18				// Current volumetric efficiency value (after interpolation)
-#define REALTIME_PW_INDEX			20				// Pulse width (ms)
+#define REALTIME_CURRVE_INDEX		18				// Current volumetric efficiency value (after interpolation)
+#define REALTIME_CURRAFR_INDEX		19				// Current air to fuel ratio value (after interpolation)
+#define REALTIME_PW_INDEX			20				// Pulse width (ms * 10)
 #define REALTIME_IGN_INDEX			22				// Ignition advance (deg)
 #define REALTIME_TPS_INDEX			23				// Throttle position sensor (0-100%)
+
 
 // Data definitions (see page = 2 in .ini file)
 #define CONFIG_TPS_LOW_OFFSET		44				// Throttle position sensor lower calibration index
