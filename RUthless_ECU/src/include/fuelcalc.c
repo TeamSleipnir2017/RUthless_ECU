@@ -21,8 +21,10 @@ uint32_t fuelcalc_pulsewidth(void)
 	//uart_print_string("Afr: "); uart_print_int(Afr); uart_new_line();
 	// Fuel equation:
 	// Mair = (VE *  MAP * CYL_DISP) / (R (287 J/(Kg Kelvin)) * (IAT + 273))
-	 
-	uint64_t Numerator = (uint64_t)Map * 100 * Ve * FUEL_CONST; // MAP is in kPa, required to change it to Pa (1000) AND AFR is * 10, 13.0 = 130 AND VE is /100 since it is in %
+
+	// MAP is in kPa, required to change it to Pa (1000) AND AFR is * 10, 13.0 = 130 AND VE is /100 since it is in % 
+	// InjectorTime is in nano seconds
+	uint64_t Numerator = (uint64_t)Map * 100 * Ve * FUEL_CONST; 
 	uint32_t Denominator = (uint32_t)Afr * (Temperature + 273);  
 	uint64_t InjectorTime = Numerator / Denominator;
 	

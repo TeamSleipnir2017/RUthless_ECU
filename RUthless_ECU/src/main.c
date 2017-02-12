@@ -124,13 +124,15 @@ int main (void)
 			if (!(CrankTooth % TachPulse))
 			{
 				// TODO: Disable Interrupts
-				uint32_t CalcRpm = GLOBAL_TIMER_FREQ / CrankCurrCycleCounts * 60 / TRIGGER_WHEEL;
+				// ATHUGA ÞARF Að REIKNA YFIR LENGRA TÍMABIL, FLEIRRI TENNUR
+				uint64_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankCurrCycleCounts / TRIGGER_WHEEL;
 				// TODO: Enable Interrupts
 				// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
-				engine.CurrRpm = CalcRpm;
+				engine.CurrRpm = (uint16_t)CalcRpm;
 				engine.InjDuration = fuelcalc_pulsewidth();
 				if (CrankTooth >= 24)
 				{
+					CrankTachCycleCounts = 0;
 					CrankTooth = 1;
 				}
 			}

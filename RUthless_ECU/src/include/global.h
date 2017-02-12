@@ -79,6 +79,7 @@ volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 
 volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
 volatile uint16_t CrankTooth;				// Variable storing current crank tooth 
 volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
+volatile uint32_t CrankTachCycleCounts;		// Cumsum of CrankCurrCycleCounts for TachPulse
 volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
 volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 
@@ -158,6 +159,9 @@ volatile struct cylinder_ cylinder[NR_OF_CYL]; // Create an instance of the stru
 #define CONFIG_LENGTH	4		// Only start with storing MAP and TPS (low, high) in EEPROM
 struct engine_config_
 {
+	uint8_t InjOpenTime;		// Injector opening time in ms
+	uint8_t NrOfInj;			// Number of injectors
+
 	uint16_t TpsLow;			// Current lower ADC value of TPS sensor 1 (for calibration)
 	uint16_t TpsHigh;			// Current lower ADC value of TPS sensor 1 (for calibration)
 	uint16_t TpsTimeDiff;		// Time difference between last TPS measurement

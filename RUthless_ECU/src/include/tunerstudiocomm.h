@@ -32,6 +32,9 @@
 
 
 // Data definitions (see page = 2 in .ini file)
+#define CONFIG_INJ_OPEN_TIME_OFFSET	27				// Injector opening time configuration index
+#define CONFIG_INJ_CLOSING_ANGLE_OFFSET	28			// Injector squirt closing angle configuration index
+
 #define CONFIG_TPS_LOW_OFFSET		44				// Throttle position sensor lower calibration index
 #define CONFIG_TPS_HIGH_OFFSET		45				// Throttle position sensor high calibration index
 #define CONFIG_MAP_LOW_OFFSET		46				// Manifold absolute pressure lower calibration index
@@ -76,6 +79,8 @@ void tunerstudio_send_page(void);
 
 // Function to send a 16x16 table to tunerstudio
 void tunerstudio_send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE]);
+// Function to send configuration data to tunerstudio
+void tunerstudio_send_config(void);
 // Function to send dummy bytes to tunerstudio
 void tunerstudio_send_dummy_data(uint16_t NumberOfBytes, uint8_t dummy);
 // Function to receive data and update array

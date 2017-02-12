@@ -26,7 +26,8 @@ void global_init(void)
 	CrankTooth = 1;
 	CrankSignalFlag = FALSE;
 	CamSignalFlag = FALSE;
-	TachPulse = 4; // Calculate new RPM every quarter of the trigger wheel (4 cylinder)
+	CrankTachCycleCounts = 0;
+	TachPulse = 12; // Calculate new RPM every half of the trigger wheel 24 tooths
 
 	engine_init();
 	cylinder_init();
@@ -70,20 +71,22 @@ void cylinder_init(void)
 
 void engine_config_init(void)
 {
-	engine_config.TpsLow = 0;			
-	engine_config.TpsHigh = 0;			
-	engine_config.TpsTimeDiff = 0;		
+	engine_config.InjOpenTime		= eeprom_read_byte(EEPROM_INJ_OPEN_TIME_INDEX);
 	
-	engine_config.Baro = 0;	
+	engine_config.TpsLow			= eeprom_read_byte(EEPROM_TPS_LOW_INDEX);
+	engine_config.TpsHigh			= eeprom_read_byte(EEPROM_TPS_HIGH_INDEX);		
+	engine_config.TpsTimeDiff		= 0;		
 	
-	engine_config.MapLow = 0;
-	engine_config.MapHigh = 0;			
+	engine_config.Baro				= 0;	
 	
-	engine_config.RevLimit = 0;			
+	engine_config.MapLow			= eeprom_read_byte(EEPROM_MAP_LOW_INDEX);
+	engine_config.MapHigh			= eeprom_read_int(EEPROM_MAP_HIGH_INDEX);		
+	
+	engine_config.RevLimit			= 0;			
 	engine_config.LaunchControlRevLimit = 0;	
 	
-	engine_config.CltFanTemp = 0;		
-	engine_config.CltFanTempHyst = 0;
+	engine_config.CltFanTemp		= 0;		
+	engine_config.CltFanTempHyst	= 0;
 
-	engine_config.TwiFault = 0;
+	engine_config.TwiFault			= 0;
 }

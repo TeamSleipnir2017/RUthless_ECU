@@ -82,6 +82,7 @@ void PIOA_Handler(void)
 	{
 		CrankCurrCycleCounts	=		TimerCounterValue - CrankTimerCounts;
 		CrankTimerCounts		=		TimerCounterValue;
+		CrankTachCycleCounts	+=		CrankCurrCycleCounts;
 		CrankTooth++;
 		CrankSignalFlag			=		TRUE;
 	}

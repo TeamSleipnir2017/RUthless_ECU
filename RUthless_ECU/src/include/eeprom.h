@@ -31,17 +31,17 @@ The EEPROM used is AT24C256C-SSHL-T, and the addresses are as follows
 #define TWI_NUMBER_OF_TRIES		10				// Constant of number of tries to read from the EEPROM
 
 // EEPROM address structure see excel document EEPROM_Management.xlsx
-#define EEPROM_VE_INDEX			0
-#define EEPROM_AFR_INDEX		288
-#define EEPROM_IGN_INDEX		576
-#define EEPROM_CLT_ADC_INDEX	864
-#define EEPROM_IAT_ADC_INDEX	1888
-#define EEPROM_AFR_ADC_INDEX	2912
-#define EEPROM_TPS_LOW_INDEX	3936
-#define EEPROM_TPS_HIGH_INDEX	3937
-#define EEPROM_MAP_LOW_INDEX	3938
-#define EEPROM_MAP_HIGH_INDEX	3939
-
+#define EEPROM_VE_INDEX					0
+#define EEPROM_AFR_INDEX				288
+#define EEPROM_IGN_INDEX				576
+#define EEPROM_CLT_ADC_INDEX			864
+#define EEPROM_IAT_ADC_INDEX			1888
+#define EEPROM_AFR_ADC_INDEX			2912
+#define EEPROM_TPS_LOW_INDEX			3936
+#define EEPROM_TPS_HIGH_INDEX			3937
+#define EEPROM_MAP_LOW_INDEX			3938
+#define EEPROM_MAP_HIGH_INDEX			3939
+#define EEPROM_INJ_OPEN_TIME_INDEX		3941
 
 
 

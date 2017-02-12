@@ -82,7 +82,7 @@ void tunerstudio_command(uint8_t character)
 		case 'R':
 			break;
 		case 'S':
-			uart_interrupt_transfer("Speeduino 2016.12");
+			uart_interrupt_transfer("RUthless V1.0 Formula Student 2017");
 			break;
 		case 'Q':
 			uart_interrupt_transfer("speeduino 201612");
@@ -121,8 +121,8 @@ void tunerstudio_send_page(void)
 		case VE_PAGE:
 			tunerstudio_send_3d_table(VeTable, VeRpmBins, VeMapBins);
 			break;
-		case 2:
-			tunerstudio_send_dummy_data(64, 255);
+		case CONFIG_PAGE:
+			tunerstudio_send_config();
 			break;
 		case IGN_PAGE:
 			tunerstudio_send_3d_table(IgnTable, IgnRpmBins, IgnMapBins);
@@ -171,6 +171,19 @@ void tunerstudio_send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_S
 
 	// Let the UART interrupt handler send the buffer
 	uart_interrupt_transfer_specific(transmit, transmit_index);		
+}
+
+void tunerstudio_send_config(void)
+{
+	#define LEN 80
+	uint8_t transmit[LEN];
+	// Initialize array with constant, since all of the variables are not used
+	uint16_t i = 0;
+	for (; i < LEN; i++)
+		transmit[i] = 255;
+
+	transmit[i++] = NULL;
+	uart_interrupt_transfer(transmit);
 }
 
 void tunerstudio_send_dummy_data(uint16_t NumberOfBytes, uint8_t dummy)
@@ -286,6 +299,7 @@ void tunerstudio_burn_config(void)
 {
 	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
 		return;
+	tunerstudio_burn_value_if_changed(engine_config.InjOpenTime		, EEPROM_INJ_OPEN_TIME_INDEX);
 	tunerstudio_burn_value_if_changed(engine_config.TpsLow			, EEPROM_TPS_LOW_INDEX);	
 	tunerstudio_burn_value_if_changed(engine_config.TpsHigh			, EEPROM_TPS_HIGH_INDEX);		
 	tunerstudio_burn_value_if_changed(engine_config.MapLow			, EEPROM_MAP_LOW_INDEX);	
