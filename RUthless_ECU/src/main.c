@@ -65,7 +65,11 @@ int main (void)
 	// Initialize interrupts for UART
 	uart_enable_rx_interrupt();
 	uart_tx_interrupt_init();
-	
+	uart_print_string("Init begin"); uart_new_line();
+
+	// Initialize TWI communication for EEPROM
+	eeprom_init();
+
 	// Initialize necessary global parameters
 	global_init();
 	
@@ -79,8 +83,7 @@ int main (void)
 	timer_init(GLOBAL_TIMER, TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_WAVE, TC_IER_COVFS | TC_IER_CPAS, TC8_PRIORITY);
 	tc_write_ra(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
 	
-	// Initialize TWI communication for EEPROM
-	eeprom_init();
+	
 
 	// Initialize tuning tables by reading them from EEPROM
 	table_init();

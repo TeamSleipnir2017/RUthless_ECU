@@ -116,23 +116,35 @@ src/include/timers.d src/include/timers.o: ../src/include/timers.c \
  ../src/ASF/common/utils/interrupt.h \
  ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h \
  ../src/ASF/sam/utils/status_codes.h \
- ../src/ASF/common/services/gpio/gpio.h \
- ../src/ASF/common/services/gpio/sam_gpio/sam_gpio.h \
- ../src/ASF/sam/drivers/pio/pio.h ../src/ASF/common/boards/board.h \
- ../src/ASF/sam/boards/arduino_due_x/arduino_due_x.h \
- ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
- ../src/ASF/common/services/ioport/ioport.h \
- ../src/ASF/common/services/ioport/sam/ioport_pio.h \
+ ../src/ASF/common/services/delay/delay.h \
  ../src/ASF/common/services/clock/sysclk.h ../src/config/conf_clock.h \
  ../src/ASF/common/services/clock/sam3x/sysclk.h \
  ../src/ASF/common/services/clock/osc.h \
  ../src/ASF/common/services/clock/sam3x/osc.h \
+ ../src/ASF/common/boards/board.h \
+ ../src/ASF/sam/boards/arduino_due_x/arduino_due_x.h \
+ ../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h \
  ../src/ASF/sam/drivers/pmc/pmc.h ../src/ASF/common/services/clock/pll.h \
  ../src/ASF/common/services/clock/sam3x/pll.h \
+ ../src/ASF/common/services/delay/sam/cycle_counter.h \
+ ../src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.h \
+ ../src/ASF/common/services/twi/twi_master.h \
+ ../src/ASF/common/services/twi/sam_twi/twi_master.h \
+ ../src/ASF/sam/drivers/twi/twi.h ../src/ASF/common/services/gpio/gpio.h \
+ ../src/ASF/common/services/gpio/sam_gpio/sam_gpio.h \
+ ../src/ASF/sam/drivers/pio/pio.h \
+ ../src/ASF/common/services/ioport/ioport.h \
+ ../src/ASF/common/services/ioport/sam/ioport_pio.h \
  ../src/ASF/sam/drivers/pmc/sleep.h ../src/ASF/sam/drivers/tc/tc.h \
+ ../src/ASF/common/services/twi/sam_twi/twi_master.h \
+ ../src/ASF/common/services/twi/sam_twi/twi_slave.h \
+ ../src/ASF/common/services/twi/twi_slave.h \
+ ../src/ASF/common/services/twi/sam_twi/twi_slave.h \
  ../src/ASF/sam/drivers/pio/pio_handler.h ../src/include/global.h \
+ ../src/include/sensors.h ../src/include/math.h ../src/include/ignition.h \
  ../src/include/interrupts.h ../src/include/uart.h ../src/include/ADC.h \
- ../src/include/tunerstudiocomm.h
+ ../src/include/tunerstudiocomm.h ../src/include/table.h \
+ ../src/include/eeprom.h ../src/include/fuelcalc.h
 
 ../src/include/timers.h:
 
@@ -372,21 +384,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/sam/utils/status_codes.h:
 
-../src/ASF/common/services/gpio/gpio.h:
-
-../src/ASF/common/services/gpio/sam_gpio/sam_gpio.h:
-
-../src/ASF/sam/drivers/pio/pio.h:
-
-../src/ASF/common/boards/board.h:
-
-../src/ASF/sam/boards/arduino_due_x/arduino_due_x.h:
-
-../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h:
-
-../src/ASF/common/services/ioport/ioport.h:
-
-../src/ASF/common/services/ioport/sam/ioport_pio.h:
+../src/ASF/common/services/delay/delay.h:
 
 ../src/ASF/common/services/clock/sysclk.h:
 
@@ -398,19 +396,59 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/common/services/clock/sam3x/osc.h:
 
+../src/ASF/common/boards/board.h:
+
+../src/ASF/sam/boards/arduino_due_x/arduino_due_x.h:
+
+../src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.h:
+
 ../src/ASF/sam/drivers/pmc/pmc.h:
 
 ../src/ASF/common/services/clock/pll.h:
 
 ../src/ASF/common/services/clock/sam3x/pll.h:
 
+../src/ASF/common/services/delay/sam/cycle_counter.h:
+
+../src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.h:
+
+../src/ASF/common/services/twi/twi_master.h:
+
+../src/ASF/common/services/twi/sam_twi/twi_master.h:
+
+../src/ASF/sam/drivers/twi/twi.h:
+
+../src/ASF/common/services/gpio/gpio.h:
+
+../src/ASF/common/services/gpio/sam_gpio/sam_gpio.h:
+
+../src/ASF/sam/drivers/pio/pio.h:
+
+../src/ASF/common/services/ioport/ioport.h:
+
+../src/ASF/common/services/ioport/sam/ioport_pio.h:
+
 ../src/ASF/sam/drivers/pmc/sleep.h:
 
 ../src/ASF/sam/drivers/tc/tc.h:
 
+../src/ASF/common/services/twi/sam_twi/twi_master.h:
+
+../src/ASF/common/services/twi/sam_twi/twi_slave.h:
+
+../src/ASF/common/services/twi/twi_slave.h:
+
+../src/ASF/common/services/twi/sam_twi/twi_slave.h:
+
 ../src/ASF/sam/drivers/pio/pio_handler.h:
 
 ../src/include/global.h:
+
+../src/include/sensors.h:
+
+../src/include/math.h:
+
+../src/include/ignition.h:
 
 ../src/include/interrupts.h:
 
@@ -419,3 +457,9 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/include/ADC.h:
 
 ../src/include/tunerstudiocomm.h:
+
+../src/include/table.h:
+
+../src/include/eeprom.h:
+
+../src/include/fuelcalc.h:

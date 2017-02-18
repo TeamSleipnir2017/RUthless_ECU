@@ -175,7 +175,7 @@ void tunerstudio_send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_S
 
 void tunerstudio_send_config(void)
 {
-	#define LEN 80
+	#define LEN 72
 	uint8_t transmit[LEN];
 	// Initialize array with constant, since all of the variables are not used
 	uint16_t i = 0;
