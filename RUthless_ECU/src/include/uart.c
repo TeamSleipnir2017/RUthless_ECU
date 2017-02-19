@@ -53,9 +53,10 @@ void uart_interrupt_transfer_specific(char * str, uint16_t BufferLength)
 	for (uint16_t i = 0; i < BufferLength; i++)
 	{
 		TxString[TxStringHead++] = str[i];
-		UART->UART_IER = UART_IER_TXRDY;
 	}
+	UART->UART_IER = UART_IER_TXRDY;
 }
+
 
 void uart_enable_rx_interrupt(void)
 {

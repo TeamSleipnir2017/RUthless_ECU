@@ -80,13 +80,16 @@ void tunerstudio_send_page(void);
 // Function to send a 16x16 table to tunerstudio
 void tunerstudio_send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE]);
 // Function to send configuration data to tunerstudio
-void tunerstudio_send_config(void);
+void tunerstudio_send_config1(void);
+void tunerstudio_send_config(uint8_t *ConfigStructPointer, uint16_t ConfigLen);
 // Function to send dummy bytes to tunerstudio
 void tunerstudio_send_dummy_data(uint16_t NumberOfBytes, uint8_t dummy);
 // Function to receive data and update array
 void tunerstudio_write_data(uint16_t data);
 // Helper function to write data to 3d table
 void tunerstudio_write_to_table(uint8_t data, uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_SIZE], uint8_t xbin[THREE_D_TABLE_SIZE], uint8_t ybin[THREE_D_TABLE_SIZE]);
+// Write data to configuration structs
+void tunerstudio_write_config(uint8_t *ConfigStructPointer, uint8_t data);
 // Burn data of current page to eeprom
 void tunerstudio_burn_page_eeprom(void);
 // Helper function to write changed data to eeprom
@@ -94,7 +97,8 @@ void tunerstudio_burn_table_eeporm(uint16_t EepromIndex, uint8_t table[THREE_D_T
 // Helper function
 void tunerstudio_burn_value_if_changed(uint32_t TempValue, uint32_t EepromIndex);
 // Burn engine configuration to eeprom
-void tunerstudio_burn_config(void);
+void tunerstudio_burn_config1(void);
+void tunerstudio_burn_config(uint8_t *ConfigStructPointer, uint16_t ConfigLen, uint16_t EepromIndex);
 // Send real time data to tunerstudio when character "A" is received
 void tunerstudio_send_real_time_data(void);
 // Update calibration vectors for sensors like IAT, CLT and AFR. REMEMBER TO RESTART AFTER CHANGING THESE VALUES

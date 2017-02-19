@@ -122,7 +122,8 @@ void tunerstudio_send_page(void)
 			tunerstudio_send_3d_table(VeTable, VeRpmBins, VeMapBins);
 			break;
 		case CONFIG_PAGE:
-			tunerstudio_send_config();
+			tunerstudio_send_config(&engine_config2, ENGINE_CONFIG2_LEN);
+			//tunerstudio_send_config1();
 			break;
 		case IGN_PAGE:
 			tunerstudio_send_3d_table(IgnTable, IgnRpmBins, IgnMapBins);
@@ -172,8 +173,9 @@ void tunerstudio_send_3d_table(uint8_t table[THREE_D_TABLE_SIZE][THREE_D_TABLE_S
 	// Let the UART interrupt handler send the buffer
 	uart_interrupt_transfer_specific(transmit, transmit_index);		
 }
-
-void tunerstudio_send_config(void)
+ 
+// ATTENTION TODO: optimize speed by loading buffer straight instead of creating array and use for loop twice
+void tunerstudio_send_config1(void)
 {
 	#define LEN 72
 	uint8_t transmit[LEN];
@@ -184,6 +186,14 @@ void tunerstudio_send_config(void)
 
 	transmit[i++] = NULL;
 	uart_interrupt_transfer(transmit);
+}
+
+void tunerstudio_send_config(uint8_t *ConfigStructPointer, uint16_t ConfigLen)
+{
+	uint8_t transmit[ConfigLen];
+	for (uint16_t i = 0; i < ConfigLen; i++)
+		transmit[i] = *((uint8_t *)ConfigStructPointer + i);
+	uart_interrupt_transfer_specific(transmit, ConfigLen);
 }
 
 void tunerstudio_send_dummy_data(uint16_t NumberOfBytes, uint8_t dummy)
@@ -204,22 +214,23 @@ void tunerstudio_write_data(uint16_t data)
 		tunerstudio_write_to_table(data, VeTable, VeRpmBins, VeMapBins);
 		break;
 	case CONFIG_PAGE:
-		switch (Offset1)
-		{
-		case CONFIG_TPS_LOW_OFFSET:
-			engine_config.TpsLow = data; break;
-		case CONFIG_TPS_HIGH_OFFSET:
-			engine_config.TpsHigh = data; break;
-		case CONFIG_MAP_LOW_OFFSET:
-			engine_config.MapLow = data; break;
-		case CONFIG_MAP_HIGH_OFFSET_FIRST_BYTE:
-			engine_config.MapHigh = data; break;
-		case CONFIG_MAP_HIGH_OFFSET_SECOND_BYTE:
-			engine_config.MapHigh |= data << 8; 
-			break;
-		default:
-			break;
-		}
+		tunerstudio_write_config(&engine_config2, data);
+// 		switch (Offset1)
+// 		{
+// 		case CONFIG_TPS_LOW_OFFSET:
+// 			engine_config.TpsLow = data; break;
+// 		case CONFIG_TPS_HIGH_OFFSET:
+// 			engine_config.TpsHigh = data; break;
+// 		case CONFIG_MAP_LOW_OFFSET:
+// 			engine_config.MapLow = data; break;
+// 		case CONFIG_MAP_HIGH_OFFSET_FIRST_BYTE:
+// 			engine_config.MapHigh = data; break;
+// 		case CONFIG_MAP_HIGH_OFFSET_SECOND_BYTE:
+// 			engine_config.MapHigh |= data << 8; 
+// 			break;
+// 		default:
+// 			break;
+// 		}
 		break;
 	case IGN_PAGE:
 		tunerstudio_write_to_table(data, IgnTable, IgnRpmBins, IgnMapBins);
@@ -248,6 +259,11 @@ void tunerstudio_write_to_table(uint8_t data, uint8_t table[THREE_D_TABLE_SIZE][
 	}
 }
 
+void tunerstudio_write_config(uint8_t *ConfigStructPointer, uint8_t data)
+{
+	*(ConfigStructPointer + Offset1) = data;
+}
+
 void tunerstudio_burn_page_eeprom(void)
 {
 	switch (CurrPage)
@@ -262,7 +278,8 @@ void tunerstudio_burn_page_eeprom(void)
 		tunerstudio_burn_table_eeporm(EEPROM_AFR_INDEX, AfrTable, AfrRpmBins, AfrMapBins);
 		break;
 	case CONFIG_PAGE:
-		tunerstudio_burn_config();
+		tunerstudio_burn_config(&engine_config2, ENGINE_CONFIG2_LEN, EEPROM_CONFIG2_INDEX);
+		//tunerstudio_burn_config1();
 		break;
 	default:
 		break;
@@ -295,7 +312,7 @@ void tunerstudio_burn_value_if_changed(uint32_t TempValue, uint32_t EepromIndex)
 	}
 }
 
-void tunerstudio_burn_config(void)
+void tunerstudio_burn_config1(void)
 {
 	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
 		return;
@@ -305,6 +322,27 @@ void tunerstudio_burn_config(void)
 	tunerstudio_burn_value_if_changed(engine_config.MapLow			, EEPROM_MAP_LOW_INDEX);	
 	tunerstudio_burn_value_if_changed(engine_config.MapHigh & 0xFF	, EEPROM_MAP_HIGH_INDEX);	// Write first byte
 	tunerstudio_burn_value_if_changed(engine_config.MapHigh >> 8	, EEPROM_MAP_HIGH_INDEX + 1);// Write second byte
+}
+void tunerstudio_burn_config(uint8_t *ConfigStructPointer, uint16_t ConfigLen, uint16_t EepromIndex)
+{
+	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
+	{	
+		uart_print_string("EEPROM Fault");
+		return;
+	}
+	for (uint16_t i = 0; i < ConfigLen; i++)
+	{
+// 		uint8_t var = *((uint8_t *)ConfigStructPointer + i);
+// 		uint8_t EEvar = eeprom_read_byte(EEPROM_CONFIG2_INDEX + i);
+// 		if (EEvar != var){ // Compare current value with EEPROM value, update EEPROM if it is not the same
+// 			uart_print_string("var: "); uart_print_int(var);
+// 			uart_print_string("EE: "); uart_print_int(EEvar);
+// 			at24cxx_write_byte(EEPROM_CONFIG2_INDEX + i, var);
+// 		}
+		
+		
+		tunerstudio_burn_value_if_changed(*((uint8_t *)ConfigStructPointer + i), EEPROM_CONFIG2_INDEX + i);
+	}
 }
 
 void tunerstudio_send_real_time_data(void)
