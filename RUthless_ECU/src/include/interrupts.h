@@ -9,14 +9,13 @@
 #ifndef INTERRUPTS_H_
 #define INTERRUPTS_H_
 
+#include "global.h"
 
 #define INTERRUPT_PIN_CHANGE_MODE		0
 #define INTERRUPT_RISING_EDGE_MODE		1
 #define INTERRUPT_FALLING_EDGE_MODE		2
 
 
-#include <asf.h>
-#include "global.h"
 
 /************************************************************************/
 /* INTERRUPT PRIORITY QUEUE

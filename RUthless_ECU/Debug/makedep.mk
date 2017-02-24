@@ -52,7 +52,9 @@ src\include\math.c
 
 src\include\sensors.c
 
-src\include\table.c
+src\include\storage.c
+
+src\include\tables.c
 
 src\include\timers.c
 

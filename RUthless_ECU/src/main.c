@@ -83,8 +83,6 @@ int main (void)
 	timer_init(GLOBAL_TIMER, TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_WAVE, TC_IER_COVFS | TC_IER_CPAS, TC8_PRIORITY);
 	tc_write_ra(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
 	
-	
-
 	// Initialize tuning tables by reading them from EEPROM
 	table_init();
 	
@@ -98,6 +96,12 @@ int main (void)
 	interrupts_enable_pio(ID_PIOA, CRANK_SIGNAL, PIOA_PRIORITY, INTERRUPT_RISING_EDGE_MODE);
 
 	uart_print_string("Init done"); uart_new_line();
+
+// 	uart_print_string("table 15,15"); uart_print_int(VE.Table[15][15]); uart_new_line();
+// 	uart_print_string("rpm 15"); uart_print_int(VE.Xbin[15]); uart_new_line();
+// 	uart_print_string("map 15"); uart_print_int(VE.Ybin[15]); uart_new_line();
+
+
 
 	while (1)
 	{
@@ -120,6 +124,7 @@ int main (void)
 // 				__asm__("nop");
 // 			}
 		}
+
 		// TEST
 		if (CrankSignalFlag)
 		{
@@ -131,8 +136,8 @@ int main (void)
 				uint64_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankCurrCycleCounts / TRIGGER_WHEEL;
 				// TODO: Enable Interrupts
 				// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
-				engine.CurrRpm = (uint16_t)CalcRpm;
-				engine.InjDuration = fuelcalc_pulsewidth();
+				engine_realtime.Rpm = (uint16_t)CalcRpm;
+				engine_realtime.PulseWidth = fuelcalc_pulsewidth() / 1000;
 				if (CrankTooth >= 24)
 				{
 					CrankTachCycleCounts = 0;

@@ -1,7 +1,6 @@
-src/include/interrupts.d src/include/interrupts.o: \
- ../src/include/interrupts.c ../src/include/interrupts.h \
- ../src/include/global.h ../src/asf.h ../src/ASF/sam/drivers/adc/adc.h \
- ../src/ASF/sam/utils/compiler.h \
+src/include/tables.d src/include/tables.o: ../src/include/tables.c \
+ ../src/include/tables.h ../src/include/global.h ../src/asf.h \
+ ../src/ASF/sam/drivers/adc/adc.h ../src/ASF/sam/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\5.3.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h \
  ../src/ASF/sam/utils/preprocessor/preprocessor.h \
@@ -142,13 +141,13 @@ src/include/interrupts.d src/include/interrupts.o: \
  ../src/ASF/common/services/twi/twi_slave.h \
  ../src/ASF/common/services/twi/sam_twi/twi_slave.h \
  ../src/ASF/sam/drivers/pio/pio_handler.h ../src/include/sensors.h \
- ../src/include/math.h ../src/include/ignition.h ../src/include/uart.h \
+ ../src/include/math.h ../src/include/ignition.h \
+ ../src/include/interrupts.h ../src/include/uart.h \
  ../src/include/timers.h ../src/include/ADC.h \
- ../src/include/tunerstudiocomm.h ../src/include/tables.h \
- ../src/include/eeprom.h ../src/include/fuelcalc.h \
- ../src/include/storage.h
+ ../src/include/tunerstudiocomm.h ../src/include/eeprom.h \
+ ../src/include/fuelcalc.h ../src/include/storage.h
 
-../src/include/interrupts.h:
+../src/include/tables.h:
 
 ../src/include/global.h:
 
@@ -452,6 +451,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/include/ignition.h:
 
+../src/include/interrupts.h:
+
 ../src/include/uart.h:
 
 ../src/include/timers.h:
@@ -459,8 +460,6 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/include/ADC.h:
 
 ../src/include/tunerstudiocomm.h:
-
-../src/include/tables.h:
 
 ../src/include/eeprom.h:
 

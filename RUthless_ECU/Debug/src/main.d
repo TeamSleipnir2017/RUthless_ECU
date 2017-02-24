@@ -143,8 +143,9 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/include/sensors.h ../src/include/global.h ../src/include/math.h \
  ../src/include/ignition.h ../src/include/interrupts.h \
  ../src/include/uart.h ../src/include/timers.h ../src/include/ADC.h \
- ../src/include/tunerstudiocomm.h ../src/include/table.h \
- ../src/include/eeprom.h ../src/include/fuelcalc.h
+ ../src/include/tunerstudiocomm.h ../src/include/tables.h \
+ ../src/include/eeprom.h ../src/include/fuelcalc.h \
+ ../src/include/storage.h
 
 ../src/asf.h:
 
@@ -460,8 +461,10 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/include/tunerstudiocomm.h:
 
-../src/include/table.h:
+../src/include/tables.h:
 
 ../src/include/eeprom.h:
 
 ../src/include/fuelcalc.h:
+
+../src/include/storage.h:

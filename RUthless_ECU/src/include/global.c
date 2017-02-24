@@ -29,51 +29,47 @@ void global_init(void)
 	CrankTachCycleCounts = 0;
 	TachPulse = 12; // Calculate new RPM every half of the trigger wheel 24 tooths
 
-	global_struct_read_eeprom_init(&engine_config2, ENGINE_CONFIG2_LEN, EEPROM_CONFIG2_INDEX);
+	global_struct_read_eeprom_init(&engine_config2, sizeof(engine_config2), EEPROM_CONFIG2_INDEX);
+	global_struct_read_eeprom_init(&engine_config4, sizeof(engine_config4), EEPROM_CONFIG4_INDEX);
+	global_struct_read_eeprom_init(&engine_config6, sizeof(engine_config6), EEPROM_CONFIG6_INDEX);
+	global_struct_read_eeprom_init(&engine_config7, sizeof(engine_config7), EEPROM_CONFIG7_INDEX);
+	global_struct_read_eeprom_init(&engine_config8, sizeof(engine_config8), EEPROM_CONFIG8_INDEX);
+	global_struct_read_eeprom_init(&engine_config9, sizeof(engine_config9), EEPROM_CONFIG9_INDEX);
 
-	engine_config2.AfterStartEnrichPct = 0x12;
-	engine_config2.AfterStartEnrichCycles = 0x29;
-	engine_config2.Oddfire3 = 0xAA;
-	engine_config2.Oddfire4 = 0xFA;
-
-	engine_init();
+	tables_Table3D_alloc_mem(&VE, THREE_D_TABLE_SIZE, THREE_D_TABLE_SIZE);
+	tables_Table3D_alloc_mem(&AFR, THREE_D_TABLE_SIZE, THREE_D_TABLE_SIZE);
+	tables_Table3D_alloc_mem(&IGN, THREE_D_TABLE_SIZE, THREE_D_TABLE_SIZE);
+	//engine_init();
 	cylinder_init();
 	engine_config_init();
 }
 
-// Read the EEPROM and store the according byte in ascending order
-void global_struct_read_eeprom_init(uint8_t *ConfigStructPointer, uint16_t ConfigLen, uint16_t EepromIndex)
-{
-	//uint32_t at24cxx_read_continuous(uint32_t u32_start_address,
-	//uint16_t u16_length, uint8_t *p_rd_buffer)
-	for (uint16_t i = 0; i < ConfigLen; i++)
-		*(ConfigStructPointer + i) = eeprom_read_byte(EepromIndex++);
-}
 
 
-void engine_init(void)
-{
-	engine.status = DEAD;				
-	engine.Tps = 0;	
-	engine.TpsAdc = 0;
-	engine.LastTps = 0;	
-	//engine.Tps2 = 0;				
-	engine.Map = 0;				
-	engine.Iat = 0;				
-	engine.Clt = 0;				
-	engine.Batt = 0;				
-	engine.Afr = 0;			
-	engine.LaunchControl = OFF;	
-	engine.CurrVeTable = 0;
-	engine.CurrAfrTable = 0;
-	engine.CurrIgnTable = 0;
-	engine.CurrRpm = 0;	
-	engine.CurrSpeed = 0;			
-	engine.CurrGear = 0;			
-	engine.InjDuration = 0;		
-	engine.IgnTiming = 0;			
-	engine.IgnDwell = 0;			
-}
+
+// void engine_init(void)
+// {
+// 	engine.status = DEAD;				
+// 	engine.Tps = 0;	
+// 	engine.TpsAdc = 0;
+// 	engine.LastTps = 0;	
+// 	//engine.Tps2 = 0;				
+// 	engine.Map = 0;				
+// 	engine.Iat = 0;				
+// 	engine.Clt = 0;				
+// 	engine.Batt = 0;				
+// 	engine.Afr = 0;			
+// 	engine.LaunchControl = OFF;	
+// 	engine.CurrVeTable = 0;
+// 	engine.CurrAfrTable = 0;
+// 	engine.CurrIgnTable = 0;
+// 	engine.CurrRpm = 0;	
+// 	engine.CurrSpeed = 0;			
+// 	engine.CurrGear = 0;			
+// 	engine.InjDuration = 0;		
+// 	engine.IgnTiming = 0;			
+// 	engine.IgnDwell = 0;			
+// }
 
 void cylinder_init(void)
 {

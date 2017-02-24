@@ -9,10 +9,9 @@
 #ifndef SENSORS_H_
 #define SENSORS_H_
 
-#define LUT_SIZE 1024
-
 #include "global.h"
-#include <asf.h>	// Compile error if this is not included here, not sure why 30.1.17 JBB
+
+#define LUT_SIZE 1024
 
 // Look up tables for Coolant temp, intake air temp, air to fuel ratio
 volatile uint8_t CltAdc_LUT[LUT_SIZE]; 

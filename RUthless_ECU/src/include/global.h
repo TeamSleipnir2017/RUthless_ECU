@@ -9,17 +9,6 @@
 #ifndef GLOBAL_H_
 #define GLOBAL_H_
 
-#include "sensors.h"
-#include "math.h"
-#include "ignition.h"
-#include "interrupts.h"
-#include "uart.h"
-#include "timers.h"
-#include "ADC.h"
-#include "tunerstudiocomm.h"
-#include "table.h"
-#include "eeprom.h"
-#include "fuelcalc.h"
 #include <asf.h>
 
 void global_init(void);
@@ -108,6 +97,12 @@ volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 #define TWI1_PRIORITY 16	// I2C EEPROM communication
 
 /************************************************************************/
+/* Table definitions:                                                   */
+/************************************************************************/
+volatile struct Table3D VE, AFR, IGN;
+#define THREE_D_TABLE_SIZE 16	// 3D table size definitions
+
+/************************************************************************/
 /* Struct definitions:                                                  */
 /************************************************************************/
 
@@ -120,100 +115,38 @@ volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 #define IGN_CUT 5				// Ignition cut (Don't know why (future purposes))
 #define Fuel_CUT 6				// Fuel cut (Don't know why (future purposes))
 
-#define ENGINE_CONFIG2_LEN		72
-struct engine_config2_
-{
-	uint8_t	AfterStartEnrichPct;					// Afterstart enrichment [%]
-	uint8_t	AfterStartEnrichCycles;					// Afterstart enrichment cycles. This is the number of ignition cycles that the afterstart enrichment % lasts for
-	uint8_t	WarmUpEnrichPct[10];					// Warmup enrichment array [%]
-	uint8_t	WarmUpEnrichTemp[10];					// Warmup Enrichment bins [°C]
-	uint8_t	CrankingEnrichPct;						// Cranking enrichment [%]
-	uint8_t	CrankingRpm;							// RPM below which the engine is considered to be cranking
-	uint8_t	TpsFlood;								// TPS value that triggers flood clear mode (No fuel whilst cranking)
-	uint8_t	PinLayout;								// Todo: Pin Mapping version
-	uint8_t	TachoPin	: 6;						// Todo: Custom pin setting for tacho output (6 bits)
-	uint8_t	unused26	: 2;						// Unused (2 bits)
-	uint8_t	TpsDecelEnrichPct;						// Todo: TPS Deceleration enrichment [%]
-	uint8_t	TpsColdAccelEnrichPct;					// Todo: Cold Accel Enrichment [%]
-	uint8_t	TpsThres;								// TPS value threshold [%/s]
-	uint8_t	TpsAccelTime;							// TPS duration of the acceleration enrichment[ms]
-	uint8_t display		: 3;						// Todo
-	uint8_t display1	: 3;						// Todo
-	uint8_t display2	: 2;						// Todo
-	uint8_t display3	: 3;						// Todo
-	uint8_t display4	: 2;						// Todo
-	uint8_t display5	: 3;						// Todo
-	uint8_t displayB1	: 4;						// Todo
-	uint8_t displayB2	: 4;						// Todo
-	uint8_t ReqFuel;								// Todo: DECIDE WHETHER TO USE THIS VARIABLE [ms*10]
-	uint8_t unused35;
-	uint8_t Alternate	: 1;						// Todo
-	uint8_t	unused36	: 7;
-	uint8_t injOpen;								// Injector opening time [ms*10]
-	uint16_t Inj1Ang;								// Injector squirt closing angle [° 0-360]
-	uint16_t Inj2Ang;								// ...
-	uint16_t Inj3Ang;								// ...
-	uint16_t Inj4Ang;								// ...
-	uint16_t Inj5Ang;								// ...
-	uint16_t Inj6Ang;								// ...
-	uint16_t Inj7Ang;								// ...
-	uint16_t Inj8Ang;								// ...
-	// Config 1
-	uint8_t	MapSample	: 2;						// Todo: "Instantaneous", "Cycle Average", "Cycle Minimum"
-	uint8_t TwoStroke	: 1;						// Todo: "Four-stroke", "Two-stroke"
-	uint8_t InjType		: 1;						// Todo: "Port", "Throttle Body"
-	uint8_t NrCylinders	: 4;						// "INVALID","1","2","3","4","5","6","INVALID","8","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID"
-	// Config 2
-	uint8_t Unused55	: 4;
-	uint8_t	NrInjectors	: 4;						// "INVALID","1","2","3","4","5","6","INVALID","8","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID"
-	// Config 3
-	uint8_t EngineType	: 1;						// Todo: "Even fire",     "Odd fire"
-	uint8_t Unused56b	: 1;
-	uint8_t Algorithm	: 1;						// Todo: "Speed Density", "Alpha-N"
-	uint8_t BaroCorr	: 1;						// Todo: "Off",           "On"
-	uint8_t InjLayout	: 2;						// Todo: "Paired", "Semi-Sequential", "INVALID", "Sequential"
-	uint8_t CanEnable	: 1;						// Todo: "Disable", "Enable"
-	uint8_t Unused56h	: 1;
-	
-	uint8_t PrimePulse;								// Todo: Priming Pulsewidth
-	uint8_t DutyLim;								// Injector duty cycle limit
-	uint8_t TpsMin;									// Current Min ADC value of TPS sensor 1 (for calibration)
-	uint8_t TpsMax;									// Current Max ADC value of TPS sensor 1 (for calibration)
-	uint8_t MapMin;									// Current Min KPA value of MAP sensor (for calibration)
-	uint16_t MapMax;								// Current Max KPA value of MAP sensor (for calibration)
-	uint8_t FuelPumpPrime;							// Todo: Fuel pump prime duration
-	uint8_t Stoich;									// Soichimetric AFR [0.1-25.5]
-	uint16_t Oddfire2;								// Todo: "The ATDC angle of channel 2 for oddfire engines. This is relative to the TDC angle of channel 1"
-	uint16_t Oddfire3;								// ...
-	uint16_t Oddfire4;								// ...
-};
 volatile struct engine_config2_ engine_config2;
+volatile struct engine_config4_ engine_config4;
+volatile struct engine_config6_ engine_config6;
+volatile struct engine_config7_ engine_config7;
+volatile struct engine_config8_ engine_config8;
+volatile struct engine_config9_ engine_config9;
+volatile struct engine_realtime_ engine_realtime; 
 
-
-struct engine_
-{
-	uint8_t status;				// Uses the above mentioned defines
-	uint16_t TpsAdc;				// Current ADC value of TPS sensor 1 (0 to 2^8-1)
-	uint8_t Tps;				// 0-100% value of TPS sensor 1
-	uint16_t LastTps;			// Last ADC value of TPS sensor 1 (0 to 2^12-1)
-	//uint16_t Tps2;				// Current ADC value of TPS sensor 2 (0 to 2^12-1)
-	uint16_t Map;				// Current kPa value of Manifold Absolute Pressure sensor 
-	uint16_t Iat;				// Current temperature value of Intake Air Temperature sensor (Offset by 40°C)
-	uint16_t Clt;				// Current temperature value of CooLant Temperature sensor (Offset by 40°C) 
-	uint8_t Batt;				// Current Voltage value of the Battery voltage (Offset by factor of 10, 12 V = 120)
-	uint8_t Afr;				// Current AFR value (Offset by factor of 10, 120 AFR = 12.0 AFR)
-	uint8_t LaunchControl;		// Launch Control button pressed (ON/OFF)
-	uint16_t CurrVeTable;		// Current volumetric efficiency value from table
-	uint16_t CurrAfrTable;		// Current air to fuel ratio from table
-	uint16_t CurrIgnTable;		// Current ignition advance from table
-	uint16_t CurrRpm;			// Current engine speed (RPM)
-	uint8_t CurrSpeed;			// Current vehicle speed (km/h)
-	int8_t CurrGear;			// Current vehicle gear (R(-1), N(0), 1, 2, 3, 4, 5, 6)
-	uint32_t InjDuration;		// Required injector duration (ns)
-	uint16_t IgnTiming;			// Required ignition spark timing (°)
-	uint16_t IgnDwell;			// Required ignition coil charging time (µs)
-};
-volatile struct engine_ engine; // Create an instance of the struct defined above
+// struct engine_
+// {
+// 	uint8_t status;				// Uses the above mentioned defines
+// 	uint16_t TpsAdc;				// Current ADC value of TPS sensor 1 (0 to 2^8-1)
+// 	uint8_t Tps;				// 0-100% value of TPS sensor 1
+// 	uint16_t LastTps;			// Last ADC value of TPS sensor 1 (0 to 2^12-1)
+// 	//uint16_t Tps2;				// Current ADC value of TPS sensor 2 (0 to 2^12-1)
+// 	uint16_t Map;				// Current kPa value of Manifold Absolute Pressure sensor 
+// 	uint16_t Iat;				// Current temperature value of Intake Air Temperature sensor (Offset by 40°C)
+// 	uint16_t Clt;				// Current temperature value of CooLant Temperature sensor (Offset by 40°C) 
+// 	uint8_t Batt;				// Current Voltage value of the Battery voltage (Offset by factor of 10, 12 V = 120)
+// 	uint8_t Afr;				// Current AFR value (Offset by factor of 10, 120 AFR = 12.0 AFR)
+// 	uint8_t LaunchControl;		// Launch Control button pressed (ON/OFF)
+// 	uint16_t CurrVeTable;		// Current volumetric efficiency value from table
+// 	uint16_t CurrAfrTable;		// Current air to fuel ratio from table
+// 	uint16_t CurrIgnTable;		// Current ignition advance from table
+// 	uint16_t CurrRpm;			// Current engine speed (RPM)
+// 	uint8_t CurrSpeed;			// Current vehicle speed (km/h)
+// 	int8_t CurrGear;			// Current vehicle gear (R(-1), N(0), 1, 2, 3, 4, 5, 6)
+// 	uint32_t InjDuration;		// Required injector duration (ns)
+// 	uint16_t IgnTiming;			// Required ignition spark timing (°)
+// 	uint16_t IgnDwell;			// Required ignition coil charging time (µs)
+// };
+//volatile struct engine_ engine; // Create an instance of the struct defined above
 
 struct cylinder_
 {
@@ -258,7 +191,7 @@ volatile struct engine_config_ engine_config; // Create an instance of the struc
 void engine_init(void);			// Initialize all variables to 0
 void cylinder_init(void);		// Initialize all variables to 0
 void engine_config_init(void);	// Initialize all variables to 0
-void global_struct_read_eeprom_init(uint8_t *ConfigStructPointer, uint16_t ConfigLen, uint16_t EepromIndex);		// Read the EEPROM and store the according byte in ascending order
+
 
 
 /************************************************************************/
@@ -335,6 +268,20 @@ void global_struct_read_eeprom_init(uint8_t *ConfigStructPointer, uint16_t Confi
 #define UART_RX1 PIO_PA10		// DUE D19
 #define UART_TX1 PIO_PA11		// DUE D18
 
+
+
+#include "sensors.h"
+#include "math.h"
+#include "ignition.h"
+#include "interrupts.h"
+#include "uart.h"
+#include "timers.h"
+#include "ADC.h"
+#include "tunerstudiocomm.h"
+#include "tables.h"
+#include "eeprom.h"
+#include "fuelcalc.h"
+#include "storage.h"
 
 
 #endif /* GLOBAL_H_ */

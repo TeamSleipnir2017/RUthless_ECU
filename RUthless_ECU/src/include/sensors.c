@@ -26,11 +26,11 @@ void sensors_init(void)
 void sensors_read_adc(void)
 {
 	// TODO: TURN GLOBAL INTERRUPTS OFF
-	engine.Clt = CltAdc_LUT[math_find_median(AdcData[ADC_CLT_CH], ADC_MEDIAN_FILTER_LENGTH)];
-	engine.Iat = IatAdc_LUT[math_find_median(AdcData[ADC_IAT_CH], ADC_MEDIAN_FILTER_LENGTH)];
-	engine.Afr = AfrAdc_LUT[math_find_median(AdcData[ADC_AFR_CH], ADC_MEDIAN_FILTER_LENGTH)];
-	engine.Map = math_map_adc(engine_config.MapLow, engine_config.MapHigh, math_find_median(AdcData[ADC_MAP_CH], ADC_MEDIAN_FILTER_LENGTH));
-	engine.TpsAdc = math_find_median(AdcData[ADC_TPS_CH], ADC_MEDIAN_FILTER_LENGTH) >> 2; // Change to 8 bit
-	engine.Tps = math_map(0, 100, engine.TpsAdc - engine_config.TpsLow, engine_config.TpsHigh - engine_config.TpsLow);
-	engine.Batt = math_map_adc(0, 150, math_find_median(AdcData[ADC_BATT_CH], ADC_MEDIAN_FILTER_LENGTH));
+	engine_realtime.Clt = CltAdc_LUT[math_find_median(AdcData[ADC_CLT_CH], ADC_MEDIAN_FILTER_LENGTH)];
+	engine_realtime.Iat = IatAdc_LUT[math_find_median(AdcData[ADC_IAT_CH], ADC_MEDIAN_FILTER_LENGTH)];
+	engine_realtime.Afr = AfrAdc_LUT[math_find_median(AdcData[ADC_AFR_CH], ADC_MEDIAN_FILTER_LENGTH)];
+	engine_realtime.Map = math_map_adc(engine_config.MapLow, engine_config.MapHigh, math_find_median(AdcData[ADC_MAP_CH], ADC_MEDIAN_FILTER_LENGTH));
+	engine_realtime.TpsAdc = math_find_median(AdcData[ADC_TPS_CH], ADC_MEDIAN_FILTER_LENGTH) >> 2; // Change to 8 bit 
+	engine_realtime.Tps = math_map(0, 100, engine_realtime.TpsAdc - engine_config.TpsLow, engine_config.TpsHigh - engine_config.TpsLow);
+	engine_realtime.BattVolt = math_map_adc(0, 150, math_find_median(AdcData[ADC_BATT_CH], ADC_MEDIAN_FILTER_LENGTH));
 }

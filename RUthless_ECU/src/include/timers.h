@@ -9,7 +9,6 @@
 #ifndef TIMERS_H_
 #define TIMERS_H_
 
-#include <asf.h>
 #include "global.h"
 
 void timer_init(uint32_t TimerChannel, uint32_t TimerMode, uint32_t InterruptMode, uint8_t TimerInterruptPriority);

@@ -1038,10 +1038,16 @@
     <Compile Include="src\include\sensors.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\include\table.c">
+    <Compile Include="src\include\storage.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\include\table.h">
+    <Compile Include="src\include\storage.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\tables.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\tables.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\include\timers.c">

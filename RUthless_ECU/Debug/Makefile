@@ -118,7 +118,8 @@ C_SRCS +=  \
 ../src/include/interrupts.c \
 ../src/include/math.c \
 ../src/include/sensors.c \
-../src/include/table.c \
+../src/include/storage.c \
+../src/include/tables.c \
 ../src/include/timers.c \
 ../src/include/tunerstudiocomm.c \
 ../src/include/uart.c \
@@ -157,7 +158,8 @@ src/include/ignition.o \
 src/include/interrupts.o \
 src/include/math.o \
 src/include/sensors.o \
-src/include/table.o \
+src/include/storage.o \
+src/include/tables.o \
 src/include/timers.o \
 src/include/tunerstudiocomm.o \
 src/include/uart.o \
@@ -189,7 +191,8 @@ src/include/ignition.o \
 src/include/interrupts.o \
 src/include/math.o \
 src/include/sensors.o \
-src/include/table.o \
+src/include/storage.o \
+src/include/tables.o \
 src/include/timers.o \
 src/include/tunerstudiocomm.o \
 src/include/uart.o \
@@ -221,7 +224,8 @@ src/include/ignition.d \
 src/include/interrupts.d \
 src/include/math.d \
 src/include/sensors.d \
-src/include/table.d \
+src/include/storage.d \
+src/include/tables.d \
 src/include/timers.d \
 src/include/tunerstudiocomm.d \
 src/include/uart.d \
@@ -253,7 +257,8 @@ src/include/ignition.d \
 src/include/interrupts.d \
 src/include/math.d \
 src/include/sensors.d \
-src/include/table.d \
+src/include/storage.d \
+src/include/tables.d \
 src/include/timers.d \
 src/include/tunerstudiocomm.d \
 src/include/uart.d \
@@ -274,6 +279,8 @@ LINKER_SCRIPT_DEP+=  \
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

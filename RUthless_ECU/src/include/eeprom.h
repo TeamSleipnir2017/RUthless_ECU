@@ -8,6 +8,8 @@
 
 #ifndef EEPROM_H_
 #define EEPROM_H_
+
+#include "global.h"
 /************************************************************************/
 /* Arduino Due core has the possibility to include an EEPROM on the PCB.
 More info here: http://www.inhaos.com/uploadfile/otherpic/DOC-DUE-CORE-V01-20160611.pdf
@@ -52,14 +54,13 @@ The EEPROM used is AT24C256C-SSHL-T, and the addresses are as follows
 #define EEPROM_INJ_OPEN_TIME_INDEX		3941
 
 
-#include "global.h"
-
 // Initialization function
 void eeprom_init(void);
 // More advanced function to read from the EEPROM
 // It basicly checks for TWI comm. success and retries until it enables a Fault
 uint8_t eeprom_read_byte(uint16_t address);
 uint16_t eeprom_read_int(uint16_t address);
+uint16_t eeprom_look_up_index(uint8_t Page);
 
 
 

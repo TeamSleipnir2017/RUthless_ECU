@@ -5,13 +5,15 @@
  *  Author: jbbja
  */ 
 
-#include "global.h"
+
 
 #ifndef FUELCALC_H_
 #define FUELCALC_H_
 
-uint32_t fuelcalc_pulsewidth(void);
+#include "global.h"
 
+uint32_t fuelcalc_pulsewidth(void);
+uint16_t fuelcalc_GammaEnrich(void);
 
 
 #endif /* FUELCALC_H_ */

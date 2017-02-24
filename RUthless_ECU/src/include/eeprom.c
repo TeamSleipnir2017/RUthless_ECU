@@ -50,3 +50,19 @@ uint16_t eeprom_read_int(uint16_t address)
 	uint16_t SecondByte = eeprom_read_byte(address + 1);
 	return (FirstByte | (SecondByte << 8));
 }
+
+uint16_t eeprom_look_up_index(uint8_t Page)
+{
+	switch(Page)
+	{
+		case PAGE_VE: return EEPROM_VE_INDEX;
+		case PAGE_AFR: return EEPROM_AFR_INDEX;
+		case PAGE_IGN: return EEPROM_IGN_INDEX;
+		case PAGE_CONFIG2: return EEPROM_CONFIG2_INDEX;
+		case PAGE_CONFIG4: return EEPROM_CONFIG4_INDEX;
+		case PAGE_CONFIG6: return EEPROM_CONFIG6_INDEX;
+		case PAGE_CONFIG7: return EEPROM_CONFIG7_INDEX;
+		case PAGE_CONFIG8: return EEPROM_CONFIG8_INDEX;
+		case PAGE_CONFIG9: return EEPROM_CONFIG9_INDEX;
+	}
+}
