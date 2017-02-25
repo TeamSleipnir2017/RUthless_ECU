@@ -39,8 +39,8 @@ uint8_t eeprom_read_byte(uint16_t address)
 			return result;
 
 	// Let know that there is a fault on the Two wire interface
-	engine_config.TwiFault = TRUE;
-	uart_print_string("TwiFault: "); uart_print_int(engine_config.TwiFault); uart_new_line();
+	engine_realtime.TwiFault = TRUE;
+	uart_print_string("TwiFault: "); uart_print_int(engine_realtime.TwiFault); uart_new_line();
 	return 1; // 1 is the safest number regarding IGN, VE and AFR map
 }
 

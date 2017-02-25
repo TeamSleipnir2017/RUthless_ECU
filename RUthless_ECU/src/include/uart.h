@@ -30,6 +30,8 @@ void uart_init(void);
 void uart_tx_interrupt_init(void);
 void uart_interrupt_transfer(char* str);
 void uart_interrupt_transfer_specific(char * str, uint16_t BufferLength);
+void uart_load_tx_buffer(uint8_t data);
+void uart_enable_tx_interrupt(void);
 void uart_enable_rx_interrupt(void);
 void uart_disable_rx_interrupt(void);
 void uart_rx_read_buffer(void);

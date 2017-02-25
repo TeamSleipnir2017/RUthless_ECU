@@ -16,11 +16,6 @@ void sensors_init(void)
 		IatAdc_LUT[i]		= eeprom_read_byte(EEPROM_IAT_ADC_INDEX + i);
 		AfrAdc_LUT[i]		= eeprom_read_byte(EEPROM_AFR_ADC_INDEX + i);
 	}
-	// Initialize config parameters
-	engine_config.MapLow	= eeprom_read_byte(EEPROM_MAP_LOW_INDEX);
-	engine_config.MapHigh	= eeprom_read_int(EEPROM_MAP_HIGH_INDEX);
-	engine_config.TpsLow	= eeprom_read_byte(EEPROM_TPS_LOW_INDEX);
-	engine_config.TpsHigh	= eeprom_read_byte(EEPROM_TPS_HIGH_INDEX);
 }
 
 void sensors_read_adc(void)
@@ -29,8 +24,8 @@ void sensors_read_adc(void)
 	engine_realtime.Clt = CltAdc_LUT[math_find_median(AdcData[ADC_CLT_CH], ADC_MEDIAN_FILTER_LENGTH)];
 	engine_realtime.Iat = IatAdc_LUT[math_find_median(AdcData[ADC_IAT_CH], ADC_MEDIAN_FILTER_LENGTH)];
 	engine_realtime.Afr = AfrAdc_LUT[math_find_median(AdcData[ADC_AFR_CH], ADC_MEDIAN_FILTER_LENGTH)];
-	engine_realtime.Map = math_map_adc(engine_config.MapLow, engine_config.MapHigh, math_find_median(AdcData[ADC_MAP_CH], ADC_MEDIAN_FILTER_LENGTH));
+	engine_realtime.Map = math_map_adc(engine_config2.MapMin, engine_config2.MapMax, math_find_median(AdcData[ADC_MAP_CH], ADC_MEDIAN_FILTER_LENGTH));
 	engine_realtime.TpsAdc = math_find_median(AdcData[ADC_TPS_CH], ADC_MEDIAN_FILTER_LENGTH) >> 2; // Change to 8 bit 
-	engine_realtime.Tps = math_map(0, 100, engine_realtime.TpsAdc - engine_config.TpsLow, engine_config.TpsHigh - engine_config.TpsLow);
+	engine_realtime.Tps = math_map(0, 100, engine_realtime.TpsAdc - engine_config2.TpsMin, engine_config2.TpsMax - engine_config2.TpsMin);
 	engine_realtime.BattVolt = math_map_adc(0, 150, math_find_median(AdcData[ADC_BATT_CH], ADC_MEDIAN_FILTER_LENGTH));
 }

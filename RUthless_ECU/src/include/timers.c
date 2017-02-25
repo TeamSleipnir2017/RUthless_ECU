@@ -88,11 +88,13 @@ void timer_init(uint32_t TimerChannel, uint32_t TimerMode, uint32_t InterruptMod
 	interrupts_enable_interrupt_vector(TC0_IRQn + TimerChannel, TimerInterruptPriority);
 	
 	tc_enable_interrupt(Timer, (TimerChannel%3), InterruptMode);
+	TC2->TC_CHANNEL[2].TC_IER = TC_IER_CPBS;
 	
 	tc_start(Timer, (TimerChannel%3));
 	
 	// TODO !!!!!!!!!!!!!
 	TC8_Overflow = FALSE;
+	millis = 0;
 }
 
 /*
@@ -166,21 +168,26 @@ void TC8_Handler(void)
 		adc_start(ADC);
 		//uart_transfer('a');
 	}
-	if (tc_status & TC_SR_CPBS)
+	if (tc_status & TC_SR_CPBS) // Compare register B is not working ?? 25.2.17
 	{
-		tc_write_rb(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/GlobalTimerFreqUARTScaler);
+		TC2->TC_CHANNEL[2].TC_RB = CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC;
+		//tc_write_rb(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC);
+		//tc_write_rb(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/GlobalTimerFreqUARTScaler);
 		// TODO: START UART
 		//uart_transfer('b');
 	}
 	if (tc_status & TC_SR_CPCS)
 	{
-		tc_write_rc(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/GlobalTimerFreqTelemetryScaler);
+		tc_write_rc(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC);
+		millis++;
+		//tc_write_rc(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/GlobalTimerFreqTelemetryScaler);
 	}
 	if (tc_status & TC_SR_COVFS)
 	{
 		TC8_Overflow = TRUE;
 		tc_write_ra(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
-		tc_write_rb(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqUARTScaler);
+		//tc_write_rb(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqUARTScaler);
+		tc_write_rc(TC2, 2, GLOBAL_TIMER_FREQ/MILLI_SEC);
 		// TODO MAYBE
 	}
 }

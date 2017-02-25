@@ -16,5 +16,6 @@ void timer_init(uint32_t TimerChannel, uint32_t TimerMode, uint32_t InterruptMod
 void timers_init1(void);
 
 uint8_t TC8_Overflow;
+uint32_t millis;
 
 #endif /* TIMERS_H_ */

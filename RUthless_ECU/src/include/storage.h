@@ -50,7 +50,7 @@ struct engine_realtime_
 	uint8_t Afr2;
 	int16_t RpmDot;
 	uint8_t Errors;
-	uint8_t Unused31;
+	uint8_t TwiFault;
 };
 /************************************************************************/
 /* Configuration structs                                                */

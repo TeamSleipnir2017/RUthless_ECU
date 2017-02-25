@@ -55,7 +55,12 @@ void tunerstudio_command(uint8_t character)
 	
 	switch (character)
 	{
-		case 'A': tunerstudio_send_struct(&engine_realtime, sizeof(engine_realtime));	break;
+		case 'A': 
+		{
+			engine_realtime.Seconds = millis / 1000;
+			tunerstudio_send_struct(&engine_realtime, sizeof(engine_realtime));	
+			break;
+		}
 		case 'B': tunerstudio_burn_page_eeprom();										break;
 		case 'C': uart_interrupt_transfer(1);											break;
 		case 'F': uart_interrupt_transfer("001");										break;
@@ -110,10 +115,9 @@ void tunerstudio_send_Table3D(struct Table3D *Current)
 // ATTENTION TODO: optimize speed by loading buffer straight instead of creating array and use for loop twice
 void tunerstudio_send_struct(uint8_t *ConfigStructPointer, uint16_t ConfigLen)
 {
-	uint8_t transmit[ConfigLen];
 	for (uint16_t i = 0; i < ConfigLen; i++)
-		transmit[i] = *((uint8_t *)ConfigStructPointer + i);
-	uart_interrupt_transfer_specific(transmit, ConfigLen);
+		uart_load_tx_buffer(*((uint8_t *)ConfigStructPointer + i));
+	uart_enable_tx_interrupt();
 }
 
 void tunerstudio_write_data(uint16_t data)
@@ -192,7 +196,7 @@ void tunerstudio_burn_page_eeprom(void)
 
 void tunerstudio_burn_Table3D(struct Table3D *Current, uint16_t EepromIndex)
 {
-	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
+	if (engine_realtime.TwiFault == TRUE) // check if communication with EEPROM is okay
 	{
 		uart_print_string("EEPROM Fault");
 		return;
@@ -216,7 +220,7 @@ void tunerstudio_burn_value_if_changed(uint32_t TempValue, uint16_t EepromIndex)
 
 void tunerstudio_burn_struct(uint8_t *ConfigStructPointer, uint16_t ConfigLen, uint16_t EepromIndex)
 {
-	if (engine_config.TwiFault == TRUE) // check if communication with EEPROM is okay
+	if (engine_realtime.TwiFault == TRUE) // check if communication with EEPROM is okay
 	{	
 		uart_print_string("EEPROM Fault");
 		return;
@@ -276,17 +280,17 @@ void tunerstudio_update_calib_vect_helper(uint8_t NrOfBytes, uint16_t EepromInde
 
 void tunerstudio_debug_global_function(void)
 {
-	uart_print_string("MAP High: "); uart_print_int(engine_config.MapHigh); uart_new_line();
-	uart_print_string("MAP Low: "); uart_print_int(engine_config.MapLow); uart_new_line();
-	uart_print_string("TPS High: "); uart_print_int(engine_config.TpsHigh); uart_new_line();
-	uart_print_string("TPS Low: "); uart_print_int(engine_config.TpsLow); uart_new_line();
+	uart_print_string("MAP High: "); uart_print_int(engine_config2.MapMax); uart_new_line();
+	uart_print_string("MAP Low: "); uart_print_int(engine_config2.MapMin); uart_new_line();
+	uart_print_string("TPS High: "); uart_print_int(engine_config2.TpsMax); uart_new_line();
+	uart_print_string("TPS Low: "); uart_print_int(engine_config2.TpsMin); uart_new_line();
 	uart_print_string("CLT: "); uart_print_int(engine_realtime.Clt); uart_new_line();
 	uart_print_string("IAT: "); uart_print_int(engine_realtime.Iat); uart_new_line();
 	uart_print_string("AFR: "); uart_print_int(engine_realtime.Afr); uart_new_line();
 	uart_print_string("MAP: "); uart_print_int(engine_realtime.Map); uart_new_line();
 	uart_print_string("TPS: "); uart_print_int(engine_realtime.Tps); uart_new_line();
 	uart_print_string("RPM: "); uart_print_int(engine_realtime.Rpm); uart_new_line();
-	uart_print_string("TWIFault: "); uart_print_int(engine_config.TwiFault); uart_new_line();
+	uart_print_string("TWIFault: "); uart_print_int(engine_realtime.TwiFault); uart_new_line();
 	uart_print_string("Fuel Const: "); uart_print_int(FUEL_CONST); uart_new_line();
 	uart_print_string("AfterStartEnrichPct: "); uart_print_int(engine_config2.AfterStartEnrichPct); uart_new_line();
 	uart_print_string("AfterStartEnrichCycles: "); uart_print_int(engine_config2.AfterStartEnrichCycles); uart_new_line();

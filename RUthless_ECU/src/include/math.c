@@ -84,6 +84,18 @@ uint16_t math_interpolation_array(uint16_t Rpm, uint16_t Map, struct Table3D *Cu
 	uint32_t calc4 = (uint32_t)Current->Table[MapIndexHigh][RpmIndexHigh] * (MapWeight) * (RpmWeight);
 	return (calc1 + calc2 + calc3 + calc4) / 10000;
 }
+
+uint16_t math_interpolation_vector(uint8_t *LookUp, uint8_t *Calculate, uint16_t Value, uint16_t Scaler, uint8_t Len)
+{
+	uint8_t IndexLow = 0;
+	uint8_t IndexHigh = Len - 1;
+	math_find_interpolation_index(LookUp, Value, &IndexLow, &IndexHigh, Scaler, Len);
+	uint8_t Weight = math_interpolation(Value, LookUp[IndexLow] * Scaler, LookUp[IndexHigh] * Scaler);
+	uint16_t calc1 = (uint32_t)Calculate[IndexLow] * (100 - Weight);
+	uint16_t calc2 = (uint32_t)Calculate[IndexHigh] * (Weight);
+	return (calc1 + calc2) / 100;
+}
+
 void math_find_interpolation_index(uint8_t * Vector, uint16_t Value, uint8_t * Low, uint8_t * High, uint16_t Scaler, uint8_t Len)
 {
 	for (uint8_t Index = 0; Index < Len; Index++)

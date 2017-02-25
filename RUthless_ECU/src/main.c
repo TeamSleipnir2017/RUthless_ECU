@@ -80,11 +80,11 @@ int main (void)
 	adc_start(ADC);
 	// Initialize ADC timer frequency, how often ADC values are measured
 	// CLOCK3 = MCK/32, TC_CMR_WAVE is to disable Capture mode, Enable Overflow and compare reg A
-	timer_init(GLOBAL_TIMER, TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_WAVE, TC_IER_COVFS | TC_IER_CPAS, TC8_PRIORITY);
+	timer_init(GLOBAL_TIMER, TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_WAVE, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPCS, TC8_PRIORITY);
 	tc_write_ra(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
-	
-	// Initialize tuning tables by reading them from EEPROM
-	table_init();
+	TC2->TC_CHANNEL[2].TC_RB =  GLOBAL_TIMER_FREQ/MILLI_SEC; // Compare register B is not working ?? 25.2.17
+	//tc_write_rb(TC2, 2, GLOBAL_TIMER_FREQ/MILLI_SEC);
+	tc_write_rc(TC2, 2, GLOBAL_TIMER_FREQ/MILLI_SEC);
 	
 	// Initialize sensors look up vectors by reading them from EEPROM
 	sensors_init();
@@ -94,7 +94,7 @@ int main (void)
 
 	// TEST 
 	interrupts_enable_pio(ID_PIOA, CRANK_SIGNAL, PIOA_PRIORITY, INTERRUPT_RISING_EDGE_MODE);
-
+	
 	uart_print_string("Init done"); uart_new_line();
 
 // 	uart_print_string("table 15,15"); uart_print_int(VE.Table[15][15]); uart_new_line();

@@ -32,12 +32,14 @@ uint32_t DebugCounter;
 #define TEMPERATURE_OFFSET 40	// IAT value from sensor - 40°C 
 #define TRIGGER_WHEEL 24		// Number of tooths
 #define CYL_DISPLACEMENT 600	// Cylinder displacement in cc
+#define MILLI_SEC	1000		// Factor of milliseconds
 // Define constants to calculate fuel constant
 #define INJECTOR_FLOW_RATE 200	// Should be a variable [cc/min]
 #define GASOLINE_DENSITY 740	// kg/m^3
 #define GAS_CONSTANT 287		// J/(Kg K)
 #define NR_OF_INJECTORS	4		// Should be a variable
 #define FUEL_CONST (CYL_DISPLACEMENT * 60 * 1000)/GASOLINE_DENSITY * 1000 / GAS_CONSTANT / NR_OF_INJECTORS * 1000 / INJECTOR_FLOW_RATE
+#define AFTER_START_ENRICH_SCALER 100 // Scale up rounds after start for enrichment calculation
 
 
 
@@ -101,6 +103,7 @@ volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 /************************************************************************/
 volatile struct Table3D VE, AFR, IGN;
 #define THREE_D_TABLE_SIZE 16	// 3D table size definitions
+#define WARMUP_ENRICH_SIZE 10
 
 /************************************************************************/
 /* Struct definitions:                                                  */
@@ -158,39 +161,39 @@ struct cylinder_
 };
 volatile struct cylinder_ cylinder[NR_OF_CYL]; // Create an instance of the struct defined above 
 
-#define CONFIG_LENGTH	4		// Only start with storing MAP and TPS (low, high) in EEPROM
-struct engine_config_
-{
-	uint8_t InjOpenTime;		// Injector opening time in ms
-	uint8_t NrOfInj;			// Number of injectors
-
-	uint16_t TpsLow;			// Current lower ADC value of TPS sensor 1 (for calibration)
-	uint16_t TpsHigh;			// Current lower ADC value of TPS sensor 1 (for calibration)
-	uint16_t TpsTimeDiff;		// Time difference between last TPS measurement
-	
-	uint16_t Baro;				// Barometric pressure (Initial MAP value before the engine is turned on or secondary sensor)
-
-	uint8_t MapLow;				// Current lower ADC value of MAP sensor  (for calibration)
-	uint16_t MapHigh;			// Current lower ADC value of MAP sensor  (for calibration)
-	
-	uint16_t RevLimit;			// Engine speed limit (RPM)
-	uint16_t LaunchControlRevLimit;	// Launch control engine speed limit (RPM)
-	
-	uint8_t CltFanTemp;			// Start temperature for the coolant fan
-	uint8_t CltFanTempHyst;		// Hysteresis threshold for turning off the coolant fan 
-
-	uint8_t TwiFault;			// Flag to indicate TWI fault, will screw up all the tuning maps VE, AFR, IGN... 
-	
-	/* REMEMBER WHEN ADDING A VARIABLE TO THIS STRUCT TO INITIALIZE IT (.c)*/
-}; 
-volatile struct engine_config_ engine_config; // Create an instance of the struct defined above
+// #define CONFIG_LENGTH	4		// Only start with storing MAP and TPS (low, high) in EEPROM
+// struct engine_config_
+// {
+// 	uint8_t InjOpenTime;		// Injector opening time in ms
+// 	uint8_t NrOfInj;			// Number of injectors
+// 
+// 	uint16_t TpsLow;			// Current lower ADC value of TPS sensor 1 (for calibration)
+// 	uint16_t TpsHigh;			// Current lower ADC value of TPS sensor 1 (for calibration)
+// 	uint16_t TpsTimeDiff;		// Time difference between last TPS measurement
+// 	
+// 	uint16_t Baro;				// Barometric pressure (Initial MAP value before the engine is turned on or secondary sensor)
+// 
+// 	uint8_t MapLow;				// Current lower ADC value of MAP sensor  (for calibration)
+// 	uint16_t MapHigh;			// Current lower ADC value of MAP sensor  (for calibration)
+// 	
+// 	uint16_t RevLimit;			// Engine speed limit (RPM)
+// 	uint16_t LaunchControlRevLimit;	// Launch control engine speed limit (RPM)
+// 	
+// 	uint8_t CltFanTemp;			// Start temperature for the coolant fan
+// 	uint8_t CltFanTempHyst;		// Hysteresis threshold for turning off the coolant fan 
+// 
+// 	uint8_t TwiFault;			// Flag to indicate TWI fault, will screw up all the tuning maps VE, AFR, IGN... 
+// 	
+// 	/* REMEMBER WHEN ADDING A VARIABLE TO THIS STRUCT TO INITIALIZE IT (.c)*/
+// }; 
+// volatile struct engine_config_ engine_config; // Create an instance of the struct defined above
 
 /************************************************************************/
 /* Functions:                                                           */
 /************************************************************************/
 void engine_init(void);			// Initialize all variables to 0
 void cylinder_init(void);		// Initialize all variables to 0
-void engine_config_init(void);	// Initialize all variables to 0
+//void engine_config_init(void);	// Initialize all variables to 0
 
 
 

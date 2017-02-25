@@ -38,6 +38,14 @@ Afterstart Enrichment
 /************************************************************************/
 uint16_t fuelcalc_GammaEnrich(void)
 {
-	uint16_t CoolantTemperature; 
-	engine_config2.WarmUpEnrichPct;
+	uint16_t TotalEnrich = 1;
+	uint8_t CoolantTemperature = engine_realtime.Clt;
+	// Calculate warm up enrichment
+	TotalEnrich *= math_interpolation_vector(&engine_config2.WarmUpEnrichTemp ,&engine_config2.WarmUpEnrichPct, CoolantTemperature, 1, WARMUP_ENRICH_SIZE);
+	// Calculate after start enrichment
+// 	if (engine_config2.AfterStartEnrichCycles * AFTER_START_ENRICH_SCALER> MilliSeconds)
+// 		TotalEnrich *= engine_config2.AfterStartEnrichPct;
+
+	engine_realtime.GammaEnrich = TotalEnrich;
+	return TotalEnrich;
 }
