@@ -57,8 +57,9 @@ void tunerstudio_command(uint8_t character)
 	{
 		case 'A': 
 		{
-			engine_realtime.Seconds = millis / 1000;
-			tunerstudio_send_struct(&engine_realtime, sizeof(engine_realtime));	
+			engine_realtime.Seconds = 100;//millis / 1000;
+			tunerstudio_send_struct_pdc(&engine_realtime, sizeof(engine_realtime));	
+			//tunerstudio_send_struct(&engine_realtime, sizeof(engine_realtime));	
 			break;
 		}
 		case 'B': tunerstudio_burn_page_eeprom();										break;
@@ -112,12 +113,17 @@ void tunerstudio_send_Table3D(struct Table3D *Current)
 	tunerstudio_send_struct(Current->Ybin, Current->Ysize);
 }
  
-// ATTENTION TODO: optimize speed by loading buffer straight instead of creating array and use for loop twice
+
 void tunerstudio_send_struct(uint8_t *ConfigStructPointer, uint16_t ConfigLen)
 {
 	for (uint16_t i = 0; i < ConfigLen; i++)
 		uart_load_tx_buffer(*((uint8_t *)ConfigStructPointer + i));
 	uart_enable_tx_interrupt();
+}
+
+void tunerstudio_send_struct_pdc(uint8_t *ConfigStructPointer, uint16_t ConfigLen)
+{
+	uart_load_pdc_tx_buffer(ConfigStructPointer, ConfigLen);
 }
 
 void tunerstudio_write_data(uint16_t data)

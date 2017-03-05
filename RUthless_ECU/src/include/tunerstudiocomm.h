@@ -42,11 +42,12 @@ void tunerstudio_command(uint8_t character);
 uint8_t tunerstudio_pick_page (uint8_t *Current);
 // Function to send page according to the .ini file (CurrPage is used)
 void tunerstudio_send_page(void);
-
 // Function to send a 16x16 table to tunerstudio
 void tunerstudio_send_Table3D(struct Table3D *Current);
 // Function to send configuration data to tunerstudio
 void tunerstudio_send_struct(uint8_t *ConfigStructPointer, uint16_t ConfigLen);
+// This function is a parallel process communication, (semi threading)  
+void tunerstudio_send_struct_pdc(uint8_t *ConfigStructPointer, uint16_t ConfigLen);
 // Function to receive data and update array
 void tunerstudio_write_data(uint16_t data);
 // Helper function to write data to 3d table

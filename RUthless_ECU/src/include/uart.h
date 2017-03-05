@@ -16,6 +16,9 @@
 #define TXBUFFERSIZE 1024
 #define RXBUFFERSIZE 1024
 
+Pdc *PdcInterface;
+pdc_packet_t PdcTxPacket;
+
 volatile uint8_t TxString[TXBUFFERSIZE];
 volatile uint16_t TxStringHead;
 volatile uint16_t TxStringTail;
@@ -40,5 +43,6 @@ void uart_print_int(uint32_t data);
 void uart_new_line(void);
 void uart_print_string(char * data);
 uint8_t uart_receive(void);
+void uart_load_pdc_tx_buffer(uint8_t * address, uint16_t size);
 
 #endif /* UART_H_ */

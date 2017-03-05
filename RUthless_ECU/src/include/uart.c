@@ -20,6 +20,8 @@ void uart_init(void)
 	UART->UART_BRGR = CLOCKDIVISION;
 	/* Reset interrupt enable register */
 	UART->UART_IDR = 0xFFFF;
+	// Initialize PDC
+	PdcInterface = PDC_UART;
 }
 
 // Transmission interrupt enable to minimize calculation downtime
@@ -85,6 +87,10 @@ void uart_rx_read_buffer(void)
 		return;
 	}
 	tunerstudio_command(RxString[RxStringTail++]);
+	if (RxStringTail >= RXBUFFERSIZE)
+	{
+		RxStringTail = 0;
+	}
 	//uint8_t read = RxString[RxStringTail++];
 }
 
@@ -177,4 +183,12 @@ uint8_t uart_receive(void)
 {
 	while (!(UART->UART_SR & UART_SR_RXRDY)); // Wait for character
 	return UART->UART_RHR;
+}
+
+void uart_load_pdc_tx_buffer(uint8_t * address, uint16_t size)
+{
+	PdcTxPacket.ul_addr = address;
+	PdcTxPacket.ul_size = size;
+	pdc_tx_init(PdcInterface, &PdcTxPacket, NULL);
+	pdc_enable_transfer(PdcInterface, PERIPH_PTCR_TXTEN);
 }
