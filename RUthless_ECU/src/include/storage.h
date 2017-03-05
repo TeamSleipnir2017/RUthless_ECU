@@ -15,42 +15,52 @@
 /* Functions:                                                           */
 /************************************************************************/
 // Read the EEPROM and store the according byte in ascending order
-void global_struct_read_eeprom_init(uint8_t *ConfigStructPointer, uint16_t ConfigLen, uint16_t EepromIndex);		
+void storage_struct_read_eeprom_init(uint8_t *ConfigStructPointer, uint16_t ConfigLen, uint16_t EepromIndex);	
+// Initialize struct to zero
+void storage_init_struct_to_zero(uint8_t *ConfigStructPointer, uint16_t ConfigLen);	
 
 /************************************************************************/
 /* Realtime variables struct                                            */
 /************************************************************************/
+// Todo: Launch Control button pressed (ON/OFF)
+// Todo: Current ignition advance from table
+// Todo: Current vehicle speed (km/h)
+// Todo: Current vehicle gear (R(-1), N(0), 1, 2, 3, 4, 5, 6)
+// Todo: Required ignition spark timing (°)
+// Todo: Required ignition coil charging time (µs)
 struct engine_realtime_
 {
-	uint8_t Seconds;
+	uint8_t dummy100;
 	uint8_t SquirtStatus;
-	uint8_t EngineStatus;
+	uint8_t EngineStatus;		// Uses definitions in global.h
 	uint8_t Dwell;
-	uint16_t Map;
-	uint8_t Iat;
-	uint8_t Clt;
-	uint8_t TpsAdc;
-	uint8_t BattVolt;
-	uint8_t Afr;
+	uint16_t Map;				// Current kPa value of Manifold Absolute Pressure sensor 
+	uint8_t Iat;				// Current temperature value of Intake Air Temperature sensor (Offset by 40°C)
+	uint8_t Clt;				// Current temperature value of CooLant Temperature sensor (Offset by 40°C) 
+	uint8_t TpsAdc;				// Current ADC value of TPS sensor 1 (0 to 2^8-1)
+	uint8_t BattVolt;			// Current Voltage value of the Battery voltage (Offset by factor of 10, 12 V = 120)
+	uint8_t Afr;				// Current AFR value (Offset by factor of 10, 120 AFR = 12.0 AFR)
 	uint8_t EgoCorrection;
 	uint8_t AirCorrection;
 	uint8_t WarmupEnrich;
-	uint16_t Rpm;
+	uint16_t Rpm;				// Current engine speed (RPM)
 	uint8_t AccelEnrich;
 	uint8_t BaroCorrection;
 	uint8_t GammaEnrich;
-	uint8_t VeTarget;
-	uint8_t AfrTarget;
-	uint8_t PulseWidth;
-	uint8_t TpsDot;
+	uint8_t VeTarget;			// Current volumetric efficiency value from table
+	uint8_t AfrTarget;			// Current air to fuel ratio from table
+	uint8_t PulseWidth;			// Required injector duration (currently tenths of ms) Todo: change to microsecs
+	uint8_t TpsDot;				// TPS %/s
 	uint8_t DegAdvance;
-	uint8_t Tps;
+	uint8_t Tps;				// 0-100% value of TPS sensor 1
 	uint8_t BattCorrection;
 	uint8_t SparkStatus;
 	uint8_t Afr2;
 	int16_t RpmDot;
 	uint8_t Errors;
 	uint8_t TwiFault;
+	uint8_t LastTps;			// Last ADC value of TPS sensor 1 (0 to 2^8-1)
+	uint8_t Seconds;
 };
 /************************************************************************/
 /* Configuration structs                                                */
@@ -58,7 +68,7 @@ struct engine_realtime_
 struct engine_config2_
 {
 	uint8_t	AfterStartEnrichPct;					// Afterstart enrichment [%]
-	uint8_t	AfterStartEnrichCycles;					// Afterstart enrichment cycles. This is the number of ignition cycles that the afterstart enrichment % lasts for
+	uint8_t	AfterStartEnrichSec;					// Afterstart enrichment cycles. This is the number of ignition cycles that the afterstart enrichment % lasts for
 	uint8_t	WarmUpEnrichPct[10];					// Warmup enrichment array [%]
 	uint8_t	WarmUpEnrichTemp[10];					// Warmup Enrichment bins [°C]
 	uint8_t	CrankingEnrichPct;						// Cranking enrichment [%]

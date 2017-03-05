@@ -11,8 +11,6 @@
 
 #include <asf.h>
 
-void global_init(void);
-
 // DEBUG PARAMETERS
 uint32_t DebugCounter;
 
@@ -39,9 +37,7 @@ uint32_t DebugCounter;
 #define GAS_CONSTANT 287		// J/(Kg K)
 #define NR_OF_INJECTORS	4		// Should be a variable
 #define FUEL_CONST (CYL_DISPLACEMENT * 60 * 1000)/GASOLINE_DENSITY * 1000 / GAS_CONSTANT / NR_OF_INJECTORS * 1000 / INJECTOR_FLOW_RATE
-#define AFTER_START_ENRICH_SCALER 100 // Scale up rounds after start for enrichment calculation
-
-
+//#define AFTER_START_ENRICH_SCALER 10 // Scale up rounds after start for enrichment calculation
 
 
 /************************************************************************/
@@ -110,13 +106,15 @@ volatile struct Table3D VE, AFR, IGN;
 /************************************************************************/
 
 // Engine status
-#define DEAD 0					// Engine dead (0 RPM)
-#define CRANKING 1				// Engine starting	
-#define WARMING 2				// Engine warming up (CLT below specific value)		
-#define RUNNING 3				// Engine warm and running
-#define IGN_AND_FUEL_CUT 4		// Ignition and fuel cut (Rev limit)
-#define IGN_CUT 5				// Ignition cut (Don't know why (future purposes))
-#define Fuel_CUT 6				// Fuel cut (Don't know why (future purposes))
+#define ENGINE_RUNNING		(1 << 0)		// Engine running (above cranking rpm)
+#define ENGINE_CRANKING		(1 << 1)		// Engine starting	
+#define ENGINE_ASE			(1 << 2)		// Engine in afterstart enrichment
+#define ENGINE_WARMING		(1 << 3)		// Engine warming up (CLT below specific value)	
+#define ENGINE_TPS_ACC_E	(1 << 4)		// TPS acceleration enrichment enabled
+#define ENGINE_TPS_DEC_E	(1 << 5)		// TODO: TPS deceleration enrichment enabled
+#define ENGINE_MAP_ACC_E	(1 << 6)		// TODO: MAP acceleration enrichment enabled
+#define ENGINE_MAP_DEC_E	(1 << 7)		// TODO: MAP deceleration enrichment enabled
+
 
 volatile struct engine_config2_ engine_config2;
 volatile struct engine_config4_ engine_config4;
@@ -125,31 +123,6 @@ volatile struct engine_config7_ engine_config7;
 volatile struct engine_config8_ engine_config8;
 volatile struct engine_config9_ engine_config9;
 volatile struct engine_realtime_ engine_realtime; 
-
-// struct engine_
-// {
-// 	uint8_t status;				// Uses the above mentioned defines
-// 	uint16_t TpsAdc;				// Current ADC value of TPS sensor 1 (0 to 2^8-1)
-// 	uint8_t Tps;				// 0-100% value of TPS sensor 1
-// 	uint16_t LastTps;			// Last ADC value of TPS sensor 1 (0 to 2^12-1)
-// 	//uint16_t Tps2;				// Current ADC value of TPS sensor 2 (0 to 2^12-1)
-// 	uint16_t Map;				// Current kPa value of Manifold Absolute Pressure sensor 
-// 	uint16_t Iat;				// Current temperature value of Intake Air Temperature sensor (Offset by 40°C)
-// 	uint16_t Clt;				// Current temperature value of CooLant Temperature sensor (Offset by 40°C) 
-// 	uint8_t Batt;				// Current Voltage value of the Battery voltage (Offset by factor of 10, 12 V = 120)
-// 	uint8_t Afr;				// Current AFR value (Offset by factor of 10, 120 AFR = 12.0 AFR)
-// 	uint8_t LaunchControl;		// Launch Control button pressed (ON/OFF)
-// 	uint16_t CurrVeTable;		// Current volumetric efficiency value from table
-// 	uint16_t CurrAfrTable;		// Current air to fuel ratio from table
-// 	uint16_t CurrIgnTable;		// Current ignition advance from table
-// 	uint16_t CurrRpm;			// Current engine speed (RPM)
-// 	uint8_t CurrSpeed;			// Current vehicle speed (km/h)
-// 	int8_t CurrGear;			// Current vehicle gear (R(-1), N(0), 1, 2, 3, 4, 5, 6)
-// 	uint32_t InjDuration;		// Required injector duration (ns)
-// 	uint16_t IgnTiming;			// Required ignition spark timing (°)
-// 	uint16_t IgnDwell;			// Required ignition coil charging time (µs)
-// };
-//volatile struct engine_ engine; // Create an instance of the struct defined above
 
 struct cylinder_
 {
@@ -161,40 +134,11 @@ struct cylinder_
 };
 volatile struct cylinder_ cylinder[NR_OF_CYL]; // Create an instance of the struct defined above 
 
-// #define CONFIG_LENGTH	4		// Only start with storing MAP and TPS (low, high) in EEPROM
-// struct engine_config_
-// {
-// 	uint8_t InjOpenTime;		// Injector opening time in ms
-// 	uint8_t NrOfInj;			// Number of injectors
-// 
-// 	uint16_t TpsLow;			// Current lower ADC value of TPS sensor 1 (for calibration)
-// 	uint16_t TpsHigh;			// Current lower ADC value of TPS sensor 1 (for calibration)
-// 	uint16_t TpsTimeDiff;		// Time difference between last TPS measurement
-// 	
-// 	uint16_t Baro;				// Barometric pressure (Initial MAP value before the engine is turned on or secondary sensor)
-// 
-// 	uint8_t MapLow;				// Current lower ADC value of MAP sensor  (for calibration)
-// 	uint16_t MapHigh;			// Current lower ADC value of MAP sensor  (for calibration)
-// 	
-// 	uint16_t RevLimit;			// Engine speed limit (RPM)
-// 	uint16_t LaunchControlRevLimit;	// Launch control engine speed limit (RPM)
-// 	
-// 	uint8_t CltFanTemp;			// Start temperature for the coolant fan
-// 	uint8_t CltFanTempHyst;		// Hysteresis threshold for turning off the coolant fan 
-// 
-// 	uint8_t TwiFault;			// Flag to indicate TWI fault, will screw up all the tuning maps VE, AFR, IGN... 
-// 	
-// 	/* REMEMBER WHEN ADDING A VARIABLE TO THIS STRUCT TO INITIALIZE IT (.c)*/
-// }; 
-// volatile struct engine_config_ engine_config; // Create an instance of the struct defined above
-
 /************************************************************************/
 /* Functions:                                                           */
 /************************************************************************/
-void engine_init(void);			// Initialize all variables to 0
+void global_init(void);
 void cylinder_init(void);		// Initialize all variables to 0
-//void engine_config_init(void);	// Initialize all variables to 0
-
 
 
 /************************************************************************/
@@ -270,8 +214,6 @@ void cylinder_init(void);		// Initialize all variables to 0
 // UART 1
 #define UART_RX1 PIO_PA10		// DUE D19
 #define UART_TX1 PIO_PA11		// DUE D18
-
-
 
 #include "sensors.h"
 #include "math.h"

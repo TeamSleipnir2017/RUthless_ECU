@@ -82,7 +82,6 @@ int main (void)
 	// CLOCK3 = MCK/32, TC_CMR_WAVE is to disable Capture mode, Enable Overflow and compare reg A
 	timer_init(GLOBAL_TIMER, TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_WAVE, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPCS, TC8_PRIORITY);
 	tc_write_ra(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
-	TC2->TC_CHANNEL[2].TC_RB =  GLOBAL_TIMER_FREQ/MILLI_SEC; // Compare register B is not working ?? 25.2.17
 	//tc_write_rb(TC2, 2, GLOBAL_TIMER_FREQ/MILLI_SEC);
 	tc_write_rc(TC2, 2, GLOBAL_TIMER_FREQ/MILLI_SEC);
 	
@@ -136,7 +135,7 @@ int main (void)
 				uint64_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankCurrCycleCounts / TRIGGER_WHEEL;
 				// TODO: Enable Interrupts
 				// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
-				engine_realtime.Rpm = (uint16_t)CalcRpm;
+				engine_realtime.Rpm = (uint16_t)CalcRpm / 2; // divide by 2 for testing cranking enrichment 5.6.17
 				engine_realtime.PulseWidth = fuelcalc_pulsewidth() / 1000;
 				if (CrankTooth >= 24)
 				{

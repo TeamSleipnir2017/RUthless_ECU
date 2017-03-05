@@ -27,6 +27,10 @@ uint32_t fuelcalc_pulsewidth(void)
 	uint64_t Numerator = (uint64_t)Map * Ve * FUEL_CONST; 
 	uint32_t Denominator = (uint32_t)Afr * (Temperature + 273);  
 	uint64_t InjectorTime = Numerator / Denominator;
+
+	// Calculate enrichments
+	uint16_t gammaEnrich = fuelcalc_GammaEnrich();
+	InjectorTime = (InjectorTime * gammaEnrich) /100;
 	return (uint32_t)InjectorTime;
 }
 
@@ -38,14 +42,33 @@ Afterstart Enrichment
 /************************************************************************/
 uint16_t fuelcalc_GammaEnrich(void)
 {
-	uint16_t TotalEnrich = 1;
+	uint16_t TotalEnrich = 100;
 	uint8_t CoolantTemperature = engine_realtime.Clt;
 	// Calculate warm up enrichment
 	TotalEnrich *= math_interpolation_vector(&engine_config2.WarmUpEnrichTemp ,&engine_config2.WarmUpEnrichPct, CoolantTemperature, 1, WARMUP_ENRICH_SIZE);
-	// Calculate after start enrichment
-// 	if (engine_config2.AfterStartEnrichCycles * AFTER_START_ENRICH_SCALER> MilliSeconds)
-// 		TotalEnrich *= engine_config2.AfterStartEnrichPct;
+	TotalEnrich /= 100;
 
+	// Calculate after start enrichment
+	// TODO: Make more efficient way to add after start enrichment
+	if (millis/MILLI_SEC < engine_config2.AfterStartEnrichSec)
+	{
+		TotalEnrich *= (100 + engine_config2.AfterStartEnrichPct);
+		TotalEnrich /= 100;
+	}
+
+	// Calculate cranking enrichment
+	if (engine_config2.CrankingRpm * RPM_SCALER > engine_realtime.Rpm)
+	{
+		TotalEnrich *= (100 + engine_config2.CrankingEnrichPct);
+		TotalEnrich /= 100;
+	}
+
+	// Prevent overflow
+	if (TotalEnrich > 255)
+	{
+		TotalEnrich = 255;
+	}
+	
 	engine_realtime.GammaEnrich = TotalEnrich;
 	return TotalEnrich;
 }

@@ -24,12 +24,12 @@ void tables_Table3D_read_eeprom(struct Table3D *Current, uint16_t EepromIndex)
 {
 	for (uint8_t i = 0; i < Current->Ysize; i++)
 	{
-		global_struct_read_eeprom_init(Current->Table[i], Current->Xsize, EepromIndex);
+		storage_struct_read_eeprom_init(Current->Table[i], Current->Xsize, EepromIndex);
 		EepromIndex += Current->Xsize;
 	} 
-	global_struct_read_eeprom_init(Current->Xbin, Current->Xsize, EepromIndex);
+	storage_struct_read_eeprom_init(Current->Xbin, Current->Xsize, EepromIndex);
 	EepromIndex += Current->Xsize;
-	global_struct_read_eeprom_init(Current->Ybin, Current->Ysize, EepromIndex);
+	storage_struct_read_eeprom_init(Current->Ybin, Current->Ysize, EepromIndex);
 }
 
 void tables_Table3D_init(struct Table3D *Current, uint8_t Xsize, uint8_t Ysize, uint16_t EepromIndex)

@@ -57,7 +57,7 @@ void tunerstudio_command(uint8_t character)
 	{
 		case 'A': 
 		{
-			engine_realtime.Seconds = 100;//millis / 1000;
+			engine_realtime.Seconds = millis / MILLI_SEC;
 			tunerstudio_send_struct_pdc(&engine_realtime, sizeof(engine_realtime));	
 			//tunerstudio_send_struct(&engine_realtime, sizeof(engine_realtime));	
 			break;
@@ -299,5 +299,7 @@ void tunerstudio_debug_global_function(void)
 	uart_print_string("TWIFault: "); uart_print_int(engine_realtime.TwiFault); uart_new_line();
 	uart_print_string("Fuel Const: "); uart_print_int(FUEL_CONST); uart_new_line();
 	uart_print_string("AfterStartEnrichPct: "); uart_print_int(engine_config2.AfterStartEnrichPct); uart_new_line();
-	uart_print_string("AfterStartEnrichCycles: "); uart_print_int(engine_config2.AfterStartEnrichCycles); uart_new_line();
+	uart_print_string("AfterStartEnrichCycles: "); uart_print_int(engine_config2.AfterStartEnrichSec); uart_new_line();
+	uart_print_string("millis: "); uart_print_int(millis); uart_new_line();
+
 }
