@@ -40,13 +40,13 @@ src\ASF\sam\utils\syscalls\gcc\syscalls.c
 
 src\include\ADC.c
 
+src\include\decoders.c
+
 src\include\eeprom.c
 
 src\include\fuelcalc.c
 
 src\include\global.c
-
-src\include\ignition.c
 
 src\include\interrupts.c
 
