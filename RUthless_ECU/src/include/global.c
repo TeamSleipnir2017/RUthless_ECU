@@ -20,6 +20,7 @@ void global_init(void)
 
 	// Timer Variables
 	CrankCurrCycleCounts = 0;
+	CrankPrevCycleCounts = 0;
 	CamCurrCycleCounts = 0;
 	CrankTimerCounts = 0;
 	CamTimerCounts = 0;

@@ -23,6 +23,10 @@ uint16_t math_interpolation_vector(uint8_t *LookUp, uint8_t *Calculate, uint16_t
 // Helper functions
 void math_find_interpolation_index(uint8_t * Vector, uint16_t Value, uint8_t * Low, uint8_t * High, uint16_t Scaler, uint8_t Len);
 uint8_t math_interpolation(uint16_t value, uint16_t x1, uint16_t x2);
+// Calculate ignition timing
+uint16_t math_ign_time_teeth(uint8_t ign_degree);
+uint32_t math_ign_time_interval(uint8_t ign_degree, uint32_t toothInterval);
+
 
 
 #endif /* MATH_H_ */

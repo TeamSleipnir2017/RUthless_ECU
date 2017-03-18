@@ -54,7 +54,7 @@ void interrupts_enable_pio(uint32_t PeripheralID, uint32_t Pin, uint32_t Priorit
 		case INTERRUPT_PIN_CHANGE_MODE:
 			break; // No need to configure anything else, just for show
 		case INTERRUPT_RISING_EDGE_MODE:
-			CurrentPio->PIO_AIMER		=	Pin;		// Enable additional interrupt modes
+			CurrentPio->PIO_AIMER		=	Pin;				// Enable additional interrupt modes
 			CurrentPio->PIO_ESR			=	Pin;				// Select edge detection
 			CurrentPio->PIO_REHLSR		=	Pin;				// Select rising edge detection
 			break;
@@ -73,6 +73,8 @@ void interrupts_enable_pio(uint32_t PeripheralID, uint32_t Pin, uint32_t Priorit
 	// PIOA->PIO_SCDR	=	0x01;
 }
 
+
+// Interrupt handler for the crankshaft and camshaft signal
 void PIOA_Handler(void)
 {
 	uint32_t TimerCounterValue	=		TC2->TC_CHANNEL[2].TC_CV;
@@ -80,11 +82,21 @@ void PIOA_Handler(void)
 	// Check if the interrupt source is from the crankshaft sensor
 	if (status_register & CRANK_SIGNAL)
 	{
+		CrankPrevCycleCounts	=		CrankCurrCycleCounts;
 		CrankCurrCycleCounts	=		TimerCounterValue - CrankTimerCounts;
 		CrankTimerCounts		=		TimerCounterValue;
 		CrankTachCycleCounts	+=		CrankCurrCycleCounts;
 		CrankTooth++;
 		CrankSignalFlag			=		TRUE;
+		if (CrankTooth == CrankSecondTach)
+		{
+			decoders_toggle_ign1pin();
+		}
+		else if (CrankTooth == CrankFirstTach)
+		{
+			decoders_toggle_ign2pin();
+			uart_print_int(CrankTooth); uart_new_line();
+		}
 	}
 	// Check if the interrupt source is from the camshaft sensor
 	if (status_register & CAM_SIGNAL)

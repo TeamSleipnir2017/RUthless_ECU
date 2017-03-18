@@ -17,28 +17,55 @@ uint32_t DebugCounter;
 /************************************************************************/
 /* Global definitions:                                                  */
 /************************************************************************/
-#define ATSAM3X8E_MCK 84000000	// Master clock frequency 84 MHz
-#define ON 1					// Define on state
-#define OFF 0					// Define off state
-#define HIGH 1					// Define high state
-#define LOW 0					// Define low state
-#define TRUE 1		
-#define FALSE 0
+#define ATSAM3X8E_MCK 84000000		// Master clock frequency 84 MHz
+#define ON		1					// Define on state
+#define OFF		0					// Define off state
+#define HIGH	1					// Define high state
+#define LOW		0					// Define low state
+#define TRUE	1		
+#define FALSE	0
 /* TODO: Read from EEPROM number of cylinders                           */
-#define NR_OF_CYL  4			// Number of cylinders
-#define RPM_SCALER 100
-#define TEMPERATURE_OFFSET 40	// IAT value from sensor - 40°C 
-#define TRIGGER_WHEEL 24		// Number of tooths
-#define CYL_DISPLACEMENT 600	// Cylinder displacement in cc
-#define MILLI_SEC	1000		// Factor of milliseconds
+#define NR_OF_CYL			4		// Number of cylinders
+#define RPM_SCALER			100
+#define TEMPERATURE_OFFSET	40		// IAT value from sensor - 40°C 
+#define TRIGGER_WHEEL		24		// Number of tooths
+#define CYL_DISPLACEMENT	600		// Cylinder displacement in cc
+#define MILLI_SEC			1000	// Factor of milliseconds
 // Define constants to calculate fuel constant
-#define INJECTOR_FLOW_RATE 200	// Should be a variable [cc/min]
-#define GASOLINE_DENSITY 740	// kg/m^3
-#define GAS_CONSTANT 287		// J/(Kg K)
-#define NR_OF_INJECTORS	4		// Should be a variable
+#define INJECTOR_FLOW_RATE	200		// Should be a variable [cc/min]
+#define GASOLINE_DENSITY	740		// kg/m^3
+#define GAS_CONSTANT		287		// J/(Kg K)
+#define NR_OF_INJECTORS		4		// Should be a variable
 #define FUEL_CONST (CYL_DISPLACEMENT * 60 * 1000)/GASOLINE_DENSITY * 1000 / GAS_CONSTANT / NR_OF_INJECTORS * 1000 / INJECTOR_FLOW_RATE
 //#define AFTER_START_ENRICH_SCALER 10 // Scale up rounds after start for enrichment calculation
 
+/************************************************************************/
+/* Crank, Cam definition:												*/
+/************************************************************************/
+
+
+#define CRANK_TEETH					24		// The amount of teeth on the crank wheel including the missing teeth
+#define CYLINDERS					4		// The amount of cylinders
+#define TACH_EVENTS					2		// Tach event per cycle http://www.megamanual.com/ms2/wheel.htm
+#define CRANK_DEGREE_INTERVAL		360/TACH_EVENTS	
+#define DEGREE_TEST					80
+
+
+volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
+volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
+volatile uint32_t CamCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for camshaft sensor.
+volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
+volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
+volatile uint16_t CrankTooth;				// Variable storing current crank tooth
+volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
+volatile uint32_t CrankTachCycleCounts;		// Cumsum of CrankCurrCycleCounts for TachPulse
+volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
+volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
+volatile uint8_t CrankFirstTach;			
+volatile uint8_t CrankSecondTach;
+volatile uint32_t CrankFirstInterval;
+volatile uint32_t CrankSecondInterval;
+volatile uint8_t CamSignalFlag;					// 
 
 /************************************************************************/
 /* Timer definitions:                                                   */
@@ -59,16 +86,6 @@ uint32_t DebugCounter;
 uint16_t GlobalTimerFreqADCScaler;
 uint16_t GlobalTimerFreqUARTScaler;
 uint16_t GlobalTimerFreqTelemetryScaler;
-
-volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor
-volatile uint32_t CamCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for camshaft sensor
-volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
-volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
-volatile uint16_t CrankTooth;				// Variable storing current crank tooth 
-volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
-volatile uint32_t CrankTachCycleCounts;		// Cumsum of CrankCurrCycleCounts for TachPulse
-volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
-volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 
 
 
@@ -170,8 +187,8 @@ void cylinder_init(void);		// Initialize all variables to 0
 #define ADC_A11_AUX_CH	ADC_CH13
 
 /* DIGITAL INPUTS */
-#define CRANK_SIGNAL PIO_PA7	// DUE D31
-#define CAM_SIGNAL PIO_PA15		// DUE D24
+#define CRANK_SIGNAL PIO_PA7	// DUE D34
+#define CAM_SIGNAL PIO_PA15		// DUE D26
 #define SPEED_SENSOR_SIGNAL	PIO_PD2		// DUE D27
 #define LAUNCH_CONTROL_SIGNAL PIO_PD6	// DUE D29
 #define NEUTRAL_SWITCH_SIGNAL PIO_PA21	// UNKNOWN
@@ -189,13 +206,13 @@ void cylinder_init(void);		// Initialize all variables to 0
 #define INJ8_OUT PIO_PC9		// DUE Core pin 67  - D41
 #define INJ_AUX_OUT PIO_PC11	// DUE Core pin 93  - Unknown
 // Ignition coils
-#define IGN1_OUT PIO_PC17		// DUE Core pin 108 - D46
+#define IGN1_OUT PIO_PC19		// DUE Core pin 108 - D46
 #define IGN2_OUT PIO_PC23		// DUE Core pin 114 - D7
-#define IGN3_OUT PIO_PC19		// DUE Core pin 110 - D44
-#define IGN4_OUT PIO_PC28		// DUE Core pin 44  - D3
-#define IGN5_OUT PIO_PC25		// DUE Core pin 116 - D5
-#define IGN6_OUT PIO_PC30		// DUE Core pin 42  - Unknown
-#define IGN7_OUT PIO_PC29		// DUE Core pin 41  - D10
+#define IGN3_OUT PIO_PC17		// DUE Core pin 110 - D44
+#define IGN4_OUT PIO_PC25		// DUE Core pin 44  - D3
+#define IGN5_OUT PIO_PC30		// DUE Core pin 116 - D5
+#define IGN6_OUT PIO_PC29		// DUE Core pin 42  - Unknown
+#define IGN7_OUT PIO_PC28		// DUE Core pin 41  - D10
 #define IGN8_OUT PIO_PC27		// DUE Core pin 43  - Unknown
 #define IGN_AUX_OUT PIO_PC21	// DUE Core pin 112 - D9
 
@@ -217,7 +234,7 @@ void cylinder_init(void);		// Initialize all variables to 0
 
 #include "sensors.h"
 #include "math.h"
-#include "ignition.h"
+#include "decoders.h"
 #include "interrupts.h"
 #include "uart.h"
 #include "timers.h"
