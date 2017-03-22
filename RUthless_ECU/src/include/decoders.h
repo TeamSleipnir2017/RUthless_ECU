@@ -19,4 +19,6 @@ void decoders_toggle_ign2pin(void);
 void decoders_toggle_ign3pin(void);
 void decoders_toggle_ign4pin(void);
 
+uint32_t decoders_tooth_degree_correction(void);
+
 #endif /* DECODERS_H_ */

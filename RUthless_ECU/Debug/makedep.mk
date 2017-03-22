@@ -48,6 +48,8 @@ src\include\fuelcalc.c
 
 src\include\global.c
 
+src\include\igncalc.c
+
 src\include\interrupts.c
 
 src\include\math.c

@@ -85,17 +85,37 @@ void PIOA_Handler(void)
 		CrankPrevCycleCounts	=		CrankCurrCycleCounts;
 		CrankCurrCycleCounts	=		TimerCounterValue - CrankTimerCounts;
 		CrankTimerCounts		=		TimerCounterValue;
-		CrankTachCycleCounts	+=		CrankCurrCycleCounts;
+		CrankRevCounts			+=		CrankCurrCycleCounts;
 		CrankTooth++;
 		CrankSignalFlag			=		TRUE;
-		if (CrankTooth == CrankSecondTach)
+
+		if (CrankTooth == CrankFirstTach)
 		{
-			decoders_toggle_ign1pin();
+			if (!CamSignalFlag)
+			{
+				TC0->TC_CHANNEL[0].TC_RA	=	CrankFirstInterval;
+				TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+			}
+			else
+			{
+				TC1->TC_CHANNEL[0].TC_RA	=	CrankFirstInterval;
+				TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+			}
+			
 		}
-		else if (CrankTooth == CrankFirstTach)
+		else if (CrankTooth == CrankSecondTach)
 		{
-			decoders_toggle_ign2pin();
-			uart_print_int(CrankTooth); uart_new_line();
+			if (!CamSignalFlag)
+			{
+				TC0->TC_CHANNEL[1].TC_RA	=	CrankSecondInterval;
+				TC0->TC_CHANNEL[1].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+			}
+			else
+			{
+				TC0->TC_CHANNEL[2].TC_RA	=	CrankSecondInterval;
+				TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+			}
+			
 		}
 	}
 	// Check if the interrupt source is from the camshaft sensor

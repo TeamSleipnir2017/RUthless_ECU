@@ -1047,6 +1047,12 @@
     <Compile Include="src\include\global.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\include\igncalc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\igncalc.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\include\interrupts.c">
       <SubType>compile</SubType>
     </Compile>

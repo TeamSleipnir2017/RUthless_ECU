@@ -139,6 +139,8 @@ uint8_t math_interpolation(uint16_t value, uint16_t x1, uint16_t x2)
 // Example: Skip 7,4 teeth ---> the function returns the integer 7
 uint16_t math_ign_time_teeth(uint8_t ign_degree)
 {
+	uint8_t temp = 360/TACH_EVENTS;
+	return	((((temp - ign_degree) * 100) / temp) * CRANK_TEETH)/TACH_EVENTS/100;
 	return	((((CRANK_DEGREE_INTERVAL - ign_degree) * 100) / CRANK_DEGREE_INTERVAL) * CRANK_TEETH)/TACH_EVENTS/100;
 }
 

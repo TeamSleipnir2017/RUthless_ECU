@@ -57,8 +57,12 @@ int main (void)
 	// Configure pin as output
 	pio_set_output(PIOC, IGN1_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
+	pio_set_output(PIOC, IGN3_OUT, LOW, FALSE, FALSE);
+	pio_set_output(PIOC, IGN4_OUT, LOW, FALSE, FALSE);
 	pio_clear(PIOC, IGN1_OUT);
 	pio_clear(PIOC, IGN2_OUT);
+	pio_clear(PIOC, IGN3_OUT);
+	pio_clear(PIOC, IGN4_OUT);
 	
 	// Initialize UART communication
 	uart_init();
@@ -94,16 +98,35 @@ int main (void)
 	// TEST 
 	interrupts_enable_pio(ID_PIOA, CRANK_SIGNAL, PIOA_PRIORITY, INTERRUPT_RISING_EDGE_MODE);
 	
-	uart_print_string("Init done"); uart_new_line();
+	
 
 // 	uart_print_string("table 15,15"); uart_print_int(VE.Table[15][15]); uart_new_line();
 // 	uart_print_string("rpm 15"); uart_print_int(VE.Xbin[15]); uart_new_line();
 // 	uart_print_string("map 15"); uart_print_int(VE.Ybin[15]); uart_new_line();
-
-
-
+	
+	
+	/************* RJR **************/
+	
+	// Enable external interrupt for PIOA register, crank and cam
+	interrupts_enable_pio(ID_PIOA, CRANK_SIGNAL, PIOA_PRIORITY, INTERRUPT_FALLING_EDGE_MODE);
+	interrupts_enable_pio(ID_PIOA, CAM_SIGNAL, PIOA_PRIORITY, INTERRUPT_FALLING_EDGE_MODE);
+	
+	// Initiate timer interrupt
+	timer_init(CYLINDER_1_TIMER, TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_EEVT_XC0, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPBS | TC_IER_CPCS, TC0_PRIORITY);
+	timer_init(CYLINDER_2_TIMER, TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_EEVT_XC0, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPBS | TC_IER_CPCS, TC1_PRIORITY);
+	timer_init(CYLINDER_3_TIMER, TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_EEVT_XC0, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPBS | TC_IER_CPCS, TC2_PRIORITY);
+	timer_init(CYLINDER_4_TIMER, TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_EEVT_XC0, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPBS | TC_IER_CPCS, TC3_PRIORITY);
+	
+	
+	
+	uart_print_string("Init done"); uart_new_line();
 	while (1)
-	{
+	{		
+		decoders_crank_primary();
+			
+		
+		
+		
 		if (RxFlag)
 		{	
 			RxFlag = FALSE;
@@ -125,7 +148,7 @@ int main (void)
 		}
 
 		// TEST
-		if (CrankSignalFlag)
+		/*if (CrankSignalFlag)
 		{
 			CrankSignalFlag = FALSE;
 			if (!(CrankTooth % TachPulse))
@@ -144,7 +167,8 @@ int main (void)
 				}
 			}
 			
-		}
+		}*/
+		
 	}
 	
 }

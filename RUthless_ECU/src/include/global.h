@@ -47,8 +47,8 @@ uint32_t DebugCounter;
 #define CRANK_TEETH					24		// The amount of teeth on the crank wheel including the missing teeth
 #define CYLINDERS					4		// The amount of cylinders
 #define TACH_EVENTS					2		// Tach event per cycle http://www.megamanual.com/ms2/wheel.htm
-#define CRANK_DEGREE_INTERVAL		360/TACH_EVENTS	
-#define DEGREE_TEST					80
+#define CRANK_DEGREE_INTERVAL		180
+#define DEGREE_TEST					35
 
 
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
@@ -58,14 +58,13 @@ volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 
 volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
 volatile uint16_t CrankTooth;				// Variable storing current crank tooth
 volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
-volatile uint32_t CrankTachCycleCounts;		// Cumsum of CrankCurrCycleCounts for TachPulse
+volatile uint32_t CrankRevCounts;		// Cumsum of CrankCurrCycleCounts for TachPulse
 volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
 volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 volatile uint8_t CrankFirstTach;			
 volatile uint8_t CrankSecondTach;
 volatile uint32_t CrankFirstInterval;
 volatile uint32_t CrankSecondInterval;
-volatile uint8_t CamSignalFlag;					// 
 
 /************************************************************************/
 /* Timer definitions:                                                   */

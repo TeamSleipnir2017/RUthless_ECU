@@ -27,7 +27,7 @@ void global_init(void)
 	CrankTooth = 1;
 	CrankSignalFlag = FALSE;
 	CamSignalFlag = FALSE;
-	CrankTachCycleCounts = 0;
+	CrankRevCounts = 0;
 	TachPulse = 12; // Calculate new RPM every half of the trigger wheel 24 tooths
 
 	storage_struct_read_eeprom_init(&engine_config2, sizeof(engine_config2), EEPROM_CONFIG2_INDEX);

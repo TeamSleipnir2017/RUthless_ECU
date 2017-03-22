@@ -118,6 +118,7 @@ C_SRCS +=  \
 ../src/include/eeprom.c \
 ../src/include/fuelcalc.c \
 ../src/include/global.c \
+../src/include/igncalc.c \
 ../src/include/interrupts.c \
 ../src/include/math.c \
 ../src/include/sensors.c \
@@ -159,6 +160,7 @@ src/include/decoders.o \
 src/include/eeprom.o \
 src/include/fuelcalc.o \
 src/include/global.o \
+src/include/igncalc.o \
 src/include/interrupts.o \
 src/include/math.o \
 src/include/sensors.o \
@@ -193,6 +195,7 @@ src/include/decoders.o \
 src/include/eeprom.o \
 src/include/fuelcalc.o \
 src/include/global.o \
+src/include/igncalc.o \
 src/include/interrupts.o \
 src/include/math.o \
 src/include/sensors.o \
@@ -227,6 +230,7 @@ src/include/decoders.d \
 src/include/eeprom.d \
 src/include/fuelcalc.d \
 src/include/global.d \
+src/include/igncalc.d \
 src/include/interrupts.d \
 src/include/math.d \
 src/include/sensors.d \
@@ -261,6 +265,7 @@ src/include/decoders.d \
 src/include/eeprom.d \
 src/include/fuelcalc.d \
 src/include/global.d \
+src/include/igncalc.d \
 src/include/interrupts.d \
 src/include/math.d \
 src/include/sensors.d \
@@ -286,6 +291,8 @@ LINKER_SCRIPT_DEP+=  \
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

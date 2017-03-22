@@ -16,17 +16,33 @@ void decoders_crank_primary(void)
 		if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1)))
 		{
 			CrankTooth = 0;
-			CrankSecondTach = 11 - math_ign_time_teeth(DEGREE_TEST);
-			CrankSecondInterval = math_ign_time_interval(DEGREE_TEST, CrankPrevCycleCounts);
+			CamSignalFlag ^= TRUE;
+			CrankFirstTach = 11 - math_ign_time_teeth(DEGREE_TEST);
+			CrankFirstInterval = math_ign_time_interval(DEGREE_TEST, CrankPrevCycleCounts) + decoders_tooth_degree_correction();
+			
+			// RPM calculations
+			uint64_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
+			// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
+			engine_realtime.Rpm = (uint16_t)CalcRpm; // divide by 2 for testing cranking enrichment 5.6.17
+			CrankRevCounts = 0;
+			
 		}
 		else if (CrankTooth == 12)
 		{
-			CrankFirstTach = 23 - math_ign_time_teeth(DEGREE_TEST);
-			CrankFirstInterval = math_ign_time_interval(DEGREE_TEST, CrankPrevCycleCounts);
+			CrankSecondTach = 23 - math_ign_time_teeth(DEGREE_TEST);
+			CrankSecondInterval = math_ign_time_interval(DEGREE_TEST, CrankPrevCycleCounts) + decoders_tooth_degree_correction();
 		}
 		CrankSignalFlag = FALSE;
 		
 	}
+}
+
+// Ignition timing correction.  
+// The 0° is at the middle of the tooth and calculations are done at the edge of every tooth.
+// This function corrects the calculations by shifting the tach degree (0° and 180° in this case) to the middle of the tooth
+uint32_t decoders_tooth_degree_correction(void)
+{
+	return CrankPrevCycleCounts/4;
 }
 
 
