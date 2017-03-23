@@ -77,8 +77,8 @@ The econoseal 18-pin connector provides the following pins:
 There are onboard header outputs for I2C, SPI and Serial (USART). 
 This is intended for remote communication or datalogging.
 
-The software is written in C using Atmel Software Framework \url{http://www.atmel.com/tools/avrsoftwareframework.aspx}.
-To tune the engine is Tunerstudio used, with modified configuration file from Speeduino \url{http://speeduino.com/wiki/index.php/Speeduino}.
+The software is written in C using Atmel Software Framework <a href="http://www.atmel.com/tools/avrsoftwareframework.aspx"></a>.
+To tune the engine is Tunerstudio used, with modified configuration file from Speeduino <a href="http://speeduino.com/wiki/index.php/Speeduino"></a>.
 ```
 
 ## Important files
@@ -100,5 +100,42 @@ RUthless_ECU
         .
         ├── uart.c
         └── uart.h
+```
+## Overview of each file
+```
+RUthless_ECU.ini - Includes configuration parameters to connect the controller to Tunerstudio.
+EEPROM_Management.xlsx - List of how the EEPROM is organized.
+RUthless_ECU.cproj - Atmel Studio project file.
+asf.h - Includes for Atmel Software Framework.
+main.c - Main loop, uses initializing and calculation function from other files.
+
+ADC.c & .h - Analog to digital converter interface, includes the following functions:
+   - adc_initialize: Initializes the controller with 10 bit resolution
+   - adc_turn_on_multiple_channels: Turns on vector of adc channels and turns on interrupts
+   - ADC_Handler: Interrupt handler, stores the values to a local array "AdcData"
+   
+decoders.c & .h - Decoder for variable reluctance sensor, includes the following functions:
+   - decoders_crank_primary: Checks for missing tooth and calculates ignition and injector timing.
+   
+eeprom.c & .h - Interface with at24c256 read,write and initialize, includes the following functions:
+   - eeprom_init: Initializes I2C interface with at24c256
+   - eeprom_read_byte: Reads a single byte from a specific address
+   - eeprom_read_int: Reads two bytes from a specific address
+   - eeprom_look_up_index: Returns the address for configuration pages from storage.h (see also EEPROM_Management.xlsx)
+   
+fuelcalc.c & .h - Calculation function for injector pulsewidth, includes the following functions:
+   - fuelcalc_pulsewidth: Calculate required pulsewidth from PV=nRT including enrichments
+   - fuelcalc_GammaEnrich: Calculate enrichment from coolant temp., cranking, afterstart and throttle position acceleration.
+   
+global.c & .h - File including global definitions and instances of variables, includes the following functions:
+   - global_init: Initializes the memory from EEPROM
+   - cylinder_init: Initialize real time struct of ignition and injector timings
+
+interrupts.c & .h - Basic initialization for interupts and handlers, includes the following functions:
+   - interrupts_enable_interrupt_vector: Initializes Nested Vector Interrupt Controller (NVIC) using peripheral and priority
+   - interrupts_enable_pio: Enable input interrupt for a specific pin, includes these modes pin change, rising and falling edge
+   - PIOA_Handler: Handler for primary, secondary and speed trigger interrupt   
+
+   
 ```
 
