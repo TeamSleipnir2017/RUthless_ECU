@@ -97,6 +97,14 @@ void timer_init(uint32_t TimerChannel, uint32_t TimerMode, uint32_t InterruptMod
 	millis = 0;
 }
 
+uint32_t timer_read_status(Tc *p_tc, uint32_t ul_channel, uint32_t *CounterValue)
+{
+	// Read the current Counter Value
+	*CounterValue = p_tc->TC_CHANNEL[ul_channel].TC_CV;
+	// Read the current Status, Compare or overflow
+	return p_tc->TC_CHANNEL[ul_channel].TC_SR;
+}
+
 /*
 Built in function
 tc_read_ra (Tc *p_tc, uint32_t ul_channel)
@@ -118,22 +126,49 @@ tc_enable_interrupt(Tc *p_tc, uint32_t ul_channel, uint32_t ul_sources)
 // CYLINDER_1_TIMER
 void TC0_Handler(void)
 {
-	if (DwellFirstFlag)
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC0, 0, &CounterValue);
+	if (TimerStatus & TC_SR_CPAS)
 	{
-		PIOC->PIO_SODR	=	IGN1_OUT;			// Sets pin PC19 to high
-		DwellFirstFlag = FALSE;
+		if (isDebug)
+		{
+			uart_transfer('a');
+		}
+		if (DwellFirstFlag)
+		{
+			if (isDebug)
+			{
+				uart_transfer('b');
+			}
+			PIOC->PIO_SODR	=	IGN1_OUT;			// Sets pin PC19 to high
+			DwellFirstFlag = FALSE;
+		}
+		else
+		{
+			if (isDebug)
+			{
+				uart_transfer('c');
+			}
+			PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
+		}
+		//TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
 	}
-	else
+	if (TimerStatus & TC_SR_CPBS)
 	{
-		PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
 	}
-	uint32_t readtc	=	TC0->TC_CHANNEL[0].TC_SR;
-	// TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
+	if (TimerStatus & TC_SR_CPCS)
+	{
+	}
+	if (TimerStatus & TC_SR_COVFS)
+	{
+	}
 }
 
 // CYLINDER_2_TIMER
 void TC1_Handler(void)
 {
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC0, 1, &CounterValue);
 	if (DwellSecondFlag)	
 	{
 		PIOC->PIO_SODR	=	IGN2_OUT;			// Sets pin PC19 to high
@@ -150,6 +185,8 @@ void TC1_Handler(void)
 // CYLINDER_3_TIMER
 void TC2_Handler(void)
 {
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC0, 2, &CounterValue);
 	if (DwellSecondFlag)
 	{
 		PIOC->PIO_SODR	=	IGN3_OUT;			// Sets pin PC17 to high
@@ -166,6 +203,8 @@ void TC2_Handler(void)
 // CYLINDER_4_TIMER
 void TC3_Handler(void)
 {
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC1, 0, &CounterValue);
 	if (DwellFirstFlag)							
 	{
 		PIOC->PIO_SODR	=	IGN4_OUT;			// Sets pin PC25 to high
@@ -181,37 +220,43 @@ void TC3_Handler(void)
 // CYLINDER_5_TIMER
 void TC4_Handler(void)
 {
-	
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC1, 1, &CounterValue);
 }
 // CYLINDER_6_TIMER
 void TC5_Handler(void)
 {
-	
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC1, 2, &CounterValue);
 }
 // CYLINDER_7_TIMER
 void TC6_Handler(void)
 {
-	
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC2, 0, &CounterValue);
 }
 // CYLINDER_8_TIMER
 void TC7_Handler(void)
 {
-	
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC2, 1, &CounterValue);
 }
 // GLOBAL_TIMER
 void TC8_Handler(void)
 {
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(TC2, 2, &CounterValue);
 	// Read the current TC8 Counter Value
-	uint32_t CounterValue = tc_read_cv(TC2, 2);
+	//uint32_t CounterValue = tc_read_cv(TC2, 2);
 	// Read the current TC8 Status, Compare or overflow
-	uint32_t tc_status = TC2->TC_CHANNEL[2].TC_SR;
-	if (tc_status & TC_SR_CPAS)
+	//uint32_t tc_status = TC2->TC_CHANNEL[2].TC_SR;
+	if (TimerStatus & TC_SR_CPAS)
 	{
 		tc_write_ra(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
 		adc_start(ADC);
 		//uart_transfer('a');
 	}
-	if (tc_status & TC_SR_CPBS) // Compare register B is not working ?? 25.2.17
+	if (TimerStatus & TC_SR_CPBS) // Compare register B is not working ?? 25.2.17
 	{
 		TC2->TC_CHANNEL[2].TC_RB = CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC;
 		//tc_write_rb(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC);
@@ -219,13 +264,13 @@ void TC8_Handler(void)
 		// TODO: START UART
 		//uart_transfer('b');
 	}
-	if (tc_status & TC_SR_CPCS)
+	if (TimerStatus & TC_SR_CPCS)
 	{
 		tc_write_rc(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC);
 		millis++;
 		//tc_write_rc(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/GlobalTimerFreqTelemetryScaler);
 	}
-	if (tc_status & TC_SR_COVFS)
+	if (TimerStatus & TC_SR_COVFS)
 	{
 		TC8_Overflow = TRUE;
 		tc_write_ra(TC2, 2, GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
