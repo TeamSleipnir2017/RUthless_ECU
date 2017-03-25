@@ -102,7 +102,8 @@ RUthless_ECU
         └── uart.h
 ```
 ## Overview of each file
-Some Markdown text with <span style="color:blue">some *blue* text</span>.
+[Ruthless_ECU.ini](https://github.com/TeamSleipnir2017/RUthless_ECU/blob/master/RUthless_ECU.ini )
+
 ```
 RUthless_ECU.ini - Includes configuration parameters to connect the controller to Tunerstudio.
 EEPROM_Management.xlsx - List of how the EEPROM is organized.
