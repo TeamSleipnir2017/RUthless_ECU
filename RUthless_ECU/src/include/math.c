@@ -134,22 +134,3 @@ uint8_t math_interpolation(uint16_t value, uint16_t x1, uint16_t x2)
 	return ((uint32_t)(value - x1) * 100)/((x2 - x1));
 }
 
-// Calculate the amount of teeth to skip for the next ignition event
-// Returns an integer to skip
-// Example: Skip 7,4 teeth ---> the function returns the integer 7
-uint16_t math_ign_time_teeth(uint8_t ign_degree)
-{
-	uint8_t temp = 360/TACH_EVENTS;
-	return	((((temp - ign_degree) * 100) / temp) * CRANK_TEETH)/TACH_EVENTS/100;
-	return	((((CRANK_DEGREE_INTERVAL - ign_degree) * 100) / CRANK_DEGREE_INTERVAL) * CRANK_TEETH)/TACH_EVENTS/100;
-}
-
-// Calculate the time between 2 teeth
-// Returns the counts to interval from the current tooth
-// Example: Skip 7,4 teeth ---> the function uses the decimal number 0,4 to calculate the spark event
-uint32_t math_ign_time_interval(uint8_t ign_degree, uint32_t toothInterval)
-{
-	uint32_t temp1 = ((((CRANK_DEGREE_INTERVAL - ign_degree) * 10000) / CRANK_DEGREE_INTERVAL) * CRANK_TEETH)/TACH_EVENTS;
-	uint32_t temp2 = math_ign_time_teeth(ign_degree) *10000;
-	return (10000 - (temp1 - temp2))*toothInterval/10000;
-}

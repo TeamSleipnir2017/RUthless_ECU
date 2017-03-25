@@ -89,6 +89,39 @@ void PIOA_Handler(void)
 		CrankTooth++;
 		CrankSignalFlag			=		TRUE;
 
+
+
+
+		if (CrankTooth == DwellFirstTach)
+		{
+			DwellFirstFlag = TRUE;
+			if (!CamSignalFlag)
+			{
+				TC0->TC_CHANNEL[0].TC_RA	=	DwellFirstInterval;
+				TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+			}
+			else
+			{
+				TC1->TC_CHANNEL[0].TC_RA	=	DwellFirstInterval;
+				TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+			}
+		}
+		else if (CrankTooth == DwellSecondTach)
+		{
+			DwellSecondFlag = TRUE;
+			if (!CamSignalFlag)
+			{
+				TC0->TC_CHANNEL[1].TC_RA	=	DwellSecondInterval;
+				TC0->TC_CHANNEL[1].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+			}
+			else
+			{
+				TC0->TC_CHANNEL[2].TC_RA	=	DwellSecondInterval;
+				TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+			}			
+		}
+		
+		
 		if (CrankTooth == CrankFirstTach)
 		{
 			if (!CamSignalFlag)
@@ -101,7 +134,6 @@ void PIOA_Handler(void)
 				TC1->TC_CHANNEL[0].TC_RA	=	CrankFirstInterval;
 				TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
 			}
-			
 		}
 		else if (CrankTooth == CrankSecondTach)
 		{
@@ -115,9 +147,11 @@ void PIOA_Handler(void)
 				TC0->TC_CHANNEL[2].TC_RA	=	CrankSecondInterval;
 				TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
 			}
-			
 		}
 	}
+	
+	
+	
 	// Check if the interrupt source is from the camshaft sensor
 	if (status_register & CAM_SIGNAL)
 	{

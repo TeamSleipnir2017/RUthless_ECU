@@ -48,7 +48,7 @@ uint32_t DebugCounter;
 #define CYLINDERS					4		// The amount of cylinders
 #define TACH_EVENTS					2		// Tach event per cycle http://www.megamanual.com/ms2/wheel.htm
 #define CRANK_DEGREE_INTERVAL		180
-#define DEGREE_TEST					35
+#define DEGREE_TEST					60
 
 
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
@@ -65,6 +65,16 @@ volatile uint8_t CrankFirstTach;
 volatile uint8_t CrankSecondTach;
 volatile uint32_t CrankFirstInterval;
 volatile uint32_t CrankSecondInterval;
+
+
+
+volatile uint8_t DwellFirstFlag;
+volatile uint8_t DwellSecondFlag;
+volatile uint16_t DwellDegree;
+volatile uint8_t DwellFirstTach;
+volatile uint8_t DwellSecondTach;
+volatile uint32_t DwellFirstInterval;
+volatile uint32_t DwellSecondInterval; 
 
 /************************************************************************/
 /* Timer definitions:                                                   */
@@ -242,6 +252,7 @@ void cylinder_init(void);		// Initialize all variables to 0
 #include "tables.h"
 #include "eeprom.h"
 #include "fuelcalc.h"
+#include "igncalc.h"
 #include "storage.h"
 
 

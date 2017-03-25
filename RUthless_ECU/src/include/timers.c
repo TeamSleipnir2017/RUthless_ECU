@@ -118,28 +118,63 @@ tc_enable_interrupt(Tc *p_tc, uint32_t ul_channel, uint32_t ul_sources)
 // CYLINDER_1_TIMER
 void TC0_Handler(void)
 {
-	decoders_toggle_ign1pin();
+	if (DwellFirstFlag)
+	{
+		PIOC->PIO_SODR	=	IGN1_OUT;			// Sets pin PC19 to high
+		DwellFirstFlag = FALSE;
+	}
+	else
+	{
+		PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
+	}
 	uint32_t readtc	=	TC0->TC_CHANNEL[0].TC_SR;
 	TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
 }
+
 // CYLINDER_2_TIMER
 void TC1_Handler(void)
 {
-	decoders_toggle_ign2pin();
+	if (DwellSecondFlag)	
+	{
+		PIOC->PIO_SODR	=	IGN2_OUT;			// Sets pin PC19 to high
+		DwellSecondFlag = FALSE;
+	}
+	else
+	{
+		PIOC->PIO_CODR	=	IGN2_OUT;			// Sets pin PC19 to low
+	}
 	uint32_t readtc	=	TC0->TC_CHANNEL[1].TC_SR;
 	TC0->TC_CHANNEL[1].TC_CCR	=	TC_CCR_CLKDIS;
 }
+
 // CYLINDER_3_TIMER
 void TC2_Handler(void)
 {
-	decoders_toggle_ign3pin();
+	if (DwellSecondFlag)
+	{
+		PIOC->PIO_SODR	=	IGN3_OUT;			// Sets pin PC17 to high
+		DwellSecondFlag = FALSE;
+	}
+	else
+	{
+		PIOC->PIO_CODR	=	IGN3_OUT;			// Sets pin PC17 to low
+	}
 	uint32_t readtc	=	TC0->TC_CHANNEL[2].TC_SR;
 	TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_CLKDIS;
 }
+
 // CYLINDER_4_TIMER
 void TC3_Handler(void)
 {
-	decoders_toggle_ign4pin();
+	if (DwellFirstFlag)							
+	{
+		PIOC->PIO_SODR	=	IGN4_OUT;			// Sets pin PC25 to high
+		DwellFirstFlag = FALSE;
+	}
+	else
+	{
+		PIOC->PIO_CODR	=	IGN4_OUT;			// Sets pin PC25 to low
+	}
 	uint32_t readtc	=	TC1->TC_CHANNEL[0].TC_SR;
 	TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
 }

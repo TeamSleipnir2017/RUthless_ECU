@@ -17,20 +17,38 @@ void decoders_crank_primary(void)
 		{
 			CrankTooth = 0;
 			CamSignalFlag ^= TRUE;
-			CrankFirstTach = 11 - math_ign_time_teeth(DEGREE_TEST);
-			CrankFirstInterval = math_ign_time_interval(DEGREE_TEST, CrankPrevCycleCounts) + decoders_tooth_degree_correction();
+			
+			// Dwell interval calculation, When to turn on ignition pins for first tach event
+			DwellDegree = DEGREE_TEST - igncalc_dwell_time()/(CrankRevCounts/360);
+			
+			DwellFirstTach = 11 - igncalc_ign_time_teeth(DwellDegree);
+			DwellFirstInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
+			
+			// Ignition interval calculation, When to turn off ignition pins for first tach event
+			CrankFirstTach = 11 - igncalc_ign_time_teeth(DEGREE_TEST);
+			CrankFirstInterval = igncalc_ign_time_interval(DEGREE_TEST) + decoders_tooth_degree_correction();
 			
 			// RPM calculations
 			uint64_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
 			// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
-			engine_realtime.Rpm = (uint16_t)CalcRpm; // divide by 2 for testing cranking enrichment 5.6.17
+			engine_realtime.Rpm = (uint16_t)CalcRpm;
+			
+			
+			
 			CrankRevCounts = 0;
 			
 		}
 		else if (CrankTooth == 12)
 		{
-			CrankSecondTach = 23 - math_ign_time_teeth(DEGREE_TEST);
-			CrankSecondInterval = math_ign_time_interval(DEGREE_TEST, CrankPrevCycleCounts) + decoders_tooth_degree_correction();
+			// Dwell interval calculation, When to turn on ignition pins for second tach event
+			DwellSecondTach = 23 - igncalc_ign_time_teeth(DwellDegree);
+			DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
+			
+			// Ignition interval calculation, When to turn off ignition pins for second tach event
+			CrankSecondTach = 23 - igncalc_ign_time_teeth(DEGREE_TEST);
+			CrankSecondInterval = igncalc_ign_time_interval(DEGREE_TEST) + decoders_tooth_degree_correction();
+			
+			
 		}
 		CrankSignalFlag = FALSE;
 		

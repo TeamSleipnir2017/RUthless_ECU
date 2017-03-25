@@ -27,5 +27,5 @@ void sensors_read_adc(void)
 	engine_realtime.Map = math_map_adc(engine_config2.MapMin, engine_config2.MapMax, math_find_median(AdcData[ADC_MAP_CH], ADC_MEDIAN_FILTER_LENGTH));
 	engine_realtime.TpsAdc = math_find_median(AdcData[ADC_TPS_CH], ADC_MEDIAN_FILTER_LENGTH) >> 2; // Change to 8 bit 
 	engine_realtime.Tps = math_map(0, 100, engine_realtime.TpsAdc - engine_config2.TpsMin, engine_config2.TpsMax - engine_config2.TpsMin);
-	engine_realtime.BattVolt = math_map_adc(0, 150, math_find_median(AdcData[ADC_BATT_CH], ADC_MEDIAN_FILTER_LENGTH));
+	engine_realtime.BattVolt = math_map_adc(0, 160, math_find_median(AdcData[ADC_BATT_CH], ADC_MEDIAN_FILTER_LENGTH));
 }
