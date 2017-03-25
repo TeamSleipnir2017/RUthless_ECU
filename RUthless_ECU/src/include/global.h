@@ -13,6 +13,7 @@
 
 // DEBUG PARAMETERS
 uint32_t DebugCounter;
+uint32_t isDebug;
 
 /************************************************************************/
 /* Global definitions:                                                  */

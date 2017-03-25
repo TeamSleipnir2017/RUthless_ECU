@@ -301,5 +301,5 @@ void tunerstudio_debug_global_function(void)
 	uart_print_string("AfterStartEnrichPct: "); uart_print_int(engine_config2.AfterStartEnrichPct); uart_new_line();
 	uart_print_string("AfterStartEnrichCycles: "); uart_print_int(engine_config2.AfterStartEnrichSec); uart_new_line();
 	uart_print_string("millis: "); uart_print_int(millis); uart_new_line();
-
+	ifDebug ^= 1;
 }
