@@ -105,6 +105,45 @@ uint32_t timer_read_status(Tc *p_tc, uint32_t ul_channel, uint32_t *CounterValue
 	return p_tc->TC_CHANNEL[ul_channel].TC_SR;
 }
 
+void timer_do_cylinder(Tc *p_tc, uint32_t ul_channel, uint8_t CylinderNr)
+{
+	uint32_t CounterValue;
+	uint32_t TimerStatus = timer_read_status(p_tc, ul_channel, &CounterValue);
+	if (TimerStatus & TC_SR_CPAS) // Compare register A
+	{
+		if (isDebug)
+		{
+			uart_transfer('a');
+		}
+		if (DwellFirstFlag)
+		{
+			if (isDebug)
+			{
+				uart_transfer('b');
+			}
+			cylinder[CylinderNr].Ign_pio->PIO_SODR	=	cylinder[CylinderNr].IgnOutputPin;			// Sets pin to high
+			DwellFirstFlag = FALSE;
+		}
+		else
+		{
+			if (isDebug)
+			{
+				uart_transfer('c');
+			}
+			cylinder[CylinderNr].Ign_pio->PIO_CODR	=	cylinder[CylinderNr].IgnOutputPin;			// Sets pin PC19 to low
+		}
+	}
+	if (TimerStatus & TC_SR_CPBS) // Compare register B
+	{
+	}
+	if (TimerStatus & TC_SR_CPCS) // Compare register C
+	{
+	}
+	if (TimerStatus & TC_SR_COVFS) // Overflow
+	{
+	}
+}
+
 /*
 Built in function
 tc_read_ra (Tc *p_tc, uint32_t ul_channel)
@@ -126,120 +165,120 @@ tc_enable_interrupt(Tc *p_tc, uint32_t ul_channel, uint32_t ul_sources)
 // CYLINDER_1_TIMER
 void TC0_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC0, 0, &CounterValue);
-	if (TimerStatus & TC_SR_CPAS)
-	{
-		if (isDebug)
-		{
-			uart_transfer('a');
-		}
-		if (DwellFirstFlag)
-		{
-			if (isDebug)
-			{
-				uart_transfer('b');
-			}
-			PIOC->PIO_SODR	=	IGN1_OUT;			// Sets pin PC19 to high
-			DwellFirstFlag = FALSE;
-		}
-		else
-		{
-			if (isDebug)
-			{
-				uart_transfer('c');
-			}
-			PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
-		}
-		//TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
-	}
-	if (TimerStatus & TC_SR_CPBS)
-	{
-	}
-	if (TimerStatus & TC_SR_CPCS)
-	{
-	}
-	if (TimerStatus & TC_SR_COVFS)
-	{
-	}
+	timer_do_cylinder(TC0, 0, 0);
+// 	uint32_t CounterValue;
+// 	uint32_t TimerStatus = timer_read_status(TC0, 0, &CounterValue);
+// 	if (TimerStatus & TC_SR_CPAS)
+// 	{
+// 		if (isDebug)
+// 		{
+// 			uart_transfer('a');
+// 		}
+// 		if (DwellFirstFlag)
+// 		{
+// 			if (isDebug)
+// 			{
+// 				uart_transfer('b');
+// 			}
+// 			PIOC->PIO_SODR	=	IGN1_OUT;			// Sets pin PC19 to high
+// 			DwellFirstFlag = FALSE;
+// 		}
+// 		else
+// 		{
+// 			if (isDebug)
+// 			{
+// 				uart_transfer('c');
+// 			}
+// 			PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
+// 		}
+// 		//TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
+// 	}
+// 	if (TimerStatus & TC_SR_CPBS)
+// 	{
+// 	}
+// 	if (TimerStatus & TC_SR_CPCS)
+// 	{
+// 	}
+// 	if (TimerStatus & TC_SR_COVFS)
+// 	{
+// 	}
 }
 
 // CYLINDER_2_TIMER
 void TC1_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC0, 1, &CounterValue);
-	if (DwellSecondFlag)	
-	{
-		PIOC->PIO_SODR	=	IGN2_OUT;			// Sets pin PC19 to high
-		DwellSecondFlag = FALSE;
-	}
-	else
-	{
-		PIOC->PIO_CODR	=	IGN2_OUT;			// Sets pin PC19 to low
-	}
-	uint32_t readtc	=	TC0->TC_CHANNEL[1].TC_SR;
-	TC0->TC_CHANNEL[1].TC_CCR	=	TC_CCR_CLKDIS;
+	timer_do_cylinder(TC0, 1, 1);
+// 	uint32_t CounterValue;
+// 	uint32_t TimerStatus = timer_read_status(TC0, 1, &CounterValue);
+// 	if (DwellSecondFlag)	
+// 	{
+// 		PIOC->PIO_SODR	=	IGN2_OUT;			// Sets pin PC19 to high
+// 		DwellSecondFlag = FALSE;
+// 	}
+// 	else
+// 	{
+// 		PIOC->PIO_CODR	=	IGN2_OUT;			// Sets pin PC19 to low
+// 	}
+// 	uint32_t readtc	=	TC0->TC_CHANNEL[1].TC_SR;
+// 	TC0->TC_CHANNEL[1].TC_CCR	=	TC_CCR_CLKDIS;
 }
 
 // CYLINDER_3_TIMER
 void TC2_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC0, 2, &CounterValue);
-	if (DwellSecondFlag)
-	{
-		PIOC->PIO_SODR	=	IGN3_OUT;			// Sets pin PC17 to high
-		DwellSecondFlag = FALSE;
-	}
-	else
-	{
-		PIOC->PIO_CODR	=	IGN3_OUT;			// Sets pin PC17 to low
-	}
-	uint32_t readtc	=	TC0->TC_CHANNEL[2].TC_SR;
-	TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_CLKDIS;
+	timer_do_cylinder(TC0, 2, 2);
+// 	uint32_t CounterValue;
+// 	uint32_t TimerStatus = timer_read_status(TC0, 2, &CounterValue);
+// 	if (DwellSecondFlag)
+// 	{
+// 		PIOC->PIO_SODR	=	IGN3_OUT;			// Sets pin PC17 to high
+// 		DwellSecondFlag = FALSE;
+// 	}
+// 	else
+// 	{
+// 		PIOC->PIO_CODR	=	IGN3_OUT;			// Sets pin PC17 to low
+// 	}
+// 	uint32_t readtc	=	TC0->TC_CHANNEL[2].TC_SR;
+// 	TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_CLKDIS;
 }
 
 // CYLINDER_4_TIMER
 void TC3_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC1, 0, &CounterValue);
-	if (DwellFirstFlag)							
-	{
-		PIOC->PIO_SODR	=	IGN4_OUT;			// Sets pin PC25 to high
-		DwellFirstFlag = FALSE;
-	}
-	else
-	{
-		PIOC->PIO_CODR	=	IGN4_OUT;			// Sets pin PC25 to low
-	}
-	uint32_t readtc	=	TC1->TC_CHANNEL[0].TC_SR;
-	TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
+	timer_do_cylinder(TC1, 0, 3);
+// 	uint32_t CounterValue;
+// 	uint32_t TimerStatus = timer_read_status(TC1, 0, &CounterValue);
+// 	if (DwellFirstFlag)							
+// 	{
+// 		PIOC->PIO_SODR	=	IGN4_OUT;			// Sets pin PC25 to high
+// 		DwellFirstFlag = FALSE;
+// 	}
+// 	else
+// 	{
+// 		PIOC->PIO_CODR	=	IGN4_OUT;			// Sets pin PC25 to low
+// 	}
+// 	uint32_t readtc	=	TC1->TC_CHANNEL[0].TC_SR;
+// 	TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
 }
 // CYLINDER_5_TIMER
 void TC4_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC1, 1, &CounterValue);
+	timer_do_cylinder(TC1, 1, 4);
 }
 // CYLINDER_6_TIMER
 void TC5_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC1, 2, &CounterValue);
+	timer_do_cylinder(TC1, 2, 5);
 }
 // CYLINDER_7_TIMER
 void TC6_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC2, 0, &CounterValue);
+	timer_do_cylinder(TC2, 0, 6);
 }
 // CYLINDER_8_TIMER
 void TC7_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC2, 1, &CounterValue);
+	timer_do_cylinder(TC2, 1, 7);
 }
 // GLOBAL_TIMER
 void TC8_Handler(void)

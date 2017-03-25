@@ -157,6 +157,10 @@ struct cylinder_
 	uint32_t IgnCntTimingOff;	// Ignition coil cylinder "x" counter OFF value
 	uint32_t InjCntTimingOn;	// Injector cylinder "x" counter ON value
 	uint32_t InjCntTimingOff;	// Injector cylinder "x" counter OFF value
+	uint32_t IgnOutputPin;		// Pointer to ignition output pin
+	Pio		*Ign_pio;			// Pointer to ignition peripheral input output controller
+	uint32_t InjOutputPin;		// Pointer to injector output pin
+	Pio		*Inj_pio;			// Pointer to injector peripheral input output controller
 	/* TODO: IF secondary injector                                      */
 };
 volatile struct cylinder_ cylinder[NR_OF_CYL]; // Create an instance of the struct defined above 

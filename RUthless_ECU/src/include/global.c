@@ -52,5 +52,24 @@ void cylinder_init(void)
 		cylinder[i].IgnCntTimingOff = 0;
 		cylinder[i].InjCntTimingOn = 0;
 		cylinder[i].InjCntTimingOff = 0;
+		cylinder[i].Ign_pio = PIOC;
+		cylinder[i].Inj_pio = PIOC;
 	}
+	cylinder[1].Inj_pio = PIOD; // Because the board developer did not thought it through :)
+	cylinder[0].IgnOutputPin = IGN1_OUT;
+	cylinder[1].IgnOutputPin = IGN2_OUT;
+	cylinder[2].IgnOutputPin = IGN3_OUT;
+	cylinder[3].IgnOutputPin = IGN4_OUT;
+	cylinder[4].IgnOutputPin = IGN5_OUT;
+	cylinder[5].IgnOutputPin = IGN6_OUT;
+	cylinder[6].IgnOutputPin = IGN7_OUT;
+	cylinder[7].IgnOutputPin = IGN8_OUT;
+	cylinder[0].InjOutputPin = INJ1_OUT;
+	cylinder[1].InjOutputPin = INJ2_OUT;
+	cylinder[2].InjOutputPin = INJ3_OUT;
+	cylinder[3].InjOutputPin = INJ4_OUT;
+	cylinder[4].InjOutputPin = INJ5_OUT;
+	cylinder[5].InjOutputPin = INJ6_OUT;
+	cylinder[6].InjOutputPin = INJ7_OUT;
+	cylinder[7].InjOutputPin = INJ8_OUT;
 }
