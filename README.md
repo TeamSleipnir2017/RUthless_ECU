@@ -102,8 +102,8 @@ RUthless_ECU
         └── uart.h
 ```
 ## Overview of each file
-```diff
-+ RUthless_ECU.ini - Includes configuration parameters to connect the controller to Tunerstudio.
+```c
+RUthless_ECU.ini - Includes configuration parameters to connect the controller to Tunerstudio.
 EEPROM_Management.xlsx - List of how the EEPROM is organized.
 RUthless_ECU.cproj - Atmel Studio project file.
 asf.h - Includes for Atmel Software Framework.
