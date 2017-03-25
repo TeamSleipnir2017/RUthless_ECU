@@ -127,7 +127,7 @@ void PIOA_Handler(void)
 			if (!CamSignalFlag)
 			{
 				TC0->TC_CHANNEL[0].TC_RA	=	CrankFirstInterval;
-				TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				//TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
 			}
 			else
 			{

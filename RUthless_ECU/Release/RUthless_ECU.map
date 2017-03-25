@@ -1530,57 +1530,57 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x00081008       0x74 src/include/interrupts.o
                 0x00081008                interrupts_enable_pio
  .text.PIOA_Handler
-                0x0008107c      0x15c src/include/interrupts.o
+                0x0008107c      0x160 src/include/interrupts.o
                 0x0008107c                PIOA_Handler
  .text.math_map_adc
-                0x000811d8        0x8 src/include/math.o
-                0x000811d8                math_map_adc
+                0x000811dc        0x8 src/include/math.o
+                0x000811dc                math_map_adc
  .text.math_map
-                0x000811e0       0x10 src/include/math.o
-                0x000811e0                math_map
+                0x000811e4       0x10 src/include/math.o
+                0x000811e4                math_map
  .text.math_find_median
-                0x000811f0       0x8c src/include/math.o
-                0x000811f0                math_find_median
+                0x000811f4       0x8c src/include/math.o
+                0x000811f4                math_find_median
  .text.math_find_interpolation_index
-                0x0008127c       0x32 src/include/math.o
-                0x0008127c                math_find_interpolation_index
+                0x00081280       0x32 src/include/math.o
+                0x00081280                math_find_interpolation_index
  .text.math_interpolation
-                0x000812ae       0x22 src/include/math.o
-                0x000812ae                math_interpolation
+                0x000812b2       0x22 src/include/math.o
+                0x000812b2                math_interpolation
  .text.math_interpolation_vector
-                0x000812d0       0x74 src/include/math.o
-                0x000812d0                math_interpolation_vector
+                0x000812d4       0x74 src/include/math.o
+                0x000812d4                math_interpolation_vector
  .text.sensors_init
-                0x00081344       0x50 src/include/sensors.o
-                0x00081344                sensors_init
+                0x00081348       0x50 src/include/sensors.o
+                0x00081348                sensors_init
  .text.sensors_read_adc
-                0x00081394       0xcc src/include/sensors.o
-                0x00081394                sensors_read_adc
+                0x00081398       0xcc src/include/sensors.o
+                0x00081398                sensors_read_adc
  .text.storage_struct_read_eeprom_init
-                0x00081460       0x10 src/include/storage.o
-                0x00081460                storage_struct_read_eeprom_init
+                0x00081464       0x10 src/include/storage.o
+                0x00081464                storage_struct_read_eeprom_init
  .text.storage_init_struct_to_zero
-                0x00081470       0x16 src/include/storage.o
-                0x00081470                storage_init_struct_to_zero
- *fill*         0x00081486        0x2 
+                0x00081474       0x16 src/include/storage.o
+                0x00081474                storage_init_struct_to_zero
+ *fill*         0x0008148a        0x2 
  .text.tables_Table3D_alloc_mem
-                0x00081488       0x4c src/include/tables.o
-                0x00081488                tables_Table3D_alloc_mem
+                0x0008148c       0x4c src/include/tables.o
+                0x0008148c                tables_Table3D_alloc_mem
  .text.tables_Table3D_read_eeprom
-                0x000814d4       0x4c src/include/tables.o
-                0x000814d4                tables_Table3D_read_eeprom
+                0x000814d8       0x4c src/include/tables.o
+                0x000814d8                tables_Table3D_read_eeprom
  .text.tables_Table3D_init
-                0x00081520       0x20 src/include/tables.o
-                0x00081520                tables_Table3D_init
+                0x00081524       0x20 src/include/tables.o
+                0x00081524                tables_Table3D_init
  .text.table_init
-                0x00081540       0x3c src/include/tables.o
-                0x00081540                table_init
+                0x00081544       0x3c src/include/tables.o
+                0x00081544                table_init
  .text.timer_init
-                0x0008157c       0x9c src/include/timers.o
-                0x0008157c                timer_init
+                0x00081580       0x9c src/include/timers.o
+                0x00081580                timer_init
  .text.TC0_Handler
-                0x00081618       0x2c src/include/timers.o
-                0x00081618                TC0_Handler
+                0x0008161c       0x28 src/include/timers.o
+                0x0008161c                TC0_Handler
  .text.TC1_Handler
                 0x00081644       0x2c src/include/timers.o
                 0x00081644                TC1_Handler

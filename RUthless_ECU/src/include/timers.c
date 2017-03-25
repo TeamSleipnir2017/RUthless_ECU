@@ -128,7 +128,7 @@ void TC0_Handler(void)
 		PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
 	}
 	uint32_t readtc	=	TC0->TC_CHANNEL[0].TC_SR;
-	TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
+	// TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
 }
 
 // CYLINDER_2_TIMER
