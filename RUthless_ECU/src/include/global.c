@@ -11,7 +11,7 @@ void global_init(void)
 {
 	// DEBUG
 	DebugCounter = 0;
-	ifDebug = 0;
+	isDebug = 0;
 	// TODO: Read from EEPROM
 
 	// Frequency scalers for ADC, TODO: Finish telemetry
