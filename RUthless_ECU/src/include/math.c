@@ -134,3 +134,12 @@ uint8_t math_interpolation(uint16_t value, uint16_t x1, uint16_t x2)
 	return ((uint32_t)(value - x1) * 100)/((x2 - x1));
 }
 
+uint32_t math_sum_with_overflow_protection(uint32_t a, uint32_t b)
+{
+	uint32_t sum = a + b;
+	if (sum < a)
+		return UINT32_T_MAX - a;
+	else
+		return sum;
+	// return ((a+b) < a) ? (UINT_MAX - a) : (a+b);
+}

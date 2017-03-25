@@ -9,6 +9,8 @@
 #ifndef MATH_H_
 #define MATH_H_
 
+#define UINT32_T_MAX 4294967295
+
 #include "global.h"
 
 // Map value to a different range
@@ -23,6 +25,9 @@ uint16_t math_interpolation_vector(uint8_t *LookUp, uint8_t *Calculate, uint16_t
 // Helper functions
 void math_find_interpolation_index(uint8_t * Vector, uint16_t Value, uint8_t * Low, uint8_t * High, uint16_t Scaler, uint8_t Len);
 uint8_t math_interpolation(uint16_t value, uint16_t x1, uint16_t x2);
+
+// Function to add two variables together 32 bit, when there is a overflow it should return 2^32 - a
+uint32_t math_sum_with_overflow_protection(uint32_t a, uint32_t b);
 
 
 
