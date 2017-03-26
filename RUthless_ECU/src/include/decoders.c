@@ -22,11 +22,22 @@ void decoders_crank_primary(void)
 			DwellDegree = DEGREE_TEST - igncalc_dwell_time()/(CrankRevCounts/360);
 			
 			DwellFirstTach = 11 - igncalc_ign_time_teeth(DwellDegree);
+			uart_transfer('a'); uart_print_int(DwellDegree); uart_new_line();
 			DwellFirstInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
+			//uart_transfer('e'); uart_print_int(DwellFirstInterval); uart_new_line();
 			
 			// Ignition interval calculation, When to turn off ignition pins for first tach event
 			CrankFirstTach = 11 - igncalc_ign_time_teeth(DEGREE_TEST);
 			CrankFirstInterval = igncalc_ign_time_interval(DEGREE_TEST) + decoders_tooth_degree_correction();
+			
+			/*
+			if (DwellFirstTach == CrankFirstTach)
+			{
+				SameFirstTooth = TRUE;
+				CrankFirstInterval = CrankFirstInterval - DwellFirstInterval;
+			}
+			*/
+			
 			
 			// RPM calculations
 			uint64_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
@@ -43,6 +54,7 @@ void decoders_crank_primary(void)
 			// Dwell interval calculation, When to turn on ignition pins for second tach event
 			DwellSecondTach = 23 - igncalc_ign_time_teeth(DwellDegree);
 			DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
+			uart_transfer('e'); uart_print_int(DwellSecondInterval); uart_new_line();
 			
 			// Ignition interval calculation, When to turn off ignition pins for second tach event
 			CrankSecondTach = 23 - igncalc_ign_time_teeth(DEGREE_TEST);

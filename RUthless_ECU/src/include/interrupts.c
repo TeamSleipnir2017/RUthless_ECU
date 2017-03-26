@@ -89,21 +89,22 @@ void PIOA_Handler(void)
 		CrankTooth++;
 		CrankSignalFlag			=		TRUE;
 
-
-
-
+		/*
+		uart_transfer('a'); uart_print_int(CrankTooth); uart_new_line();
+		*/
+		
 		if (CrankTooth == DwellFirstTach)
 		{
 			DwellFirstFlag = TRUE;
 			if (!CamSignalFlag)
 			{
-				TC0->TC_CHANNEL[0].TC_RA	=	DwellFirstInterval;
-				TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				//uart_print_int(DwellFirstTach); uart_new_line();
+				//uart_print_int(DwellFirstInterval); uart_new_line();
+				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
 			}
 			else
 			{
-				TC1->TC_CHANNEL[0].TC_RA	=	DwellFirstInterval;
-				TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				TC1->TC_CHANNEL[0].TC_RA	=	TC1->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
 			}
 		}
 		else if (CrankTooth == DwellSecondTach)
@@ -111,13 +112,11 @@ void PIOA_Handler(void)
 			DwellSecondFlag = TRUE;
 			if (!CamSignalFlag)
 			{
-				TC0->TC_CHANNEL[1].TC_RA	=	DwellSecondInterval;
-				TC0->TC_CHANNEL[1].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + DwellSecondInterval;
 			}
 			else
 			{
-				TC0->TC_CHANNEL[2].TC_RA	=	DwellSecondInterval;
-				TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				TC0->TC_CHANNEL[2].TC_RA	=	TC0->TC_CHANNEL[2].TC_CV + DwellSecondInterval;
 			}			
 		}
 		
@@ -126,26 +125,23 @@ void PIOA_Handler(void)
 		{
 			if (!CamSignalFlag)
 			{
-				TC0->TC_CHANNEL[0].TC_RA	=	CrankFirstInterval;
-				//TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				
+				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + CrankFirstInterval;
 			}
 			else
 			{
-				TC1->TC_CHANNEL[0].TC_RA	=	CrankFirstInterval;
-				TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				TC1->TC_CHANNEL[0].TC_RA	=	TC1->TC_CHANNEL[0].TC_CV + CrankFirstInterval;
 			}
 		}
 		else if (CrankTooth == CrankSecondTach)
 		{
 			if (!CamSignalFlag)
 			{
-				TC0->TC_CHANNEL[1].TC_RA	=	CrankSecondInterval;
-				TC0->TC_CHANNEL[1].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + CrankSecondInterval;
 			}
 			else
 			{
-				TC0->TC_CHANNEL[2].TC_RA	=	CrankSecondInterval;
-				TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_SWTRG	|	TC_CCR_CLKEN;
+				TC0->TC_CHANNEL[2].TC_RA	=	TC0->TC_CHANNEL[2].TC_CV + CrankSecondInterval;
 			}
 		}
 	}

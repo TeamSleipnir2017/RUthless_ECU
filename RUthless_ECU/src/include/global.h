@@ -49,7 +49,7 @@ uint32_t isDebug;
 #define CYLINDERS					4		// The amount of cylinders
 #define TACH_EVENTS					2		// Tach event per cycle http://www.megamanual.com/ms2/wheel.htm
 #define CRANK_DEGREE_INTERVAL		180
-#define DEGREE_TEST					60
+#define DEGREE_TEST					80
 
 
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
@@ -67,7 +67,8 @@ volatile uint8_t CrankSecondTach;
 volatile uint32_t CrankFirstInterval;
 volatile uint32_t CrankSecondInterval;
 
-
+volatile uint8_t SameFirstTooth;
+volatile uint8_t SameFirstTooth;
 
 volatile uint8_t DwellFirstFlag;
 volatile uint8_t DwellSecondFlag;

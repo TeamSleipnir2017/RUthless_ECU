@@ -107,29 +107,23 @@ uint32_t timer_read_status(Tc *p_tc, uint32_t ul_channel, uint32_t *CounterValue
 
 void timer_do_cylinder(Tc *p_tc, uint32_t ul_channel, uint8_t CylinderNr)
 {
+	//uart_transfer('a'); uart_print_int(CylinderNr); uart_new_line();
 	uint32_t CounterValue;
 	uint32_t TimerStatus = timer_read_status(p_tc, ul_channel, &CounterValue);
 	if (TimerStatus & TC_SR_CPAS) // Compare register A
 	{
-		if (isDebug)
-		{
-			uart_transfer('a');
-		}
 		if (DwellFirstFlag)
 		{
-			if (isDebug)
-			{
-				uart_transfer('b');
-			}
 			cylinder[CylinderNr].Ign_pio->PIO_SODR	=	cylinder[CylinderNr].IgnOutputPin;			// Sets pin to high
 			DwellFirstFlag = FALSE;
 		}
+		else if (DwellSecondFlag)
+		{
+			cylinder[CylinderNr].Ign_pio->PIO_SODR	=	cylinder[CylinderNr].IgnOutputPin;			// Sets pin to high
+			DwellSecondFlag = FALSE;
+		}
 		else
 		{
-			if (isDebug)
-			{
-				uart_transfer('c');
-			}
 			cylinder[CylinderNr].Ign_pio->PIO_CODR	=	cylinder[CylinderNr].IgnOutputPin;			// Sets pin PC19 to low
 		}
 	}

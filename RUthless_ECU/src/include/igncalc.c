@@ -20,9 +20,15 @@ uint16_t igncalc_ign_time_teeth(uint8_t ign_degree)
 // Example: Skip 7,4 teeth ---> the function uses the decimal number 0,4 to calculate the spark event
 uint32_t igncalc_ign_time_interval(uint8_t ign_degree)
 {
-	uint32_t temp1 = ((((CRANK_DEGREE_INTERVAL - ign_degree) * 10000) / CRANK_DEGREE_INTERVAL) * CRANK_TEETH)/TACH_EVENTS;
-	uint32_t temp2 = igncalc_ign_time_teeth(ign_degree) *10000;
-	return (10000 - (temp1 - temp2))*CrankPrevCycleCounts/10000;
+		
+	uint32_t temp1 = (((CRANK_DEGREE_INTERVAL - ign_degree) * 1000) / CRANK_DEGREE_INTERVAL) * (CRANK_TEETH/TACH_EVENTS);
+	//uart_transfer('b'); uart_print_int(temp1); uart_new_line();
+	
+	uint32_t temp2 = 1000- (temp1 - (igncalc_ign_time_teeth(ign_degree) *1000));
+	//uart_transfer('c'); uart_print_int(temp2); uart_new_line();
+	
+	//uart_transfer('d'); uart_print_int(CrankPrevCycleCounts); uart_new_line();
+	return (temp2*CrankPrevCycleCounts)/1000;
 }
 
 

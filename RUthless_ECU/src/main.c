@@ -124,8 +124,12 @@ int main (void)
 	while (1)
 	{		
 		decoders_crank_primary();
-		
-		// uart_print_string("C "); uart_print_int(temp1); uart_new_line();
+		/*
+		if (isDebug)
+		{
+			uart_print_string("C "); uart_print_int(temp1); uart_new_line();
+		}
+		*/
 		
 		
 		
@@ -144,14 +148,13 @@ int main (void)
 // 				__asm__("nop");
 // 			}
 		}
-		
-		
+		/*
 		if (RxFlag)
 		{
 			RxFlag = FALSE;
 			uart_rx_read_buffer();
 		}
-		
+		*/
 		
 		// TEST
 		/*if (CrankSignalFlag)
