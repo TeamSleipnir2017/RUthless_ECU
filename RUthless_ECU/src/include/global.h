@@ -52,7 +52,8 @@ uint32_t isDebug;
 #define DEGREE_TEST					36
 
 volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
-volatile uint16_t CrankTooth;				// Variable storing current crank tooth
+volatile uint8_t CrankTooth;				// Variable storing current crank tooth
+volatile uint8_t CrankSecondTooth;
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
 volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
 volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
@@ -68,12 +69,6 @@ volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9)
 volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 
 volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
-
-
-
-
-
-
 volatile uint8_t IgnATDC;					// Flag to indicate if the ignition is before top dead center (BTDC) or after top dead center (ATDC)
 
 

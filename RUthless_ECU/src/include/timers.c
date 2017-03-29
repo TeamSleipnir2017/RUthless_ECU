@@ -160,33 +160,20 @@ tc_enable_interrupt(Tc *p_tc, uint32_t ul_channel, uint32_t ul_sources)
 void TC0_Handler(void)
 {
 	timer_do_cylinder(TC0, 0, 0);
-// 	uint32_t CounterValue;
-// 	uint32_t TimerStatus = timer_read_status(TC0, 0, &CounterValue);
-// 	if (TimerStatus & TC_SR_CPAS)
-// 	{
-// 		if (isDebug)
-// 		{
-// 			uart_transfer('a');
-// 		}
-// 		if (DwellFirstFlag)
-// 		{
-// 			if (isDebug)
-// 			{
-// 				uart_transfer('b');
-// 			}
-// 			PIOC->PIO_SODR	=	IGN1_OUT;			// Sets pin PC19 to high
-// 			DwellFirstFlag = FALSE;
-// 		}
-// 		else
-// 		{
-// 			if (isDebug)
-// 			{
-// 				uart_transfer('c');
-// 			}
-// 			PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
-// 		}
-// 		//TC0->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
-// 	}
+//  	uint32_t CounterValue;
+//  	uint32_t TimerStatus = timer_read_status(TC0, 0, &CounterValue);
+//  	if (TimerStatus & TC_SR_CPAS)
+//  	{
+//  		if (DwellFirstFlag)
+//  		{
+//  			PIOC->PIO_SODR	=	IGN1_OUT;			// Sets pin PC19 to high
+//  			DwellFirstFlag = FALSE;
+//  		}
+//  		else
+//  		{
+//  			PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
+//  		}
+//  	}
 // 	if (TimerStatus & TC_SR_CPBS)
 // 	{
 // 	}

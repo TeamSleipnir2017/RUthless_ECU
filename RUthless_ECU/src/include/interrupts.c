@@ -79,6 +79,15 @@ void PIOA_Handler(void)
 {
 	uint32_t TimerCounterValue	=		TC2->TC_CHANNEL[2].TC_CV;
 	uint32_t status_register	=		PIOA->PIO_ISR;
+	
+	// Check if the interrupt source is from the camshaft sensor
+	if (status_register & CAM_SIGNAL)
+	{
+		CamCurrCycleCounts		=		TimerCounterValue - CamTimerCounts;
+		CamTimerCounts			=		TimerCounterValue;
+		CamSignalFlag			=		TRUE;
+	}
+	
 	// Check if the interrupt source is from the crankshaft sensor
 	if (status_register & CRANK_SIGNAL)
 	{
@@ -87,6 +96,7 @@ void PIOA_Handler(void)
 		CrankTimerCounts		=		TimerCounterValue;
 		CrankRevCounts			+=		CrankCurrCycleCounts;
 		CrankTooth++;
+		CrankSecondTooth++;
 		CrankSignalFlag			=		TRUE;
 		
 		

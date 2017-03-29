@@ -20,6 +20,8 @@ void decoders_crank_primary(void)
 				uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
 			}
 			CrankTooth = 0;
+			CrankSecondTooth = TachPulse;
+			
 			// uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
 			CamSignalFlag ^= TRUE;
 			IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN);
@@ -70,13 +72,15 @@ void decoders_crank_primary(void)
 			CrankRevCounts = 0;
 			
 		}
-		else if (CrankTooth == 12)
+		else if (CrankTooth == TachPulse)
 		{
-			
-			
+			CrankSecondTooth = 0;
 			IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN);
 			
 			DwellFirstTach = igncalc_ign_time_teeth(DwellDegree);
+			/*if (DwellFirstTach < TachPulse && DwellFirstTach > TachPulse - )
+			{
+			}*/
 			DwellFirstInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
 			
 			CrankFirstTach = igncalc_ign_time_teeth(IgnitionDegree);
