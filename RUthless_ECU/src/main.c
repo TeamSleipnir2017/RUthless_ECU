@@ -123,11 +123,15 @@ int main (void)
 	
 	while (1)
 	{		
+		// uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
+		// uart_print_string("T "); uart_print_int(igncalc_ign_time_teeth(DEGREE_TEST)); uart_new_line();
+		// uart_print_string("I "); uart_print_int(igncalc_ign_time_interval(DEGREE_TEST) + decoders_tooth_degree_correction()); uart_new_line();
+		
 		decoders_crank_primary();
 		/*
 		if (isDebug)
 		{
-			uart_print_string("C "); uart_print_int(temp1); uart_new_line();
+			uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
 		}
 		*/
 		
@@ -148,13 +152,13 @@ int main (void)
 // 				__asm__("nop");
 // 			}
 		}
-		/*
+		
 		if (RxFlag)
 		{
 			RxFlag = FALSE;
 			uart_rx_read_buffer();
 		}
-		*/
+		
 		
 		// TEST
 		/*if (CrankSignalFlag)

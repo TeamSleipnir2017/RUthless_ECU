@@ -49,26 +49,33 @@ uint32_t isDebug;
 #define CYLINDERS					4		// The amount of cylinders
 #define TACH_EVENTS					2		// Tach event per cycle http://www.megamanual.com/ms2/wheel.htm
 #define CRANK_DEGREE_INTERVAL		180
-#define DEGREE_TEST					80
+#define DEGREE_TEST					36
 
-
+volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
+volatile uint16_t CrankTooth;				// Variable storing current crank tooth
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
 volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
-volatile uint32_t CamCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for camshaft sensor.
 volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
-volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
-volatile uint16_t CrankTooth;				// Variable storing current crank tooth
-volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
-volatile uint32_t CrankRevCounts;		// Cumsum of CrankCurrCycleCounts for TachPulse
 volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
-volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
-volatile uint8_t CrankFirstTach;			
+volatile uint32_t CrankRevCounts;		// Cumsum of CrankCurrCycleCounts for TachPulse
+volatile uint8_t CrankFirstTach;
 volatile uint8_t CrankSecondTach;
 volatile uint32_t CrankFirstInterval;
 volatile uint32_t CrankSecondInterval;
 
-volatile uint8_t SameFirstTooth;
-volatile uint8_t SameFirstTooth;
+volatile uint32_t CamCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for camshaft sensor.
+volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
+volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
+
+volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
+
+
+
+
+
+
+volatile uint8_t IgnATDC;					// Flag to indicate if the ignition is before top dead center (BTDC) or after top dead center (ATDC)
+
 
 volatile uint8_t DwellFirstFlag;
 volatile uint8_t DwellSecondFlag;

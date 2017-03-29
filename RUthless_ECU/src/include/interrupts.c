@@ -88,18 +88,15 @@ void PIOA_Handler(void)
 		CrankRevCounts			+=		CrankCurrCycleCounts;
 		CrankTooth++;
 		CrankSignalFlag			=		TRUE;
-
-		/*
-		uart_transfer('a'); uart_print_int(CrankTooth); uart_new_line();
-		*/
+		
+		
+		
 		
 		if (CrankTooth == DwellFirstTach)
 		{
-			DwellFirstFlag = TRUE;
+			DwellSecondFlag = TRUE;
 			if (!CamSignalFlag)
 			{
-				//uart_print_int(DwellFirstTach); uart_new_line();
-				//uart_print_int(DwellFirstInterval); uart_new_line();
 				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
 			}
 			else
@@ -109,7 +106,8 @@ void PIOA_Handler(void)
 		}
 		else if (CrankTooth == DwellSecondTach)
 		{
-			DwellSecondFlag = TRUE;
+			DwellFirstFlag = TRUE;
+			
 			if (!CamSignalFlag)
 			{
 				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + DwellSecondInterval;
