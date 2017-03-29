@@ -15,51 +15,26 @@ void decoders_crank_primary(void)
 	{
 		if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1)))
 		{
-			if (isDebug)
-			{
-				uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
-			}
+// 			if (isDebug)
+// 			{
+// 				uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
+// 			}
 			CrankTooth = 0;
-			CrankSecondTooth = TachPulse;
 			
-			// uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
 			CamSignalFlag ^= TRUE;
 			IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN);
+
 			
 			DwellDegree = IgnitionDegree + igncalc_dwell_degree();
-			if (isDebug)
-			{
-				//uart_transfer('C'); uart_print_int(igncalc_dwell_degree()); uart_new_line();
-			}
+
 			
-			// uart_transfer('D'); uart_print_int(DwellDegree); uart_new_line();
 			DwellSecondTach = igncalc_ign_time_teeth(DwellDegree);
 			DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
 			
-			
+
 			CrankSecondTach = igncalc_ign_time_teeth(IgnitionDegree);
 			CrankSecondInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
-			
-			/*
-			// Dwell interval calculation, When to turn on ignition pins for first tach event
-			DwellDegree = DEGREE_TEST - igncalc_dwell_time()/(CrankRevCounts/360);
-			
-			DwellFirstTach = 11 - igncalc_ign_time_teeth(DwellDegree);
-			uart_transfer('a'); uart_print_int(DwellDegree); uart_new_line();
-			DwellFirstInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
-			//uart_transfer('e'); uart_print_int(DwellFirstInterval); uart_new_line();
-			
-			// Ignition interval calculation, When to turn off ignition pins for first tach event
-			CrankFirstTach = 11 - igncalc_ign_time_teeth(DEGREE_TEST);
-			CrankFirstInterval = igncalc_ign_time_interval(DEGREE_TEST) + decoders_tooth_degree_correction();
-			*/
-			/*
-			if (DwellFirstTach == CrankFirstTach)
-			{
-				SameFirstTooth = TRUE;
-				CrankFirstInterval = CrankFirstInterval - DwellFirstInterval;
-			}
-			*/
+
 			
 			
 			// RPM calculations
@@ -72,32 +47,21 @@ void decoders_crank_primary(void)
 			CrankRevCounts = 0;
 			
 		}
-		else if (CrankTooth == TachPulse)
-		{
-			CrankSecondTooth = 0;
-			IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN);
-			
-			DwellFirstTach = igncalc_ign_time_teeth(DwellDegree);
-			/*if (DwellFirstTach < TachPulse && DwellFirstTach > TachPulse - )
-			{
-			}*/
-			DwellFirstInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
-			
-			CrankFirstTach = igncalc_ign_time_teeth(IgnitionDegree);
-			CrankFirstInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
-			
-			/*
-			// Dwell interval calculation, When to turn on ignition pins for second tach event
-			DwellSecondTach = 23 - igncalc_ign_time_teeth(DwellDegree);
-			DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
-			uart_transfer('e'); uart_print_int(DwellSecondInterval); uart_new_line();
-			
-			// Ignition interval calculation, When to turn off ignition pins for second tach event
-			CrankSecondTach = 23 - igncalc_ign_time_teeth(DEGREE_TEST);
-			CrankSecondInterval = igncalc_ign_time_interval(DEGREE_TEST) + decoders_tooth_degree_correction();
-			*/
-			
-		}
+// 		else if (CrankTooth == TachPulse)
+// 		{
+// 			
+// 			CrankSecondTooth = 0;
+// 			IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN);
+// 			
+// 			DwellFirstTach = igncalc_ign_time_teeth(DwellDegree);
+// 			/*if (DwellFirstTach < TachPulse && DwellFirstTach > TachPulse - )
+// 			{
+// 			}*/
+// 			DwellFirstInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
+// 			
+// 			CrankFirstTach = igncalc_ign_time_teeth(IgnitionDegree);
+// 			CrankFirstInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();		
+// 		}
 		CrankSignalFlag = FALSE;
 		
 	}

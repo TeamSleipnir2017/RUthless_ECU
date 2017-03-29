@@ -11,37 +11,58 @@
 // Calculate the amount of teeth to skip for the next ignition event
 // Returns an integer to skip
 // Example: Skip 7,4 teeth ---> the function returns the integer 7
-uint16_t igncalc_ign_time_teeth(uint8_t ign_degree)
+uint16_t igncalc_ign_time_teeth(uint16_t ign_degree)
 {
-	if (IgnATDC)
-	{
-		IgnATDC = FALSE;
-		return	((((CRANK_DEGREE_INTERVAL + ign_degree) * 100) / CRANK_DEGREE_INTERVAL) * CRANK_TEETH)/TACH_EVENTS/100;
-	}
-	else
-	{
-		return	((((CRANK_DEGREE_INTERVAL - ign_degree) * 100) / CRANK_DEGREE_INTERVAL) * CRANK_TEETH)/TACH_EVENTS/100;
-	}
+	uint32_t temp = ((CRANK_DEGREE_INTERVAL * 10 - ign_degree) * 10) / CRANK_DEGREE_INTERVAL;
+	uint32_t temp1 = (temp * (CRANK_TEETH/TACH_EVENTS))/100;
+	
+// 	if (isDebug)
+// 	{
+// 		uart_transfer('A'); uart_print_int(CRANK_DEGREE_INTERVAL); uart_new_line();
+// 		uart_transfer('B'); uart_print_int(ign_degree); uart_new_line();
+// 		uart_transfer('C'); uart_print_int(temp); uart_new_line();
+// 		uart_transfer('R'); uart_print_int(temp1); uart_new_line();
+// 	}
+	
+	return	temp1;
+	
+	
+// 	if (IgnATDC)
+// 	{
+// 		IgnATDC = FALSE;
+// 		return	((((CRANK_DEGREE_INTERVAL * 10 + ign_degree) * 10) / CRANK_DEGREE_INTERVAL) * CRANK_TEETH)/TACH_EVENTS/100;
+// 	}
+// 	else
+// 	{
+// 		uint32_t temp = ((CRANK_DEGREE_INTERVAL - ign_degree/10) * 10) / CRANK_DEGREE_INTERVAL;
+// 		uint32_t temp1 = (temp * (CRANK_TEETH/TACH_EVENTS))/100;
+// 	
+// 		if (isDebug)
+// 		{
+// 			uart_transfer('o'); uart_print_int(temp); uart_new_line();
+// 			uart_transfer('R'); uart_print_int(temp1); uart_new_line();
+// 		}
+// 		
+// 		return	temp1;
+// 	}
 }
 
 // Calculate the time between 2 teeth
 // Returns the counts to interval from the current tooth
 // Example: Skip 7,4 teeth ---> the function uses the decimal number 0,4 to calculate the spark event
-uint32_t igncalc_ign_time_interval(uint8_t ign_degree)
+uint32_t igncalc_ign_time_interval(uint16_t ign_degree)
 {
 	uint32_t temp1;
 	if (IgnATDC)
 	{
-		temp1 = (((CRANK_DEGREE_INTERVAL + ign_degree) * 100) / CRANK_DEGREE_INTERVAL) * (CRANK_TEETH/TACH_EVENTS) - (igncalc_ign_time_teeth(ign_degree) * 100);
+		temp1 = (((CRANK_DEGREE_INTERVAL * 10 + ign_degree) * 10) / CRANK_DEGREE_INTERVAL) * (CRANK_TEETH/TACH_EVENTS) - (igncalc_ign_time_teeth(ign_degree) * 100);
 	}
 	else
 	{
-		temp1 = (((CRANK_DEGREE_INTERVAL - ign_degree) * 100) / CRANK_DEGREE_INTERVAL) * (CRANK_TEETH/TACH_EVENTS) - (igncalc_ign_time_teeth(ign_degree) * 100);
+		temp1 = (((CRANK_DEGREE_INTERVAL * 10 - ign_degree) * 10) / CRANK_DEGREE_INTERVAL) * (CRANK_TEETH/TACH_EVENTS) - (igncalc_ign_time_teeth(ign_degree) * 100);
 	}
+	
 	return (temp1 * CrankPrevCycleCounts)/100;
-	//uart_transfer('b'); uart_print_int(temp1); uart_new_line();
-	//uart_transfer('c'); uart_print_int(temp2); uart_new_line();
-	//uart_transfer('d'); uart_print_int(CrankPrevCycleCounts); uart_new_line();
 }
 
 
@@ -58,9 +79,9 @@ uint32_t igncalc_dwell_degree(void)
 		totalDwellms = engine_config4.DwellLimit * 10;
 	}
 	engine_realtime.Dwell = totalDwellms;
-	uint32_t temp2 = ((GLOBAL_TIMER_FREQ/1000)*(totalDwellms))/10;
+	uint32_t temp2 = ((GLOBAL_TIMER_FREQ/1000)*totalDwellms)/10;
 	
-	return temp2/(CrankRevCounts/360);
+	return (3600*temp2)/CrankRevCounts;
 }
 
 

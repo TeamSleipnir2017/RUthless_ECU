@@ -46,14 +46,15 @@ uint32_t isDebug;
 
 
 #define CRANK_TEETH					24		// The amount of teeth on the crank wheel including the missing teeth
+#define MISSING_TEETH				2
+//#define NUMBER_OF_TEETH				CRANK_TEETH - MISSING_TEETH
 #define CYLINDERS					4		// The amount of cylinders
 #define TACH_EVENTS					2		// Tach event per cycle http://www.megamanual.com/ms2/wheel.htm
 #define CRANK_DEGREE_INTERVAL		180
-#define DEGREE_TEST					36
+#define DEGREE_TEST					301
 
 volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
 volatile uint8_t CrankTooth;				// Variable storing current crank tooth
-volatile uint8_t CrankSecondTooth;
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
 volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
 volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor

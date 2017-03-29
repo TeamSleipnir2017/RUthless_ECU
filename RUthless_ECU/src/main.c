@@ -128,12 +128,12 @@ int main (void)
 		// uart_print_string("I "); uart_print_int(igncalc_ign_time_interval(DEGREE_TEST) + decoders_tooth_degree_correction()); uart_new_line();
 		
 		decoders_crank_primary();
-		/*
-		if (isDebug)
-		{
-			uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
-		}
-		*/
+		
+// 		if (isDebug)
+// 		{
+// 			uart_print_string("C "); uart_print_int(math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN)); uart_new_line();
+// 		}
+		
 		
 		
 		

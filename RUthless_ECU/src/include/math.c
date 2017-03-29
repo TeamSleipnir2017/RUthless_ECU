@@ -82,7 +82,7 @@ uint16_t math_interpolation_array(uint16_t Rpm, uint16_t Map, struct Table3D *Cu
 	uint32_t calc2 = (uint32_t)Current->Table[MapIndexLow][RpmIndexHigh] * (100 - MapWeight) * (RpmWeight);
 	uint32_t calc3 = (uint32_t)Current->Table[MapIndexHigh][RpmIndexLow] * (MapWeight) * (100 - RpmWeight);
 	uint32_t calc4 = (uint32_t)Current->Table[MapIndexHigh][RpmIndexHigh] * (MapWeight) * (RpmWeight);
-	return (calc1 + calc2 + calc3 + calc4) / 10000;
+	return (calc1 + calc2 + calc3 + calc4) / 1000;
 }
 
 uint16_t math_interpolation_vector(uint8_t *LookUp, uint8_t *Calculate, uint16_t Value, uint16_t Scaler, uint8_t Len)
