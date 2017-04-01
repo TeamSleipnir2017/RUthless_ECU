@@ -13,10 +13,10 @@ uint32_t fuelcalc_pulsewidth(void)
 {
 	uint16_t Rpm = engine_realtime.Rpm, Map = engine_realtime.Map;
 	int16_t Temperature = engine_realtime.Iat - TEMPERATURE_OFFSET;
-	uint16_t Ve = math_interpolation_array(Rpm, Map, &VE);
+	uint16_t Ve = math_interpolation_array(Rpm, Map, &VE, 1);
 	engine_realtime.VeTarget = Ve;
 	//uart_print_string("Ve: "); uart_print_int(Ve); uart_new_line();
-	uint16_t Afr = math_interpolation_array(Rpm, Map, &AFR);
+	uint16_t Afr = math_interpolation_array(Rpm, Map, &AFR, 1);
 	engine_realtime.AfrTarget = Afr;
 	//uart_print_string("Afr: "); uart_print_int(Afr); uart_new_line();
 	// Fuel equation:

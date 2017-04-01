@@ -59,7 +59,7 @@ volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (t
 volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
 volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
 volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
-volatile uint32_t CrankRevCounts;		// Cumsum of CrankCurrCycleCounts for TachPulse
+volatile uint32_t CrankRevCounts;			// Cumsum of CrankCurrCycleCounts for TachPulse
 volatile uint8_t CrankFirstTach;
 volatile uint8_t CrankSecondTach;
 volatile uint32_t CrankFirstInterval;

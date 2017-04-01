@@ -19,7 +19,7 @@ uint32_t math_map(uint16_t min, uint16_t max, int16_t value, uint16_t div);
 // Find median of vector
 uint16_t math_find_median(uint16_t * Vector, uint16_t VectorLength);
 // Calculate interpolated value for 3D tables
-uint16_t math_interpolation_array(uint16_t Rpm, uint16_t Map, struct Table3D *Current);
+uint16_t math_interpolation_array(uint16_t Rpm, uint16_t Map, struct Table3D *Current, uint16_t Scaler);
 // Calculate interpolated value for any vector
 uint16_t math_interpolation_vector(uint8_t *LookUp, uint8_t *Calculate, uint16_t Value, uint16_t Scaler, uint8_t Len);
 // Helper functions

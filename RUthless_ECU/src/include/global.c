@@ -29,7 +29,6 @@ void global_init(void)
 	CrankSignalFlag = FALSE;
 	CamSignalFlag = FALSE;
 	CrankRevCounts = 0;
-	TachPulse = CRANK_TEETH/TACH_EVENTS; // Calculate new RPM every half of the trigger wheel 24 tooths
 
 	storage_struct_read_eeprom_init(&engine_config2, sizeof(engine_config2), EEPROM_CONFIG2_INDEX);
 	storage_struct_read_eeprom_init(&engine_config4, sizeof(engine_config4), EEPROM_CONFIG4_INDEX);
@@ -37,6 +36,9 @@ void global_init(void)
 	storage_struct_read_eeprom_init(&engine_config7, sizeof(engine_config7), EEPROM_CONFIG7_INDEX);
 	storage_struct_read_eeprom_init(&engine_config8, sizeof(engine_config8), EEPROM_CONFIG8_INDEX);
 	storage_struct_read_eeprom_init(&engine_config9, sizeof(engine_config9), EEPROM_CONFIG9_INDEX);
+
+	uint16_t TachEvents = engine_config2.NrCylinders / 2; // TODO: should be divided by one for two stroke
+	TachPulse = engine_config4.TriggerTeethCount/TachEvents; // Calculate new RPM every half of the trigger wheel (24 tooths)
 
 	storage_init_struct_to_zero(&engine_realtime, sizeof(engine_realtime));
 

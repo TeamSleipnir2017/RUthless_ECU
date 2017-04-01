@@ -72,9 +72,9 @@ uint32_t igncalc_dwell_degree(void)
 {
 	// TODO: if cranking then use engine_config4.DwellTimeCranking
 	uint8_t correction = igncalc_dwell_correction();
-	uint16_t totalDwellms = (engine_config4.DwellTimeRunning * correction)/100;
+	uint16_t totalDwellms = (engine_config4.DwellTimeRunning * correction)/100; // tenths of milliseconds 
 
-	if (totalDwellms > (engine_config4.DwellLimit * 10) && engine_config4.DwellLimitEnable)
+	if ((totalDwellms > (engine_config4.DwellLimit * 10)) && engine_config4.DwellLimitEnable)
 	{
 		totalDwellms = engine_config4.DwellLimit * 10;
 	}

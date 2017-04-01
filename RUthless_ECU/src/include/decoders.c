@@ -13,7 +13,7 @@ void decoders_crank_primary(void)
 {
 	if (CrankSignalFlag)
 	{
-		if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1)))
+		if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1))) // New Cycle event (Missing tooth have passed the sensor)
 		{
 // 			if (isDebug)
 // 			{
@@ -22,7 +22,7 @@ void decoders_crank_primary(void)
 			CrankTooth = 0;
 			
 			CamSignalFlag ^= TRUE;
-			IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN);
+			IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);
 
 			
 			DwellDegree = IgnitionDegree + igncalc_dwell_degree();
@@ -38,14 +38,18 @@ void decoders_crank_primary(void)
 			
 			
 			// RPM calculations
-			uint64_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
+			uint32_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
 			// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
 			engine_realtime.Rpm = (uint16_t)CalcRpm;
 			
-			
+			engine_realtime.PulseWidth = fuelcalc_pulsewidth() / 1000;
 			
 			CrankRevCounts = 0;
 			
+		}
+		else if (CrankTooth % TachPulse == 0) // TODO: Tach Event
+		{
+
 		}
 // 		else if (CrankTooth == TachPulse)
 // 		{
@@ -65,6 +69,22 @@ void decoders_crank_primary(void)
 		CrankSignalFlag = FALSE;
 		
 	}
+}
+
+void decoders_tach_event(void)
+{
+	// Ignition timing calculations
+	IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 10);
+	DwellDegree = IgnitionDegree - igncalc_dwell_degree();
+
+	// TODO: check if DwellDegree is zero
+
+	DwellSecondTach = igncalc_ign_time_teeth(DwellDegree);
+	DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
+	
+	CrankSecondTach = igncalc_ign_time_teeth(IgnitionDegree);
+	CrankSecondInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
+	// Fuel timing calculations
 }
 
 // Ignition timing correction.  
