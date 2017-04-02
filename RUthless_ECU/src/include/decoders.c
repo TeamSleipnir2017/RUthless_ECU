@@ -47,9 +47,10 @@ void decoders_crank_primary(void)
 			CrankRevCounts = 0;
 			
 		}
-		else if (CrankTooth % TachPulse == 0) // TODO: Tach Event
+		int16_t tempCalc = (CrankTooth - TachEventDelayTeeths);
+		if (tempCalc % TachPulse == 0) // TODO:  Counteract if the tach event is at the missing tooth
 		{
-
+			global_toggle_pin(PIOC, IGN5_OUT);
 		}
 // 		else if (CrankTooth == TachPulse)
 // 		{
@@ -71,13 +72,18 @@ void decoders_crank_primary(void)
 	}
 }
 
+// The idea is to look two tach events to the future
 void decoders_tach_event(void)
 {
+	// Choose a cylinder to configure
+	uint32_t TachEventNumber = (CrankTooth - TachEventDelayTeeths) / TachPulse; // Represents count of tach event in one revolution 
+	uint32_t CylinderOffset = CamSignalFlag * (engine_config2.NrCylinders / 2); // Represent first bank or second bank
+	uint32_t Index = (TachEventNumber + CylinderOffset + 2) % (engine_config2.NrCylinders); // "2" is to index two cylinders beforehand 
+	cylinder_ *Cylinder = cylinder[Index]; // Cylinder to fire after the next in line 
+	
 	// Ignition timing calculations
-	IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 10);
-	DwellDegree = IgnitionDegree - igncalc_dwell_degree();
-
-	// TODO: check if DwellDegree is zero
+	uint32_t IgnDeg = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 10);
+	uint32_t DwellDeg = IgnDeg + igncalc_dwell_degree();
 
 	DwellSecondTach = igncalc_ign_time_teeth(DwellDegree);
 	DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();

@@ -59,6 +59,7 @@ int main (void)
 	pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, IGN3_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, IGN4_OUT, LOW, FALSE, FALSE);
+	pio_set_output(PIOC, IGN5_OUT, LOW, FALSE, FALSE);
 	pio_clear(PIOC, IGN1_OUT);
 	pio_clear(PIOC, IGN2_OUT);
 	pio_clear(PIOC, IGN3_OUT);

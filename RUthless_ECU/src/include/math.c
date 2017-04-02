@@ -144,3 +144,24 @@ uint32_t math_sum_with_overflow_protection(uint32_t a, uint32_t b)
 		return sum;
 	// return ((a+b) < a) ? (UINT_MAX - a) : (a+b);
 }
+
+// Calculate the amount of teeth to skip for the next event
+// Returns an integer to skip
+// Example: Skip 7,4 teeth ---> the function returns the integer 7
+uint16_t math_convert_degree_to_teeth_count(uint16_t degree)
+{
+	uint32_t temp = ((TachCrankDegreeInterval * 10 - degree) * 10) / TachCrankDegreeInterval;
+	uint32_t temp1 = (temp * (engine_config4.TriggerTeethCount/TachEvents))/100;
+
+	// TODO: Implement a pointer variable to configure, then it will be possible to calculate both teeth count and the required time to the event (example 0,4)
+	
+	// 	if (isDebug)
+	// 	{
+	// 		uart_transfer('A'); uart_print_int(TachCrankDegreeInterval); uart_new_line();
+	// 		uart_transfer('B'); uart_print_int(ign_degree); uart_new_line();
+	// 		uart_transfer('C'); uart_print_int(temp); uart_new_line();
+	// 		uart_transfer('R'); uart_print_int(temp1); uart_new_line();
+	// 	}
+	
+	return	temp1;
+}

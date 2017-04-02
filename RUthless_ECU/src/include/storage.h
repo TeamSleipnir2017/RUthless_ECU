@@ -127,7 +127,7 @@ struct engine_config2_
 	uint16_t MapMax;								// Current Max KPA value of MAP sensor (for calibration)
 	uint8_t Divider;								// Not sure what this parameter is but it is required by tunerstudio
 	uint8_t FuelPumpPrime;							// Todo: Fuel pump prime duration
-	
+	uint8_t FiringOrder[8];							// One byte represents each cylinder index 0 is the first cylinder to fire, typically cyl #1 and so on
 };
 
 // Primarily ignition related configuration

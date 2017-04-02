@@ -69,6 +69,9 @@ volatile uint32_t CamCurrCycleCounts;		// Current cycle counts of timer 2.2 (tim
 volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
 volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 
+volatile uint16_t TachEvents;				// Number of tach pulses/events, basicly cylinder count divided by 2 (only for four stroke)
+volatile uint16_t TachCrankDegreeInterval;	// Interval in degrees between tach pulses/events
+volatile uint8_t TachEventDelayTeeths;		// Number of teeths from tooth 0 to cyl #1 TDC
 volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
 volatile uint8_t IgnATDC;					// Flag to indicate if the ignition is before top dead center (BTDC) or after top dead center (ATDC)
 
@@ -157,10 +160,15 @@ volatile struct engine_realtime_ engine_realtime;
 
 struct cylinder_
 {
+	uint8_t FireEventPending;	// A flag to indicate a ignition/injection event
 	uint32_t IgnCntTimingOn;	// Ignition coil cylinder "x" counter ON value
 	uint32_t IgnCntTimingOff;	// Ignition coil cylinder "x" counter OFF value
+	uint32_t IgnToothOn;		// Ignition coil cylinder "x" trigger wheel tooth ON value
+	uint32_t IgnToothOff;		// Ignition coil cylinder "x" trigger wheel tooth OFF value
 	uint32_t InjCntTimingOn;	// Injector cylinder "x" counter ON value
 	uint32_t InjCntTimingOff;	// Injector cylinder "x" counter OFF value
+	uint32_t InjToothOn;		// Ignition coil cylinder "x" trigger wheel tooth ON value
+	uint32_t InjToothOff;		// Ignition coil cylinder "x" trigger wheel tooth OFF value
 	uint32_t IgnOutputPin;		// Pointer to ignition output pin
 	Pio		*Ign_pio;			// Pointer to ignition peripheral input output controller
 	uint32_t InjOutputPin;		// Pointer to injector output pin
@@ -174,6 +182,7 @@ volatile struct cylinder_ cylinder[NR_OF_CYL]; // Create an instance of the stru
 /************************************************************************/
 void global_init(void);
 void cylinder_init(void);		// Initialize all variables to 0
+void global_toggle_pin(Pio *PioInterface, uint32_t Pin);
 
 
 /************************************************************************/
