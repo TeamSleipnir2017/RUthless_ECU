@@ -148,10 +148,11 @@ uint32_t math_sum_with_overflow_protection(uint32_t a, uint32_t b)
 // Calculate the amount of teeth to skip for the next event
 // Returns an integer to skip
 // Example: Skip 7,4 teeth ---> the function returns the integer 7
-uint16_t math_convert_degree_to_teeth_count(uint16_t degree)
+uint8_t math_convert_degree_to_teeth_count(uint16_t degree)
 {
-	uint32_t temp = ((TachCrankDegreeInterval * 10 - degree) * 10) / TachCrankDegreeInterval;
-	uint32_t temp1 = (temp * (engine_config4.TriggerTeethCount/TachEvents))/100;
+	uint32_t temp = degree * engine_config4.TriggerTeethCount / 360;
+// 	uint32_t temp = ((TachCrankDegreeInterval * 10 - degree) * 10) / TachCrankDegreeInterval;
+// 	uint32_t temp1 = (temp * (engine_config4.TriggerTeethCount/TachEvents))/100;
 
 	// TODO: Implement a pointer variable to configure, then it will be possible to calculate both teeth count and the required time to the event (example 0,4)
 	
@@ -163,5 +164,29 @@ uint16_t math_convert_degree_to_teeth_count(uint16_t degree)
 	// 		uart_transfer('R'); uart_print_int(temp1); uart_new_line();
 	// 	}
 	
-	return	temp1;
+	return (uint8_t) temp;
+}
+
+uint8_t math_convert_pulsewidth_to_teeth_count(uint32_t PW) // Hundreds of nanoseconds (1 = 0.1 µs)
+{
+	
+	uint64_t temp = (math_convert_pulsewidth_to_timer_counts(PW) * engine_config4.TriggerTeethCount) / LastCrankRevCounts;
+	return (uint8_t) temp;
+}
+ 
+uint32_t math_convert_pulsewidth_to_timer_counts(uint32_t PW) // Hundreds of nanoseconds (1 = 0.1 µs)
+{
+	uint64_t temp = (PW * GLOBAL_TIMER_FREQ) / 10000000;
+	return (uint32_t) temp; 
+}
+
+uint32_t math_calculate_event_tooth_from_number_of_teeths(uint8_t CurrentCrankTooth, uint8_t NumberOfTeeths) // Find the event tooth(initiate timer tooth) from current tooth
+{
+	uint32_t EventTooth = CrankToothCounter; // Get current counts of tooth from start
+	for (uint8_t i = 0; i < NumberOfTeeths; i++)
+	{
+		if (!(((CurrentCrankTooth + i) % engine_config4.TriggerTeethCount) > (engine_config4.TriggerTeethCount - engine_config4.MissingTeethCount))) // Check if current tooth is the missing tooth
+			EventTooth++;
+	}
+	return EventTooth;
 }

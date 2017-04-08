@@ -81,7 +81,8 @@ uint32_t igncalc_dwell_degree(void)
 	engine_realtime.Dwell = totalDwellms;
 	uint32_t temp2 = ((GLOBAL_TIMER_FREQ/1000)*totalDwellms)/10;
 	
-	return (3600*temp2)/CrankRevCounts;
+	//return (3600*temp2)/CrankRevCounts; changed to below 5.4.17 JBB
+	return (3600*temp2)/LastCrankRevCounts;
 }
 
 

@@ -28,8 +28,13 @@ uint8_t math_interpolation(uint16_t value, uint16_t x1, uint16_t x2);
 
 // Function to add two variables together 32 bit, when there is a overflow it should return 2^32 - a
 uint32_t math_sum_with_overflow_protection(uint32_t a, uint32_t b);
-
-
-
+// Calculate teeth counts from degrees
+uint8_t math_convert_degree_to_teeth_count(uint16_t degree);
+// Calculate number of teeths according to RPM, PW is in hundreds of nanoseconds (1 = 0.1 µs)
+uint8_t math_convert_pulsewidth_to_teeth_count(uint32_t PW);
+// Convert pulsewidth (time) to timer counts, PW is in hundreds of nanoseconds (1 = 0.1 µs)
+uint32_t math_convert_pulsewidth_to_timer_counts(uint32_t PW);
+// Find the event tooth(initiate timer tooth) from current tooth 
+uint32_t math_calculate_event_tooth_from_number_of_teeths(uint8_t CurrentCrankTooth, uint8_t NumberOfTeeths);
 
 #endif /* MATH_H_ */

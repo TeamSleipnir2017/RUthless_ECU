@@ -55,11 +55,13 @@ uint32_t isDebug;
 
 volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
 volatile uint8_t CrankTooth;				// Variable storing current crank tooth
+volatile uint32_t CrankToothCounter;		// Variable storing current crank tooth count from beginning, overflows after 6.9 days at 18000 RPM
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
 volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
 volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
 volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
 volatile uint32_t CrankRevCounts;			// Cumsum of CrankCurrCycleCounts for TachPulse
+volatile uint32_t LastCrankRevCounts;		//
 volatile uint8_t CrankFirstTach;
 volatile uint8_t CrankSecondTach;
 volatile uint32_t CrankFirstInterval;
