@@ -43,6 +43,7 @@ void global_init(void)
 	TachPulse = engine_config4.TriggerTeethCount/TachEvents; // Calculate new RPM every half of the trigger wheel (24 tooths)
 	TachEventDelayTeeths = (engine_config4.TriggerTeethCount * engine_config4.TriggerAngle) / (360);
 	TachCrankDegreeInterval = 360 / TachEvents;
+	CrankToothDegreeInterval = 360 / engine_config4.TriggerTeethCount;
 
 
 	// TODO: NEED TO MAKE CONFIGURABLE IN TUNERSTUDIO

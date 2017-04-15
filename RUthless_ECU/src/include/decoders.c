@@ -100,6 +100,7 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 		{
 // 		uart_print_string("TachPulse: "); uart_print_int(TachPulse); uart_new_line();
  		uart_print_string("CurrentCrankTooth: "); uart_print_int(CurrentCrankTooth); uart_new_line();
+		uart_print_string("CurrentCrankToothCounter: "); uart_print_int(CurrentCrankToothCounter); uart_new_line(); 
 // 		uart_print_string("TachEventDelayTeeths: "); uart_print_int(TachEventDelayTeeths); uart_new_line();
 // 		uart_print_string("TachEventNumber: "); uart_print_int(TachEventNumber); uart_new_line();
 // 		uart_print_string("CylinderOffset: "); uart_print_int(CylinderOffset); uart_new_line();
@@ -114,10 +115,21 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	// The number of teeths are calculated from now
 	uint16_t InjTeethsOFF = math_convert_degree_to_teeth_count(InjDeg + 360); // OFF means when to turn off the injector, 360 is because it is 720° before
 	uint16_t InjTeethsON = InjTeethsOFF - (math_convert_pulsewidth_to_teeth_count(PulseWidth + (engine_config2.injOpen * 1000)) + 1); // 1 is because it floors the calculation and it is better to get always scaled one up since it is also timer dependant
-	uint32_t InjEventToothOFF = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, CurrentCrankToothCounter, InjTeethsOFF);
-	uint32_t InjEventToothON = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, CurrentCrankToothCounter, InjTeethsON);
+	
+	uint32_t InjEventToothOFF = CurrentCrankToothCounter, InjEventToothON = CurrentCrankToothCounter; // Copying values to different register, to be able to manipulate the values without changing CurrentCrankToothCounter
+	uint32_t NrOfMissingTeethsAtEventOFF = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, &InjEventToothOFF, InjTeethsOFF);
+	uint32_t NrOfMissingTeethsAtEventON = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, &InjEventToothON, InjTeethsON);
 	InjCylEvent->InjToothOff = InjEventToothOFF;
 	InjCylEvent->InjToothOn = InjEventToothON;
+	
+	// The number of counts for the timer is calculated here (which is enabled after the EventTooth)
+	uint32_t TimerTurnOffDegreeAfterTooth = InjDeg % CrankToothDegreeInterval; // MAYBE INCREASE ACCURACY TO .1 ° !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	uint32_t TimerToothOffPercentage = TimerTurnOffDegreeAfterTooth * 100 / CrankToothDegreeInterval; // should give 0 - 99%, since 100% is next tooth obviously
+	InjCylEvent->InjCntTimingOff = ((TimerToothOffPercentage + NrOfMissingTeethsAtEventOFF * 100) * LastCrankRevCounts) / (100 * engine_config4.TriggerTeethCount); // I think this should never overflow
+	// IMPLEMENT A WAY TO CALCULATE ON DEGREES IT IS MUCH MORE CONVENIENT PLEASE....
+	InjCylEvent->InjCntTimingOn = InjTeethsON * LastCrankRevCounts / engine_config4.TriggerTeethCount
+	
+	
 
 	if (isDebug)
 	{
@@ -128,8 +140,10 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 // 		uart_print_string("InjTeethsOFF: "); uart_print_int(InjTeethsOFF); uart_new_line();
 // 		uart_print_string("InjTeethsON: "); uart_print_int(InjTeethsON); uart_new_line();
 // 		uart_print_string("CurrentCrankToothCounter: "); uart_print_int(CurrentCrankToothCounter); uart_new_line();
-// 		uart_print_string("InjEventToothOFF: "); uart_print_int(InjEventToothOFF); uart_new_line();
-// 		uart_print_string("InjEventToothON: "); uart_print_int(InjEventToothON); uart_new_line();
+		uart_print_string("InjEventToothOFF: "); uart_print_int(InjEventToothOFF); uart_new_line();
+		uart_print_string("InjEventToothON: "); uart_print_int(InjEventToothON); uart_new_line();
+		uart_print_string("NrOfMissingTeethsAtEventOFF: "); uart_print_int(NrOfMissingTeethsAtEventOFF); uart_new_line();
+		uart_print_string("NrOfMissingTeethsAtEventON: "); uart_print_int(NrOfMissingTeethsAtEventON); uart_new_line();
 // 		uart_print_string("cylinder[InjIndex].InjToothOff: "); uart_print_int(cylinder[InjIndex].InjToothOff); uart_new_line();
 // 		uart_print_string("cylinder[InjIndex].InjToothOn: "); uart_print_int(cylinder[InjIndex].InjToothOn); uart_new_line();
  		DebugCounter = 0;

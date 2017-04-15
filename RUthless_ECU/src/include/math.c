@@ -195,24 +195,32 @@ uint32_t math_convert_pulsewidth_to_timer_counts(uint32_t PW) // Hundreds of nan
 	return (uint32_t) temp; 
 }
 
-uint32_t math_find_event_tooth_from_number_of_teeths(uint16_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter, uint16_t NumberOfTeeths) // Find the event tooth(initiate timer tooth) from current tooth
+uint8_t math_find_event_tooth_from_number_of_teeths(uint16_t CurrentCrankTooth, uint32_t *EventTooth, uint16_t NumberOfTeeths) // Find the event tooth(initiate timer tooth) from current tooth
 {
-	uint32_t EventTooth = CurrentCrankToothCounter; // Get current counts of tooth from start
 	uint8_t TriggerTeethMinusMiss = engine_config4.TriggerTeethCount - engine_config4.MissingTeethCount;
 // 	if (isDebug)
 // 	{
 // 		if (DebugCounter == 101)
 // 		{
 // 			uart_print_string("TriggerTeethMinusMiss: "); uart_print_int(TriggerTeethMinusMiss); uart_new_line();
-// 			uart_print_string("CurrentCrankTooth: "); uart_print_int(CurrentCrankTooth); uart_new_line();
+// 			uart_print_string("EventTooth: "); uart_print_int(EventTooth); uart_new_line();
+// 			uart_print_string("EventTooth*: "); uart_print_int(*EventTooth); uart_new_line();
 // 		}
 // 	}
+	uint8_t NrOfMissingTeethsAtEvent = 0; // this should not exceed 2 generally
 	for (uint8_t i = 0; i < NumberOfTeeths; i++)
 	{
 		CurrentCrankTooth = (CurrentCrankTooth + 1) % engine_config4.TriggerTeethCount;
 		if (!(CurrentCrankTooth >= TriggerTeethMinusMiss)) // Check if current tooth is NOT a missing tooth
-			EventTooth++;
+		{
+			(*EventTooth)++;
+			NrOfMissingTeethsAtEvent = 0;
+		}
+		else // counting missing tooth for timer 
+		{
+			NrOfMissingTeethsAtEvent++;
+		}
 	}
 	// TODO: Check if CurrentCrankTooth is between 22 - 23 if so, change a variable pointer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	return EventTooth;
+	return NrOfMissingTeethsAtEvent;
 }

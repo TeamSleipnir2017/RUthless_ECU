@@ -54,6 +54,8 @@ uint32_t isDebug;
 #define DEGREE_TEST					301
 
 volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
+
+// Crank Variables
 volatile uint8_t CrankTooth;				// Variable storing current crank tooth
 volatile uint32_t CrankToothCounter;		// Variable storing current crank tooth count from beginning, overflows after 6.9 days at 18000 RPM
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
@@ -66,18 +68,21 @@ volatile uint8_t CrankFirstTach;
 volatile uint8_t CrankSecondTach;
 volatile uint32_t CrankFirstInterval;
 volatile uint32_t CrankSecondInterval;
+volatile uint32_t CrankToothDegreeInterval;
 
+// Camshaft variables
 volatile uint32_t CamCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for camshaft sensor.
 volatile uint32_t CamTimerCounts;			// Last counter value of timer 2.2 (timer 9), for camshaft sensor
 volatile uint8_t CamSignalFlag;				// Flag indicating new counter value
 
+// Tach event variables
 volatile uint16_t TachEvents;				// Number of tach pulses/events, basicly cylinder count divided by 2 (only for four stroke)
 volatile uint16_t TachCrankDegreeInterval;	// Interval in degrees between tach pulses/events
 volatile uint8_t TachEventDelayTeeths;		// Number of teeths from tooth 0 to cyl #1 TDC
 volatile uint8_t TachPulse;					// Indicates when to calculate new RPM value
 volatile uint8_t IgnATDC;					// Flag to indicate if the ignition is before top dead center (BTDC) or after top dead center (ATDC)
 
-
+// Dwell related variables 
 volatile uint8_t DwellFirstFlag;
 volatile uint8_t DwellSecondFlag;
 volatile uint16_t DwellDegree;

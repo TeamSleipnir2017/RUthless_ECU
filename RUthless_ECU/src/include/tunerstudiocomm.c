@@ -286,20 +286,20 @@ void tunerstudio_update_calib_vect_helper(uint8_t NrOfBytes, uint16_t EepromInde
 
 void tunerstudio_debug_global_function(void)
 {
-// 	uart_print_string("MAP High: "); uart_print_int(engine_config2.MapMax); uart_new_line();
-// 	uart_print_string("MAP Low: "); uart_print_int(engine_config2.MapMin); uart_new_line();
-// 	uart_print_string("TPS High: "); uart_print_int(engine_config2.TpsMax); uart_new_line();
-// 	uart_print_string("TPS Low: "); uart_print_int(engine_config2.TpsMin); uart_new_line();
-// 	uart_print_string("CLT: "); uart_print_int(engine_realtime.Clt); uart_new_line();
-// 	uart_print_string("IAT: "); uart_print_int(engine_realtime.Iat); uart_new_line();
-// 	uart_print_string("AFR: "); uart_print_int(engine_realtime.Afr); uart_new_line();
-// 	uart_print_string("MAP: "); uart_print_int(engine_realtime.Map); uart_new_line();
-// 	uart_print_string("TPS: "); uart_print_int(engine_realtime.Tps); uart_new_line();
-// 	uart_print_string("RPM: "); uart_print_int(engine_realtime.Rpm); uart_new_line();
-// 	uart_print_string("TWIFault: "); uart_print_int(engine_realtime.TwiFault); uart_new_line();
-// 	uart_print_string("Fuel Const: "); uart_print_int(FUEL_CONST); uart_new_line();
-// 	uart_print_string("AfterStartEnrichPct: "); uart_print_int(engine_config2.AfterStartEnrichPct); uart_new_line();
-// 	uart_print_string("AfterStartEnrichCycles: "); uart_print_int(engine_config2.AfterStartEnrichSec); uart_new_line();
-// 	uart_print_string("millis: "); uart_print_int(millis); uart_new_line();
+	uart_print_string("MAP High: "); uart_print_int(engine_config2.MapMax); uart_new_line();
+	uart_print_string("MAP Low: "); uart_print_int(engine_config2.MapMin); uart_new_line();
+	uart_print_string("TPS High: "); uart_print_int(engine_config2.TpsMax); uart_new_line();
+	uart_print_string("TPS Low: "); uart_print_int(engine_config2.TpsMin); uart_new_line();
+	uart_print_string("CLT: "); uart_print_int(engine_realtime.Clt); uart_new_line();
+	uart_print_string("IAT: "); uart_print_int(engine_realtime.Iat); uart_new_line();
+	uart_print_string("AFR: "); uart_print_int(engine_realtime.Afr); uart_new_line();
+	uart_print_string("MAP: "); uart_print_int(engine_realtime.Map); uart_new_line();
+	uart_print_string("TPS: "); uart_print_int(engine_realtime.Tps); uart_new_line();
+	uart_print_string("RPM: "); uart_print_int(engine_realtime.Rpm); uart_new_line();
+	uart_print_string("TWIFault: "); uart_print_int(engine_realtime.TwiFault); uart_new_line();
+	uart_print_string("Fuel Const: "); uart_print_int(FUEL_CONST); uart_new_line();
+	uart_print_string("AfterStartEnrichPct: "); uart_print_int(engine_config2.AfterStartEnrichPct); uart_new_line();
+	uart_print_string("AfterStartEnrichCycles: "); uart_print_int(engine_config2.AfterStartEnrichSec); uart_new_line();
+	uart_print_string("millis: "); uart_print_int(millis); uart_new_line();
 	isDebug ^= 1;
 }
