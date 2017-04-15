@@ -14,6 +14,8 @@
 
 void decoders_crank_primary(void);
 
+void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter);
+
 void decoders_toggle_ign1pin(void);
 void decoders_toggle_ign2pin(void);
 void decoders_toggle_ign3pin(void);

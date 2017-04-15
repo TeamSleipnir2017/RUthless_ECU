@@ -90,6 +90,7 @@ void PIOA_Handler(void)
 		CrankTimerCounts		=		TimerCounterValue;
 		CrankRevCounts			+=		CrankCurrCycleCounts;
 		CrankTooth++;
+		CrankToothCounter++;
 		CrankSignalFlag			=		TRUE;
 		
 		

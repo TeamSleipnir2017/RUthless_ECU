@@ -13,6 +13,7 @@ void decoders_crank_primary(void)
 {
 	if (CrankSignalFlag)
 	{
+		
 		if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1))) // New Cycle event (Missing tooth have passed the sensor)
 		{
 // 			if (isDebug)
@@ -48,9 +49,15 @@ void decoders_crank_primary(void)
 			CrankRevCounts = 0;
 			
 		}
-		int16_t tempCalc = (CrankTooth - TachEventDelayTeeths);
+		// TODO: DISABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
+		uint8_t tempCrankTooth = CrankTooth;
+		uint32_t tempCrankToothCounter = CrankToothCounter;
+		// TODO: ENABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
+		
+		int16_t tempCalc = (tempCrankTooth - TachEventDelayTeeths);
 		if (tempCalc % TachPulse == 0) // TODO:  Counteract if the tach event is at the missing tooth
 		{
+			decoders_tach_event(tempCrankTooth, tempCrankToothCounter);
 			global_toggle_pin(PIOC, IGN5_OUT);
 		}
 // 		else if (CrankTooth == TachPulse)
@@ -74,39 +81,69 @@ void decoders_crank_primary(void)
 }
 
 // The idea is to look two cycles beforhand for each cylinder
-void decoders_tach_event(void)
+void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter)
 {
 	// Choose a cylinder to configure
 	uint8_t NrCylinderDividedByTwo =  engine_config2.NrCylinders / 2;
-	uint32_t TachEventNumber = (CrankTooth - TachEventDelayTeeths) / TachPulse; // Represents count of tach event in one revolution 
+	uint32_t TachEventNumber = (CurrentCrankTooth - TachEventDelayTeeths) / TachPulse; // Represents count of tach event in one revolution 
 	uint32_t CylinderOffset = CamSignalFlag * (NrCylinderDividedByTwo); // Represent first bank or second bank
 	uint32_t InjIndex = TachEventNumber + CylinderOffset;						// Represents current cylinder tdc or 720°
 	uint32_t IgnIndex = (TachEventNumber + CylinderOffset + NrCylinderDividedByTwo) % (engine_config2.NrCylinders); // Calculate cylinder after 360° 
+	// TODO: CHOOSE CYLINDER ACCORDING TO FIRING ORDER
 	struct cylinder_ *InjCylEvent = &cylinder[InjIndex]; // Next cylinder to calculate injection parameters for (720° from current position)
 	struct cylinder_ *IgnCylEvent = &cylinder[IgnIndex]; // Next cylinder to calculate ignition parameters for (360° from current position) TODO: Check if dwell time is longer than max rpm time then calculate 720° before
 	
 	if (isDebug)
 	{
-		uart_print_string("InjIndex: "); uart_print_int(InjIndex); uart_new_line();
-		uart_print_string("IgnIndex: "); uart_print_int(IgnIndex); uart_new_line();
+		DebugCounter++;
+		if (DebugCounter == 101)
+		{
+// 		uart_print_string("TachPulse: "); uart_print_int(TachPulse); uart_new_line();
+ 		uart_print_string("CurrentCrankTooth: "); uart_print_int(CurrentCrankTooth); uart_new_line();
+// 		uart_print_string("TachEventDelayTeeths: "); uart_print_int(TachEventDelayTeeths); uart_new_line();
+// 		uart_print_string("TachEventNumber: "); uart_print_int(TachEventNumber); uart_new_line();
+// 		uart_print_string("CylinderOffset: "); uart_print_int(CylinderOffset); uart_new_line();
+// 		uart_print_string("InjIndex: "); uart_print_int(InjIndex); uart_new_line();
+// 		uart_print_string("IgnIndex: "); uart_print_int(IgnIndex); uart_new_line();
+ 		}
 	}
 
 	// Injection timing calculations
 	uint32_t PulseWidth = fuelcalc_pulsewidth(); // Hundreds of nanoseconds (1 = 0.1 µs)
-	uint32_t InjDeg = engine_config2.InjAng[InjIndex]; // configured injector closing angle
+	uint16_t InjDeg = engine_config2.InjAng[InjIndex]; // configured injector closing angle
 	// The number of teeths are calculated from now
-	uint32_t InjTeethsOFF = math_convert_degree_to_teeth_count(InjDeg + 360); // OFF means when to turn off the injector, 360 is because it is 720° before
-	uint32_t InjTeethsON = InjTeethsOFF - (math_convert_pulsewidth_to_teeth_count(PulseWidth) + 1); // 1 is because it floors the calculation and it is better to get always scaled one up since it is also timer dependant
-	
+	uint16_t InjTeethsOFF = math_convert_degree_to_teeth_count(InjDeg + 360); // OFF means when to turn off the injector, 360 is because it is 720° before
+	uint16_t InjTeethsON = InjTeethsOFF - (math_convert_pulsewidth_to_teeth_count(PulseWidth + (engine_config2.injOpen * 1000)) + 1); // 1 is because it floors the calculation and it is better to get always scaled one up since it is also timer dependant
+	uint32_t InjEventToothOFF = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, CurrentCrankToothCounter, InjTeethsOFF);
+	uint32_t InjEventToothON = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, CurrentCrankToothCounter, InjTeethsON);
+	InjCylEvent->InjToothOff = InjEventToothOFF;
+	InjCylEvent->InjToothOn = InjEventToothON;
+
 	if (isDebug)
 	{
-		uart_print_string("PulseWidth: "); uart_print_int(PulseWidth); uart_new_line();
-		uart_print_string("InjDeg: "); uart_print_int(InjDeg); uart_new_line();
-		uart_print_string("InjTeethsOFF: "); uart_print_int(InjTeethsOFF); uart_new_line();
-		uart_print_string("InjTeethsON: "); uart_print_int(InjTeethsON); uart_new_line();
-		uart_print_string("InjDeg: "); uart_print_int(InjDeg); uart_new_line();
-		uart_print_string("InjDeg: "); uart_print_int(InjDeg); uart_new_line();
+		if (DebugCounter == 101)
+		{
+// 		uart_print_string("PulseWidth: "); uart_print_int(PulseWidth); uart_new_line();
+// 		uart_print_string("InjDeg: "); uart_print_int(InjDeg); uart_new_line();
+// 		uart_print_string("InjTeethsOFF: "); uart_print_int(InjTeethsOFF); uart_new_line();
+// 		uart_print_string("InjTeethsON: "); uart_print_int(InjTeethsON); uart_new_line();
+// 		uart_print_string("CurrentCrankToothCounter: "); uart_print_int(CurrentCrankToothCounter); uart_new_line();
+// 		uart_print_string("InjEventToothOFF: "); uart_print_int(InjEventToothOFF); uart_new_line();
+// 		uart_print_string("InjEventToothON: "); uart_print_int(InjEventToothON); uart_new_line();
+// 		uart_print_string("cylinder[InjIndex].InjToothOff: "); uart_print_int(cylinder[InjIndex].InjToothOff); uart_new_line();
+// 		uart_print_string("cylinder[InjIndex].InjToothOn: "); uart_print_int(cylinder[InjIndex].InjToothOn); uart_new_line();
+ 		DebugCounter = 0;
+		}
 	}
+
+
+
+	
+
+
+
+
+
 	// Ignition timing calculations
 	uint32_t IgnDeg = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 10);
 	// Calculate TEETHS for IgnDeg

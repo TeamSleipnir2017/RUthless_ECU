@@ -44,6 +44,7 @@ void global_init(void)
 	TachEventDelayTeeths = (engine_config4.TriggerTeethCount * engine_config4.TriggerAngle) / (360);
 	TachCrankDegreeInterval = 360 / TachEvents;
 
+
 	// TODO: NEED TO MAKE CONFIGURABLE IN TUNERSTUDIO
 	engine_config2.FiringOrder[0] = 1;
 	engine_config2.FiringOrder[1] = 2;

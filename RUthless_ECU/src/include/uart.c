@@ -128,7 +128,7 @@ void uart_print_string(char * data)
 {
 	int i = 0;
 	// loop which print strings till null is reached or more than 20 characters (for safety)
-	while(data[i] != 0 || i > 20)
+	while(data[i] != 0 && i < 30)
 		uart_transfer(data[i++]);
 	uart_transfer(32); // space
 }

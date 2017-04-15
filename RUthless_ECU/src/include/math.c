@@ -169,24 +169,50 @@ uint8_t math_convert_degree_to_teeth_count(uint16_t degree)
 
 uint8_t math_convert_pulsewidth_to_teeth_count(uint32_t PW) // Hundreds of nanoseconds (1 = 0.1 µs)
 {
-	
 	uint64_t temp = (math_convert_pulsewidth_to_timer_counts(PW) * engine_config4.TriggerTeethCount) / LastCrankRevCounts;
+// 	if (isDebug)
+// 	{
+// 		if (DebugCounter == 101)
+// 		{
+// 			uart_print_string("PulseWidth: "); uart_print_int(PW); uart_new_line();
+// 			uart_print_string("temp: "); uart_print_int(temp); uart_new_line();
+// 		}
+// 	}
 	return (uint8_t) temp;
 }
  
 uint32_t math_convert_pulsewidth_to_timer_counts(uint32_t PW) // Hundreds of nanoseconds (1 = 0.1 µs)
 {
-	uint64_t temp = (PW * GLOBAL_TIMER_FREQ) / 10000000;
+	uint64_t temp = ((uint64_t) PW * GLOBAL_TIMER_FREQ) / 10000000;
+// 	if (isDebug)
+// 	{
+// 		if (DebugCounter == 101)
+// 		{
+// 			uart_print_string("PulseWidth: "); uart_print_int(PW); uart_new_line();
+// 			uart_print_string("temp1: "); uart_print_int(temp); uart_new_line();
+// 		}
+// 	}
 	return (uint32_t) temp; 
 }
 
-uint32_t math_calculate_event_tooth_from_number_of_teeths(uint8_t CurrentCrankTooth, uint8_t NumberOfTeeths) // Find the event tooth(initiate timer tooth) from current tooth
+uint32_t math_find_event_tooth_from_number_of_teeths(uint16_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter, uint16_t NumberOfTeeths) // Find the event tooth(initiate timer tooth) from current tooth
 {
-	uint32_t EventTooth = CrankToothCounter; // Get current counts of tooth from start
+	uint32_t EventTooth = CurrentCrankToothCounter; // Get current counts of tooth from start
+	uint8_t TriggerTeethMinusMiss = engine_config4.TriggerTeethCount - engine_config4.MissingTeethCount;
+// 	if (isDebug)
+// 	{
+// 		if (DebugCounter == 101)
+// 		{
+// 			uart_print_string("TriggerTeethMinusMiss: "); uart_print_int(TriggerTeethMinusMiss); uart_new_line();
+// 			uart_print_string("CurrentCrankTooth: "); uart_print_int(CurrentCrankTooth); uart_new_line();
+// 		}
+// 	}
 	for (uint8_t i = 0; i < NumberOfTeeths; i++)
 	{
-		if (!(((CurrentCrankTooth + i) % engine_config4.TriggerTeethCount) > (engine_config4.TriggerTeethCount - engine_config4.MissingTeethCount))) // Check if current tooth is the missing tooth
+		CurrentCrankTooth = (CurrentCrankTooth + 1) % engine_config4.TriggerTeethCount;
+		if (!(CurrentCrankTooth >= TriggerTeethMinusMiss)) // Check if current tooth is NOT a missing tooth
 			EventTooth++;
 	}
+	// TODO: Check if CurrentCrankTooth is between 22 - 23 if so, change a variable pointer !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	return EventTooth;
 }
