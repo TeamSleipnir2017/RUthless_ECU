@@ -44,6 +44,7 @@ uint32_t isDebug;
 /* Crank, Cam definition:												*/
 /************************************************************************/
 
+#define CRANK_DEGREE_RESOLUTION		3600 // 360.0° (For crankshaft)
 
 #define CRANK_TEETH					24		// The amount of teeth on the crank wheel including the missing teeth
 #define MISSING_TEETH				2
@@ -54,6 +55,7 @@ uint32_t isDebug;
 #define DEGREE_TEST					301
 
 volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
+volatile uint16_t InjectorOpenTime;			// Injector opening/closing time in hundreds of nanoseconds: 1 = 100 nsec
 
 // Crank Variables
 volatile uint8_t CrankTooth;				// Variable storing current crank tooth
@@ -180,6 +182,7 @@ struct cylinder_
 	Pio		*Ign_pio;			// Pointer to ignition peripheral input output controller
 	uint32_t InjOutputPin;		// Pointer to injector output pin
 	Pio		*Inj_pio;			// Pointer to injector peripheral input output controller
+	TcChannel *Tc_channel;		// Pointer to appropriated timer for this cylinder
 	/* TODO: IF secondary injector                                      */
 };
 volatile struct cylinder_ cylinder[NR_OF_CYL]; // Create an instance of the struct defined above 

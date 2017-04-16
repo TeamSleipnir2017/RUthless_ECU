@@ -150,7 +150,7 @@ uint32_t math_sum_with_overflow_protection(uint32_t a, uint32_t b)
 // Example: Skip 7,4 teeth ---> the function returns the integer 7
 uint8_t math_convert_degree_to_teeth_count(uint16_t degree)
 {
-	uint32_t temp = degree * engine_config4.TriggerTeethCount / 360;
+	uint32_t temp = degree * engine_config4.TriggerTeethCount / CRANK_DEGREE_RESOLUTION;
 // 	uint32_t temp = ((TachCrankDegreeInterval * 10 - degree) * 10) / TachCrankDegreeInterval;
 // 	uint32_t temp1 = (temp * (engine_config4.TriggerTeethCount/TachEvents))/100;
 
@@ -193,6 +193,13 @@ uint32_t math_convert_pulsewidth_to_timer_counts(uint32_t PW) // Hundreds of nan
 // 		}
 // 	}
 	return (uint32_t) temp; 
+}
+
+// Returns crank degrees in .1° resolution (36.1 = 361)
+uint32_t math_convert_pulsewidth_to_crank_degrees(uint32_t PW)
+{
+	uint32_t PWCounts = math_convert_pulsewidth_to_timer_counts(PW);
+	return (PWCounts * CRANK_DEGREE_RESOLUTION) / LastCrankRevCounts;
 }
 
 uint8_t math_find_event_tooth_from_number_of_teeths(uint16_t CurrentCrankTooth, uint32_t *EventTooth, uint16_t NumberOfTeeths) // Find the event tooth(initiate timer tooth) from current tooth

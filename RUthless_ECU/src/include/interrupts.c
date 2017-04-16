@@ -80,8 +80,6 @@ void PIOA_Handler(void)
 	uint32_t TimerCounterValue	=		TC2->TC_CHANNEL[2].TC_CV;
 	uint32_t status_register	=		PIOA->PIO_ISR;
 	
-
-	
 	// Check if the interrupt source is from the crankshaft sensor
 	if (status_register & CRANK_SIGNAL)
 	{
@@ -92,6 +90,22 @@ void PIOA_Handler(void)
 		CrankTooth++;
 		CrankToothCounter++;
 		CrankSignalFlag			=		TRUE;
+		for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
+		{
+			struct cylinder_ *Cyl = &cylinder[i]; 
+			if (Cyl->InjToothOn == CrankToothCounter) // Compare register B is for injector (TC_RB)
+			{
+				Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOn; 
+			}
+			if (Cyl->InjToothOn == Cyl->InjToothOff)
+			{
+				// RAISE A FLAG WHICH IS USED IN TIMER INTERRUPT TO LOAD RB THE InjCntTimingOff
+			}
+			else if (Cyl->InjToothOff == CrankToothCounter) // Compare register B is for injector (TC_RB)
+			{
+				Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOff;
+			}
+		}
 		
 		
 		

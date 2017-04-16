@@ -88,7 +88,6 @@ void timer_init(uint32_t TimerChannel, uint32_t TimerMode, uint32_t InterruptMod
 	interrupts_enable_interrupt_vector(TC0_IRQn + TimerChannel, TimerInterruptPriority);
 	
 	tc_enable_interrupt(Timer, (TimerChannel%3), InterruptMode);
-	TC2->TC_CHANNEL[2].TC_IER = TC_IER_CPBS;
 	
 	tc_start(Timer, (TimerChannel%3));
 	

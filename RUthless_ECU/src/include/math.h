@@ -34,6 +34,8 @@ uint8_t math_convert_degree_to_teeth_count(uint16_t degree);
 uint8_t math_convert_pulsewidth_to_teeth_count(uint32_t PW);
 // Convert pulsewidth (time) to timer counts, PW is in hundreds of nanoseconds (1 = 0.1 µs)
 uint32_t math_convert_pulsewidth_to_timer_counts(uint32_t PW);
+// Convert pulsewidth (time) to crankshaft degrees, PW is in hundreds of nanoseconds (1 = 0.1 µs)
+uint32_t math_convert_pulsewidth_to_crank_degrees(uint32_t PW);
 // Find the event tooth(initiate timer tooth) from current tooth 
 uint8_t math_find_event_tooth_from_number_of_teeths(uint16_t CurrentCrankTooth, uint32_t *EventTooth, uint16_t NumberOfTeeths);
 

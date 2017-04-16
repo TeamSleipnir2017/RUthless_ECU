@@ -43,7 +43,8 @@ void global_init(void)
 	TachPulse = engine_config4.TriggerTeethCount/TachEvents; // Calculate new RPM every half of the trigger wheel (24 tooths)
 	TachEventDelayTeeths = (engine_config4.TriggerTeethCount * engine_config4.TriggerAngle) / (360);
 	TachCrankDegreeInterval = 360 / TachEvents;
-	CrankToothDegreeInterval = 360 / engine_config4.TriggerTeethCount;
+	CrankToothDegreeInterval = CRANK_DEGREE_RESOLUTION / engine_config4.TriggerTeethCount;
+	InjectorOpenTime = engine_config2.injOpen * 1000; // injOpen is in 100 of µs, convert it to 100 of ns
 
 
 	// TODO: NEED TO MAKE CONFIGURABLE IN TUNERSTUDIO
@@ -74,6 +75,16 @@ void cylinder_init(void)
 		cylinder[i].InjToothOff = 0;
 		cylinder[i].Ign_pio = PIOC;
 		cylinder[i].Inj_pio = PIOC;
+		
+		Tc *Timer;
+		// Initialize timer
+		if (i < 3) // TC0
+			Timer = TC0;
+		else if (i < 6) // TC1
+			Timer = TC1;
+		else // TC2
+			Timer = TC2;
+		cylinder[i].Tc_channel = Timer->TC_CHANNEL[i%3];
 	}
 	cylinder[1].Inj_pio = PIOD; // Because the board developer did not thought it through :)
 	cylinder[0].IgnOutputPin = IGN1_OUT;

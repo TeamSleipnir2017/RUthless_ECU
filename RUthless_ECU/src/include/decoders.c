@@ -109,27 +109,34 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
  		}
 	}
 
-	// Injection timing calculations
+	// Injection timing calculations, OFF means turn output off and ON is output on
 	uint32_t PulseWidth = fuelcalc_pulsewidth(); // Hundreds of nanoseconds (1 = 0.1 µs)
-	uint16_t InjDeg = engine_config2.InjAng[InjIndex]; // configured injector closing angle
+	// Degrees are calculated from current crank position(some cylinder TDC), for example 390.0° is one cycle beforehand and 330.0° before next TDC 
+	uint16_t InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
+	int16_t InjDegON = InjDegOFF - math_convert_pulsewidth_to_crank_degrees(PulseWidth + InjectorOpenTime);
+	if (InjDegON < 0) // If perhaps the calculated pulsewidth is longer than 2 crank cycles (duty cycle > 100%)
+		InjDegON = 0;
+	
 	// The number of teeths are calculated from now
-	uint16_t InjTeethsOFF = math_convert_degree_to_teeth_count(InjDeg + 360); // OFF means when to turn off the injector, 360 is because it is 720° before
-	uint16_t InjTeethsON = InjTeethsOFF - (math_convert_pulsewidth_to_teeth_count(PulseWidth + (engine_config2.injOpen * 1000)) + 1); // 1 is because it floors the calculation and it is better to get always scaled one up since it is also timer dependant
+	uint16_t InjTeethsOFF = math_convert_degree_to_teeth_count(InjDegOFF); // OFF means when to turn off the injector
+	uint16_t InjTeethsON = math_convert_degree_to_teeth_count(InjDegON); // ON means when to turn on the injector
+	//uint16_t InjTeethsON = InjTeethsOFF - (math_convert_pulsewidth_to_teeth_count(PulseWidth + InjectorOpenTime) + 1); // 1 is because it floors the calculation and it is better to get always scaled one up since it is also timer dependant
 	
 	uint32_t InjEventToothOFF = CurrentCrankToothCounter, InjEventToothON = CurrentCrankToothCounter; // Copying values to different register, to be able to manipulate the values without changing CurrentCrankToothCounter
 	uint32_t NrOfMissingTeethsAtEventOFF = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, &InjEventToothOFF, InjTeethsOFF);
 	uint32_t NrOfMissingTeethsAtEventON = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, &InjEventToothON, InjTeethsON);
+	
 	InjCylEvent->InjToothOff = InjEventToothOFF;
 	InjCylEvent->InjToothOn = InjEventToothON;
 	
 	// The number of counts for the timer is calculated here (which is enabled after the EventTooth)
-	uint32_t TimerTurnOffDegreeAfterTooth = InjDeg % CrankToothDegreeInterval; // MAYBE INCREASE ACCURACY TO .1 ° !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	uint32_t TimerTurnOffDegreeAfterTooth = InjDegOFF % CrankToothDegreeInterval; 
 	uint32_t TimerToothOffPercentage = TimerTurnOffDegreeAfterTooth * 100 / CrankToothDegreeInterval; // should give 0 - 99%, since 100% is next tooth obviously
 	InjCylEvent->InjCntTimingOff = ((TimerToothOffPercentage + NrOfMissingTeethsAtEventOFF * 100) * LastCrankRevCounts) / (100 * engine_config4.TriggerTeethCount); // I think this should never overflow
-	// IMPLEMENT A WAY TO CALCULATE ON DEGREES IT IS MUCH MORE CONVENIENT PLEASE....
-	InjCylEvent->InjCntTimingOn = InjTeethsON * LastCrankRevCounts / engine_config4.TriggerTeethCount
 	
-	
+	uint32_t TimerTurnOnDegreeAfterTooth = InjDegOFF % CrankToothDegreeInterval;
+	uint32_t TimerToothOnPercentage = TimerTurnOnDegreeAfterTooth * 100 / CrankToothDegreeInterval; // should give 0 - 99%, since 100% is next tooth obviously
+	InjCylEvent->InjCntTimingOn = ((TimerToothOnPercentage + NrOfMissingTeethsAtEventON * 100) * LastCrankRevCounts) / (100 * engine_config4.TriggerTeethCount); // I think this should never overflow
 
 	if (isDebug)
 	{
@@ -150,14 +157,6 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 		}
 	}
 
-
-
-	
-
-
-
-
-
 	// Ignition timing calculations
 	uint32_t IgnDeg = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 10);
 	// Calculate TEETHS for IgnDeg
@@ -166,14 +165,20 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	// Calculate DELAY COUNTS from IgnDeg 
 	//uint32_t DwellDeg = IgnDeg + igncalc_dwell_degree(); // This is probably just to make it harder and longer to calculate, convert from time to degrees and there to counts
 
-	
-
 // 	DwellSecondTach = igncalc_ign_time_teeth(DwellDegree);
 // 	DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
 // 	
 // 	CrankSecondTach = igncalc_ign_time_teeth(IgnitionDegree);
 // 	CrankSecondInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
 	// Fuel timing calculations
+}
+
+// CURRENTLY NOT USED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 16.4.17
+// returns teeth numbers to next event
+uint32_t decoders_find_event_tooth(uint32_t CrankDegree, uint32_t CurrentCrankToothCounter)
+{
+	uint16_t InjTeeths = math_convert_degree_to_teeth_count(CrankDegree); 
+	
 }
 
 // Ignition timing correction.  
