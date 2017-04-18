@@ -62,17 +62,20 @@ void global_init(void)
 
 void cylinder_init(void)
 {
-	for (uint8_t i = 0; i < NR_OF_CYL; i++)
+	for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
 	{
-		cylinder[i].FireEventPending = FALSE;
 		cylinder[i].IgnCntTimingOn = 0;
 		cylinder[i].IgnCntTimingOff = 0;
 		cylinder[i].IgnToothOn = 0;
 		cylinder[i].IgnToothOff = 0;
+		cylinder[i].IgnEventPending = FALSE;
+		cylinder[i].IgnEventOnSameTooth = FALSE;
 		cylinder[i].InjCntTimingOn = 0;
 		cylinder[i].InjCntTimingOff = 0;
 		cylinder[i].InjToothOn = 0;
 		cylinder[i].InjToothOff = 0;
+		cylinder[i].InjEventPending = FALSE;
+		cylinder[i].InjEventOnSameTooth = FALSE;
 		cylinder[i].Ign_pio = PIOC;
 		cylinder[i].Inj_pio = PIOC;
 		
@@ -84,7 +87,7 @@ void cylinder_init(void)
 			Timer = TC1;
 		else // TC2
 			Timer = TC2;
-		cylinder[i].Tc_channel = Timer->TC_CHANNEL[i%3];
+		cylinder[i].Tc_channel = &Timer->TC_CHANNEL[i%3];
 	}
 	cylinder[1].Inj_pio = PIOD; // Because the board developer did not thought it through :)
 	cylinder[0].IgnOutputPin = IGN1_OUT;
@@ -103,6 +106,11 @@ void cylinder_init(void)
 	cylinder[5].InjOutputPin = INJ6_OUT;
 	cylinder[6].InjOutputPin = INJ7_OUT;
 	cylinder[7].InjOutputPin = INJ8_OUT;
+	for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
+	{
+		pio_set_output(cylinder[i].Ign_pio, cylinder[i].IgnOutputPin, LOW, FALSE, FALSE);
+		pio_set_output(cylinder[i].Inj_pio, cylinder[i].InjOutputPin, LOW, FALSE, FALSE);
+	}
 }
 
 void global_toggle_pin(Pio *PioInterface, uint32_t Pin)

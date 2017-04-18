@@ -96,44 +96,53 @@ void timer_init(uint32_t TimerChannel, uint32_t TimerMode, uint32_t InterruptMod
 	millis = 0;
 }
 
-uint32_t timer_read_status(Tc *p_tc, uint32_t ul_channel, uint32_t *CounterValue)
-{
-	// Read the current Counter Value
-	*CounterValue = p_tc->TC_CHANNEL[ul_channel].TC_CV;
-	// Read the current Status, Compare or overflow
-	return p_tc->TC_CHANNEL[ul_channel].TC_SR;
-}
-
-void timer_do_cylinder(Tc *p_tc, uint32_t ul_channel, uint8_t CylinderNr)
+void timer_do_cylinder(uint8_t CylinderNr)
 {
 	//uart_transfer('a'); uart_print_int(CylinderNr); uart_new_line();
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(p_tc, ul_channel, &CounterValue);
-	if (TimerStatus & TC_SR_CPAS) // Compare register A
+	struct cylinder_ *Cyl = &cylinder[CylinderNr];
+	uint32_t CounterValue = Cyl->Tc_channel->TC_CV;
+	uint32_t TimerStatus = Cyl->Tc_channel->TC_SR;
+	if (TimerStatus & TC_SR_CPAS) // Compare register A ignition 1
 	{
 		if (DwellFirstFlag)
 		{
-			cylinder[CylinderNr].Ign_pio->PIO_SODR	=	cylinder[CylinderNr].IgnOutputPin;			// Sets pin to high
+			Cyl->Ign_pio->PIO_SODR	=	Cyl->IgnOutputPin;			// Sets pin to high
 			DwellFirstFlag = FALSE;
 		}
 		else if (DwellSecondFlag)
 		{
-			cylinder[CylinderNr].Ign_pio->PIO_SODR	=	cylinder[CylinderNr].IgnOutputPin;			// Sets pin to high
+			Cyl->Ign_pio->PIO_SODR	=	Cyl->IgnOutputPin;			// Sets pin to high
 			DwellSecondFlag = FALSE;
 		}
 		else
 		{
-			cylinder[CylinderNr].Ign_pio->PIO_CODR	=	cylinder[CylinderNr].IgnOutputPin;			// Sets pin PC19 to low
+			Cyl->Ign_pio->PIO_CODR	=	Cyl->IgnOutputPin;			// Sets pin PC19 to low
 		}
 	}
-	if (TimerStatus & TC_SR_CPBS) // Compare register B
+	if (TimerStatus & TC_SR_CPBS) // Compare register B injector 1
 	{
+		if (Cyl->InjEventPending)
+		{
+			uart_transfer('B');
+			Cyl->Inj_pio->PIO_SODR = Cyl->InjOutputPin;			// Sets pin to high
+			Cyl->InjEventPending = FALSE;
+		}
+		else
+		{
+			Cyl->Inj_pio->PIO_CODR = Cyl->InjOutputPin;			// Sets pin to high
+		}
+		if (Cyl->InjEventOnSameTooth)							// Check if Off event is at the same tooth
+		{
+			Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOff;
+			Cyl->InjEventOnSameTooth = FALSE;
+		}
 	}
-	if (TimerStatus & TC_SR_CPCS) // Compare register C
+	if (TimerStatus & TC_SR_CPCS) // Compare register C injector 2
 	{
 	}
 	if (TimerStatus & TC_SR_COVFS) // Overflow
-	{
+	{ 
+		// TODO: Necessary to handle the Overflow probably best to check when loading RA, RB and RC
 	}
 }
 
@@ -155,127 +164,31 @@ tc_enable_interrupt(Tc *p_tc, uint32_t ul_channel, uint32_t ul_sources)
 	CPCS: RC Compare Status                                             */
 /************************************************************************/
 
-// CYLINDER_1_TIMER
-void TC0_Handler(void)
-{
-	timer_do_cylinder(TC0, 0, 0);
-//  	uint32_t CounterValue;
-//  	uint32_t TimerStatus = timer_read_status(TC0, 0, &CounterValue);
-//  	if (TimerStatus & TC_SR_CPAS)
-//  	{
-//  		if (DwellFirstFlag)
-//  		{
-//  			PIOC->PIO_SODR	=	IGN1_OUT;			// Sets pin PC19 to high
-//  			DwellFirstFlag = FALSE;
-//  		}
-//  		else
-//  		{
-//  			PIOC->PIO_CODR	=	IGN1_OUT;			// Sets pin PC19 to low
-//  		}
-//  	}
-// 	if (TimerStatus & TC_SR_CPBS)
-// 	{
-// 	}
-// 	if (TimerStatus & TC_SR_CPCS)
-// 	{
-// 	}
-// 	if (TimerStatus & TC_SR_COVFS)
-// 	{
-// 	}
-}
+// Cylinder handlers
+void TC0_Handler(void) { timer_do_cylinder(CYLINDER_1_TIMER); }
+void TC1_Handler(void) { timer_do_cylinder(CYLINDER_2_TIMER); }
+void TC2_Handler(void) { timer_do_cylinder(CYLINDER_3_TIMER); }
+void TC3_Handler(void) { timer_do_cylinder(CYLINDER_4_TIMER); }
+void TC4_Handler(void) { timer_do_cylinder(CYLINDER_5_TIMER); }
+void TC5_Handler(void) { timer_do_cylinder(CYLINDER_6_TIMER); }
+void TC6_Handler(void) { timer_do_cylinder(CYLINDER_7_TIMER); }
+void TC7_Handler(void) { timer_do_cylinder(CYLINDER_8_TIMER); }
 
-// CYLINDER_2_TIMER
-void TC1_Handler(void)
-{
-	timer_do_cylinder(TC0, 1, 1);
-// 	uint32_t CounterValue;
-// 	uint32_t TimerStatus = timer_read_status(TC0, 1, &CounterValue);
-// 	if (DwellSecondFlag)	
-// 	{
-// 		PIOC->PIO_SODR	=	IGN2_OUT;			// Sets pin PC19 to high
-// 		DwellSecondFlag = FALSE;
-// 	}
-// 	else
-// 	{
-// 		PIOC->PIO_CODR	=	IGN2_OUT;			// Sets pin PC19 to low
-// 	}
-// 	uint32_t readtc	=	TC0->TC_CHANNEL[1].TC_SR;
-// 	TC0->TC_CHANNEL[1].TC_CCR	=	TC_CCR_CLKDIS;
-}
-
-// CYLINDER_3_TIMER
-void TC2_Handler(void)
-{
-	timer_do_cylinder(TC0, 2, 2);
-// 	uint32_t CounterValue;
-// 	uint32_t TimerStatus = timer_read_status(TC0, 2, &CounterValue);
-// 	if (DwellSecondFlag)
-// 	{
-// 		PIOC->PIO_SODR	=	IGN3_OUT;			// Sets pin PC17 to high
-// 		DwellSecondFlag = FALSE;
-// 	}
-// 	else
-// 	{
-// 		PIOC->PIO_CODR	=	IGN3_OUT;			// Sets pin PC17 to low
-// 	}
-// 	uint32_t readtc	=	TC0->TC_CHANNEL[2].TC_SR;
-// 	TC0->TC_CHANNEL[2].TC_CCR	=	TC_CCR_CLKDIS;
-}
-
-// CYLINDER_4_TIMER
-void TC3_Handler(void)
-{
-	timer_do_cylinder(TC1, 0, 3);
-// 	uint32_t CounterValue;
-// 	uint32_t TimerStatus = timer_read_status(TC1, 0, &CounterValue);
-// 	if (DwellFirstFlag)							
-// 	{
-// 		PIOC->PIO_SODR	=	IGN4_OUT;			// Sets pin PC25 to high
-// 		DwellFirstFlag = FALSE;
-// 	}
-// 	else
-// 	{
-// 		PIOC->PIO_CODR	=	IGN4_OUT;			// Sets pin PC25 to low
-// 	}
-// 	uint32_t readtc	=	TC1->TC_CHANNEL[0].TC_SR;
-// 	TC1->TC_CHANNEL[0].TC_CCR	=	TC_CCR_CLKDIS;
-}
-// CYLINDER_5_TIMER
-void TC4_Handler(void)
-{
-	timer_do_cylinder(TC1, 1, 4);
-}
-// CYLINDER_6_TIMER
-void TC5_Handler(void)
-{
-	timer_do_cylinder(TC1, 2, 5);
-}
-// CYLINDER_7_TIMER
-void TC6_Handler(void)
-{
-	timer_do_cylinder(TC2, 0, 6);
-}
-// CYLINDER_8_TIMER
-void TC7_Handler(void)
-{
-	timer_do_cylinder(TC2, 1, 7);
-}
 // GLOBAL_TIMER
 void TC8_Handler(void)
 {
-	uint32_t CounterValue;
-	uint32_t TimerStatus = timer_read_status(TC2, 2, &CounterValue);
 	// Read the current TC8 Counter Value
-	//uint32_t CounterValue = tc_read_cv(TC2, 2);
+	uint32_t CounterValue = TC2->TC_CHANNEL[2].TC_CV;
 	// Read the current TC8 Status, Compare or overflow
-	//uint32_t tc_status = TC2->TC_CHANNEL[2].TC_SR;
-	if (TimerStatus & TC_SR_CPAS)
+	uint32_t TimerStatus = TC2->TC_CHANNEL[2].TC_SR;
+	
+	if (TimerStatus & TC_SR_CPAS) // Compare Register A ADC control
 	{
 		tc_write_ra(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/GlobalTimerFreqADCScaler);
 		adc_start(ADC);
 		//uart_transfer('a');
 	}
-	if (TimerStatus & TC_SR_CPBS) // Compare register B is not working ?? 25.2.17
+	if (TimerStatus & TC_SR_CPBS) // Compare register B extra
 	{
 		TC2->TC_CHANNEL[2].TC_RB = CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC;
 		//tc_write_rb(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC);
@@ -283,7 +196,7 @@ void TC8_Handler(void)
 		// TODO: START UART
 		//uart_transfer('b');
 	}
-	if (TimerStatus & TC_SR_CPCS)
+	if (TimerStatus & TC_SR_CPCS) // Compare register C interrupt per millisec
 	{
 		tc_write_rc(TC2, 2, CounterValue + GLOBAL_TIMER_FREQ/MILLI_SEC);
 		millis++;

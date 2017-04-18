@@ -115,26 +115,33 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	uint16_t InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
 	int16_t InjDegON = InjDegOFF - math_convert_pulsewidth_to_crank_degrees(PulseWidth + InjectorOpenTime);
 	if (InjDegON < 0) // If perhaps the calculated pulsewidth is longer than 2 crank cycles (duty cycle > 100%)
+	{
 		InjDegON = 0;
+		// TODO: TURN THE INJECTOR ON
+		// PROBABLY SET SOME FLAG OR SOME
+	}
 	
-	// The number of teeths are calculated from now
+	// The number of teeths are calculated
 	uint16_t InjTeethsOFF = math_convert_degree_to_teeth_count(InjDegOFF); // OFF means when to turn off the injector
 	uint16_t InjTeethsON = math_convert_degree_to_teeth_count(InjDegON); // ON means when to turn on the injector
 	//uint16_t InjTeethsON = InjTeethsOFF - (math_convert_pulsewidth_to_teeth_count(PulseWidth + InjectorOpenTime) + 1); // 1 is because it floors the calculation and it is better to get always scaled one up since it is also timer dependant
 	
+	// The event tooth is found according to the delay teeths calculated above, here are missing tooth counts skipped and taken into account for timers
 	uint32_t InjEventToothOFF = CurrentCrankToothCounter, InjEventToothON = CurrentCrankToothCounter; // Copying values to different register, to be able to manipulate the values without changing CurrentCrankToothCounter
 	uint32_t NrOfMissingTeethsAtEventOFF = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, &InjEventToothOFF, InjTeethsOFF);
 	uint32_t NrOfMissingTeethsAtEventON = math_find_event_tooth_from_number_of_teeths(CurrentCrankTooth, &InjEventToothON, InjTeethsON);
 	
+	// Load the event tooth to the according cylinder struct
 	InjCylEvent->InjToothOff = InjEventToothOFF;
 	InjCylEvent->InjToothOn = InjEventToothON;
 	
 	// The number of counts for the timer is calculated here (which is enabled after the EventTooth)
+	// If the event is at the last tooth before missing tooth, and if it is applicable it is added to the counts of the timer
 	uint32_t TimerTurnOffDegreeAfterTooth = InjDegOFF % CrankToothDegreeInterval; 
 	uint32_t TimerToothOffPercentage = TimerTurnOffDegreeAfterTooth * 100 / CrankToothDegreeInterval; // should give 0 - 99%, since 100% is next tooth obviously
 	InjCylEvent->InjCntTimingOff = ((TimerToothOffPercentage + NrOfMissingTeethsAtEventOFF * 100) * LastCrankRevCounts) / (100 * engine_config4.TriggerTeethCount); // I think this should never overflow
 	
-	uint32_t TimerTurnOnDegreeAfterTooth = InjDegOFF % CrankToothDegreeInterval;
+	uint32_t TimerTurnOnDegreeAfterTooth = InjDegON % CrankToothDegreeInterval;
 	uint32_t TimerToothOnPercentage = TimerTurnOnDegreeAfterTooth * 100 / CrankToothDegreeInterval; // should give 0 - 99%, since 100% is next tooth obviously
 	InjCylEvent->InjCntTimingOn = ((TimerToothOnPercentage + NrOfMissingTeethsAtEventON * 100) * LastCrankRevCounts) / (100 * engine_config4.TriggerTeethCount); // I think this should never overflow
 
@@ -159,18 +166,7 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 
 	// Ignition timing calculations
 	uint32_t IgnDeg = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 10);
-	// Calculate TEETHS for IgnDeg
-	// Calculate DELAY COUNTS for IgnDeg
-	// Calculate TEETHS from IgnDeg time to Dwell time
-	// Calculate DELAY COUNTS from IgnDeg 
-	//uint32_t DwellDeg = IgnDeg + igncalc_dwell_degree(); // This is probably just to make it harder and longer to calculate, convert from time to degrees and there to counts
 
-// 	DwellSecondTach = igncalc_ign_time_teeth(DwellDegree);
-// 	DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
-// 	
-// 	CrankSecondTach = igncalc_ign_time_teeth(IgnitionDegree);
-// 	CrankSecondInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
-	// Fuel timing calculations
 }
 
 // CURRENTLY NOT USED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 16.4.17

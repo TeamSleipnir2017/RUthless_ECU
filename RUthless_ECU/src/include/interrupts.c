@@ -95,21 +95,19 @@ void PIOA_Handler(void)
 			struct cylinder_ *Cyl = &cylinder[i]; 
 			if (Cyl->InjToothOn == CrankToothCounter) // Compare register B is for injector (TC_RB)
 			{
+				Cyl->InjEventPending = TRUE;
 				Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOn; 
 			}
 			if (Cyl->InjToothOn == Cyl->InjToothOff)
 			{
 				// RAISE A FLAG WHICH IS USED IN TIMER INTERRUPT TO LOAD RB THE InjCntTimingOff
+				Cyl->InjEventOnSameTooth = TRUE;
 			}
 			else if (Cyl->InjToothOff == CrankToothCounter) // Compare register B is for injector (TC_RB)
 			{
 				Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOff;
 			}
 		}
-		
-		
-		
-		
 		if (CrankTooth == DwellFirstTach)
 		{
 			DwellSecondFlag = TRUE;

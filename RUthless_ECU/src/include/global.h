@@ -169,15 +169,18 @@ volatile struct engine_realtime_ engine_realtime;
 
 struct cylinder_
 {
-	uint8_t FireEventPending;	// A flag to indicate a ignition/injection event
 	uint32_t IgnCntTimingOn;	// Ignition coil cylinder "x" counter ON value
 	uint32_t IgnCntTimingOff;	// Ignition coil cylinder "x" counter OFF value
 	uint32_t IgnToothOn;		// Ignition coil cylinder "x" trigger wheel tooth ON value
 	uint32_t IgnToothOff;		// Ignition coil cylinder "x" trigger wheel tooth OFF value
+	uint8_t	 IgnEventPending;	// A flag to indicate a injection event
+	uint8_t  IgnEventOnSameTooth;// A flag to indicate on and off event at same crankshaft tooth
 	uint32_t InjCntTimingOn;	// Injector cylinder "x" counter ON value
 	uint32_t InjCntTimingOff;	// Injector cylinder "x" counter OFF value
 	uint32_t InjToothOn;		// Ignition coil cylinder "x" trigger wheel tooth ON value
 	uint32_t InjToothOff;		// Ignition coil cylinder "x" trigger wheel tooth OFF value
+	uint8_t	 InjEventPending;	// A flag to indicate a injection event
+	uint8_t  InjEventOnSameTooth;// A flag to indicate on and off event at same crankshaft tooth
 	uint32_t IgnOutputPin;		// Pointer to ignition output pin
 	Pio		*Ign_pio;			// Pointer to ignition peripheral input output controller
 	uint32_t InjOutputPin;		// Pointer to injector output pin
