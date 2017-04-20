@@ -57,6 +57,9 @@ void global_init(void)
 	storage_init_struct_to_zero(&engine_realtime, sizeof(engine_realtime));
 
 	table_init();
+	uint32_t *debug_cylinder_pointer = &debug_cylinder; 
+	for (uint32_t i = 0; i < sizeof(debug_cylinder); i++)
+		*(debug_cylinder_pointer + i) = 0;
 	cylinder_init();
 }
 
@@ -88,6 +91,8 @@ void cylinder_init(void)
 		else // TC2
 			Timer = TC2;
 		cylinder[i].Tc_channel = &Timer->TC_CHANNEL[i%3];
+		
+		debug_cylinder[i].RealTimeCylInstance = i + 1;
 	}
 	cylinder[1].Inj_pio = PIOD; // Because the board developer did not thought it through :)
 	cylinder[0].IgnOutputPin = IGN1_OUT;

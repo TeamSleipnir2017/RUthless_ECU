@@ -123,29 +123,11 @@ int main (void)
 	
 	uart_print_string("Init done"); uart_new_line();
 
-	//cylinder[0].Inj_pio->PIO_CODR = cylinder[0].InjOutputPin;
-	pio_set_output(PIOC, PIO_PC13, LOW, FALSE, FALSE);
-	pio_clear(PIOC, PIO_PC13);
-	//global_toggle_pin(cylinder[0].Inj_pio, cylinder[0].InjOutputPin);
+	uart_print_int(sizeof(debug_cylinder)); uart_new_line();
+	isDebug = TRUE;
 	
 	while (1)
-	{		
-		pio_clear(PIOC, PIO_PC13);
-		// uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
-		// uart_print_string("T "); uart_print_int(igncalc_ign_time_teeth(DEGREE_TEST)); uart_new_line();
-		// uart_print_string("I "); uart_print_int(igncalc_ign_time_interval(DEGREE_TEST) + decoders_tooth_degree_correction()); uart_new_line();
-		
-		decoders_crank_primary();
-		
-// 		if (isDebug)
-// 		{
-// 			uart_print_string("C "); uart_print_int(math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN)); uart_new_line();
-// 		}
-		
-		
-		
-		
-		
+	{			
 		
 		if (AdcFlag)
 		{
@@ -166,6 +148,26 @@ int main (void)
 			RxFlag = FALSE;
 			uart_rx_read_buffer();
 		}
+		
+		if (CrankSignalFlag)
+		{
+			CrankSignalFlag = FALSE;
+			decoders_crank_primary();
+		}
+		if (CrankNewCycleFlag)
+		{
+			CrankNewCycleFlag = FALSE;
+			if (isDebug)
+			{
+				debug_cylinder[0].RealTimeLastRevCounts = LastCrankRevCounts;
+				debug_cylinder[1].RealTimeLastRevCounts = LastCrankRevCounts;
+				debug_cylinder[2].RealTimeLastRevCounts = LastCrankRevCounts;
+				debug_cylinder[3].RealTimeLastRevCounts = LastCrankRevCounts;
+				uart_load_pdc_tx_buffer(&debug_cylinder, sizeof(debug_cylinder));
+				//uart_print_string("PIOAHandlerTimeInCounts"); uart_print_int(PIOAHandlerTimeInCounts); uart_new_line();
+			}
+		}
+		
 		
 		
 		// TEST

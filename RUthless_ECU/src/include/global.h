@@ -26,6 +26,7 @@ uint32_t isDebug;
 #define TRUE	1		
 #define FALSE	0
 /* TODO: Read from EEPROM number of cylinders                           */
+#define MAX_NR_OF_CYL		8
 #define NR_OF_CYL			4		// Number of cylinders
 #define RPM_SCALER			100
 #define TEMPERATURE_OFFSET	40		// IAT value from sensor - 40°C 
@@ -57,6 +58,8 @@ uint32_t isDebug;
 volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
 volatile uint16_t InjectorOpenTime;			// Injector opening/closing time in hundreds of nanoseconds: 1 = 100 nsec
 
+volatile uint32_t PIOAHandlerTimeInCounts; // Time taken in PIOA_HANDLER in timer counts
+
 // Crank Variables
 volatile uint8_t CrankTooth;				// Variable storing current crank tooth
 volatile uint32_t CrankToothCounter;		// Variable storing current crank tooth count from beginning, overflows after 6.9 days at 18000 RPM
@@ -64,6 +67,7 @@ volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (t
 volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
 volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
 volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
+volatile uint8_t CrankNewCycleFlag;			// Flag indicating new crankshaft cycle
 volatile uint32_t CrankRevCounts;			// Cumsum of CrankCurrCycleCounts for TachPulse
 volatile uint32_t LastCrankRevCounts;		//
 volatile uint8_t CrankFirstTach;
@@ -108,6 +112,8 @@ volatile uint32_t DwellSecondInterval;
 #define GLOBAL_TIMER 8
 
 #define GLOBAL_TIMER_FREQ 2625000
+
+#define PIOAHANDLERTIMEINCOUNTS 30 // Used to check if it is required to turn on timer interrupts (This time was manually measured)
 
 uint16_t GlobalTimerFreqADCScaler;
 uint16_t GlobalTimerFreqUARTScaler;
@@ -167,6 +173,8 @@ volatile struct engine_config8_ engine_config8;
 volatile struct engine_config9_ engine_config9;
 volatile struct engine_realtime_ engine_realtime; 
 
+
+// TODO: ALLOCATE MEMORY FOR CONFIGURABLE AMOUNT OF CYLINDERS, instead of 8
 struct cylinder_
 {
 	uint32_t IgnCntTimingOn;	// Ignition coil cylinder "x" counter ON value
@@ -188,8 +196,26 @@ struct cylinder_
 	TcChannel *Tc_channel;		// Pointer to appropriated timer for this cylinder
 	/* TODO: IF secondary injector                                      */
 };
-volatile struct cylinder_ cylinder[NR_OF_CYL]; // Create an instance of the struct defined above 
+volatile struct cylinder_ cylinder[MAX_NR_OF_CYL]; // Create an instance of the struct defined above 
 
+struct debug_cylinders_
+{
+	uint32_t RealTimeCycleNr;
+	uint32_t RealTimeLastRevCounts;
+};
+volatile struct debug_cylinders_ debug_cylinders;
+struct debug_cylinder_ 
+{
+	uint32_t RealTimeCycleNr;
+	uint32_t RealTimeLastRevCounts;
+	uint32_t RealTimeCylInstance;
+	uint32_t InjTargetPulseWidth;
+	uint32_t InjTargetTurnOffDegree;
+	uint32_t InjRealTimeTurnOnCount;
+	uint32_t InjRealTimeTurnOffCount;
+	uint32_t InjRealTimeCalcCount;
+};
+volatile struct debug_cylinder_ debug_cylinder[NR_OF_CYL];
 /************************************************************************/
 /* Functions:                                                           */
 /************************************************************************/

@@ -10,56 +10,54 @@
 
 
 void decoders_crank_primary(void)
-{
-	if (CrankSignalFlag)
+{	
+	if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1))) // New Cycle event (Missing tooth have passed the sensor)
 	{
-		
-		if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1))) // New Cycle event (Missing tooth have passed the sensor)
-		{
+		CrankNewCycleFlag = TRUE;
+		debug_cylinder[0].RealTimeCycleNr++;
+		debug_cylinder[1].RealTimeCycleNr++;
+		debug_cylinder[2].RealTimeCycleNr++;
+		debug_cylinder[3].RealTimeCycleNr++;
 // 			if (isDebug)
 // 			{
 // 				uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
 // 			}
-			CrankTooth = 0;
+		CrankTooth = 0;
 			
-			CamSignalFlag ^= TRUE;
-			IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);
+		CamSignalFlag ^= TRUE;
+		IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);
+	
+		DwellDegree = IgnitionDegree + igncalc_dwell_degree();
+			
+		DwellSecondTach = igncalc_ign_time_teeth(DwellDegree);
+		DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
+			
+		CrankSecondTach = igncalc_ign_time_teeth(IgnitionDegree);
+		CrankSecondInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
 
+		// RPM calculations
+		uint32_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
+		// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
+		engine_realtime.Rpm = (uint16_t)CalcRpm;
 			
-			DwellDegree = IgnitionDegree + igncalc_dwell_degree();
-
+		engine_realtime.PulseWidth = fuelcalc_pulsewidth() / 1000; // REMEMBER TO REMOVE !!!!!
 			
-			DwellSecondTach = igncalc_ign_time_teeth(DwellDegree);
-			DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
+		LastCrankRevCounts = CrankRevCounts;
+		CrankRevCounts = 0;
 			
-
-			CrankSecondTach = igncalc_ign_time_teeth(IgnitionDegree);
-			CrankSecondInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
-
-			
-			
-			// RPM calculations
-			uint32_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
-			// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
-			engine_realtime.Rpm = (uint16_t)CalcRpm;
-			
-			engine_realtime.PulseWidth = fuelcalc_pulsewidth() / 1000; // REMEMBER TO REMOVE !!!!!
-			
-			LastCrankRevCounts = CrankRevCounts;
-			CrankRevCounts = 0;
-			
-		}
-		// TODO: DISABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
-		uint8_t tempCrankTooth = CrankTooth;
-		uint32_t tempCrankToothCounter = CrankToothCounter;
-		// TODO: ENABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
+	}
+	// TODO: DISABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
+	uint8_t tempCrankTooth = CrankTooth;
+	uint32_t tempCrankToothCounter = CrankToothCounter;
+	// TODO: ENABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
 		
-		int16_t tempCalc = (tempCrankTooth - TachEventDelayTeeths);
-		if (tempCalc % TachPulse == 0) // TODO:  Counteract if the tach event is at the missing tooth
-		{
-			decoders_tach_event(tempCrankTooth, tempCrankToothCounter);
-			global_toggle_pin(PIOC, IGN5_OUT);
-		}
+	// TODO: WHAT IF THE MAIN FUNCTION MISSED AN CRANK SIGNAL EVENT !!!!!!!!!!!!!!!!!
+	int16_t tempCalc = (tempCrankTooth - TachEventDelayTeeths);
+	if (tempCalc % TachPulse == 0) // TODO:  Counteract if the tach event is at the missing tooth
+	{
+		decoders_tach_event(tempCrankTooth, tempCrankToothCounter);
+		global_toggle_pin(PIOC, IGN5_OUT);
+	}
 // 		else if (CrankTooth == TachPulse)
 // 		{
 // 			
@@ -75,9 +73,6 @@ void decoders_crank_primary(void)
 // 			CrankFirstTach = igncalc_ign_time_teeth(IgnitionDegree);
 // 			CrankFirstInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();		
 // 		}
-		CrankSignalFlag = FALSE;
-		
-	}
 }
 
 // The idea is to look two cycles beforhand for each cylinder
@@ -99,8 +94,8 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 		if (DebugCounter == 101)
 		{
 // 		uart_print_string("TachPulse: "); uart_print_int(TachPulse); uart_new_line();
- 		uart_print_string("CurrentCrankTooth: "); uart_print_int(CurrentCrankTooth); uart_new_line();
-		uart_print_string("CurrentCrankToothCounter: "); uart_print_int(CurrentCrankToothCounter); uart_new_line(); 
+//  		uart_print_string("CurrentCrankTooth: "); uart_print_int(CurrentCrankTooth); uart_new_line();
+// 		uart_print_string("CurrentCrankToothCounter: "); uart_print_int(CurrentCrankToothCounter); uart_new_line(); 
 // 		uart_print_string("TachEventDelayTeeths: "); uart_print_int(TachEventDelayTeeths); uart_new_line();
 // 		uart_print_string("TachEventNumber: "); uart_print_int(TachEventNumber); uart_new_line();
 // 		uart_print_string("CylinderOffset: "); uart_print_int(CylinderOffset); uart_new_line();
@@ -110,10 +105,10 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	}
 
 	// Injection timing calculations, OFF means turn output off and ON is output on
-	uint32_t PulseWidth = fuelcalc_pulsewidth(); // Hundreds of nanoseconds (1 = 0.1 µs)
+	uint32_t PulseWidth = fuelcalc_pulsewidth() + InjectorOpenTime; // Hundreds of nanoseconds (1 = 0.1 µs)
 	// Degrees are calculated from current crank position(some cylinder TDC), for example 390.0° is one cycle beforehand and 330.0° before next TDC 
 	uint16_t InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
-	int16_t InjDegON = InjDegOFF - math_convert_pulsewidth_to_crank_degrees(PulseWidth + InjectorOpenTime);
+	int16_t InjDegON = InjDegOFF - math_convert_pulsewidth_to_crank_degrees(PulseWidth);
 	if (InjDegON < 0) // If perhaps the calculated pulsewidth is longer than 2 crank cycles (duty cycle > 100%)
 	{
 		InjDegON = 0;
@@ -135,6 +130,12 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	InjCylEvent->InjToothOff = InjEventToothOFF;
 	InjCylEvent->InjToothOn = InjEventToothON;
 	
+	if (InjCylEvent->InjToothOn == InjCylEvent->InjToothOff)
+	{
+		// RAISE A FLAG WHICH IS USED IN TIMER INTERRUPT TO LOAD RB THE InjCntTimingOff
+		InjCylEvent->InjEventOnSameTooth = TRUE;
+	}
+	
 	// The number of counts for the timer is calculated here (which is enabled after the EventTooth)
 	// If the event is at the last tooth before missing tooth, and if it is applicable it is added to the counts of the timer
 	uint32_t TimerTurnOffDegreeAfterTooth = InjDegOFF % CrankToothDegreeInterval; 
@@ -154,14 +155,17 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 // 		uart_print_string("InjTeethsOFF: "); uart_print_int(InjTeethsOFF); uart_new_line();
 // 		uart_print_string("InjTeethsON: "); uart_print_int(InjTeethsON); uart_new_line();
 // 		uart_print_string("CurrentCrankToothCounter: "); uart_print_int(CurrentCrankToothCounter); uart_new_line();
-		uart_print_string("InjEventToothOFF: "); uart_print_int(InjEventToothOFF); uart_new_line();
-		uart_print_string("InjEventToothON: "); uart_print_int(InjEventToothON); uart_new_line();
-		uart_print_string("NrOfMissingTeethsAtEventOFF: "); uart_print_int(NrOfMissingTeethsAtEventOFF); uart_new_line();
-		uart_print_string("NrOfMissingTeethsAtEventON: "); uart_print_int(NrOfMissingTeethsAtEventON); uart_new_line();
+// 		uart_print_string("InjEventToothOFF: "); uart_print_int(InjEventToothOFF); uart_new_line();
+// 		uart_print_string("InjEventToothON: "); uart_print_int(InjEventToothON); uart_new_line();
+// 		uart_print_string("NrOfMissingTeethsAtEventOFF: "); uart_print_int(NrOfMissingTeethsAtEventOFF); uart_new_line();
+// 		uart_print_string("NrOfMissingTeethsAtEventON: "); uart_print_int(NrOfMissingTeethsAtEventON); uart_new_line();
 // 		uart_print_string("cylinder[InjIndex].InjToothOff: "); uart_print_int(cylinder[InjIndex].InjToothOff); uart_new_line();
 // 		uart_print_string("cylinder[InjIndex].InjToothOn: "); uart_print_int(cylinder[InjIndex].InjToothOn); uart_new_line();
  		DebugCounter = 0;
 		}
+		debug_cylinder[InjIndex].InjTargetTurnOffDegree = InjDegOFF;
+		debug_cylinder[InjIndex].InjTargetPulseWidth = PulseWidth;
+		debug_cylinder[InjIndex].InjRealTimeCalcCount = InjCylEvent->Tc_channel->TC_CV;
 	}
 
 	// Ignition timing calculations
@@ -185,65 +189,3 @@ uint32_t decoders_tooth_degree_correction(void)
 	return CrankPrevCycleCounts/4;
 }
 
-
-
-
-// Toggle ignition pin 1
-void decoders_toggle_ign1pin(void)
-{
-	uint32_t status =	PIOC->PIO_ODSR;			// Store the status on pins in port C
-	/*	Toggle output pin PC19	*/
-	if (status & PIO_ODSR_P19)					// AND the status on pins in port C and the status of pin 19
-	{
-		PIOC->PIO_CODR	=	IGN1_OUT;			// If PC19 is high,	Clear Output Data Register	-	Sets pin PC19 to low
-	}
-	else
-	{
-		PIOC->PIO_SODR	=	IGN1_OUT;			// If PC19 is low,	Set Output Data Register	-	Sets pin PC19 to high
-	}
-}
-
-// Toggle ignition pin 2
-void decoders_toggle_ign2pin(void)
-{
-	uint32_t status =	PIOC->PIO_ODSR;			// Store the status on pins in port C
-	/*	Toggle output pin PC19	*/
-	if (status & PIO_ODSR_P23)					// AND the status on pins in port C and the status of pin 19
-	{
-		PIOC->PIO_CODR	=	IGN2_OUT;			// If PC19 is high,	Clear Output Data Register	-	Sets pin PC19 to low
-	}
-	else
-	{
-		PIOC->PIO_SODR	=	IGN2_OUT;			// If PC19 is low,	Set Output Data Register	-	Sets pin PC19 to high
-	}
-}
-
-// Toggle ignition pin 3
-void decoders_toggle_ign3pin(void)
-{
-	uint32_t status =	PIOC->PIO_ODSR;			// Store the status on pins in port C
-	/*	Toggle output pin PC19	*/
-	if (status & PIO_ODSR_P17)					// AND the status on pins in port C and the status of pin 19
-	{
-		PIOC->PIO_CODR	=	IGN3_OUT;			// If PC19 is high,	Clear Output Data Register	-	Sets pin PC19 to low
-	}
-	else
-	{
-		PIOC->PIO_SODR	=	IGN3_OUT;			// If PC19 is low,	Set Output Data Register	-	Sets pin PC19 to high
-	}
-}
-
-// Toggle ignition pin 4
-void decoders_toggle_ign4pin(void)
-{
-	uint32_t status =	PIOC->PIO_ODSR;			// Store the status on pins in port C
-	/*	Toggle output pin PC19	*/
-	if (status & PIO_ODSR_P25)					// AND the status on pins in port C and the status of pin 25
-	{
-		PIOC->PIO_CODR	=	IGN4_OUT;			// If PC25 is high,	Clear Output Data Register	-	Sets pin PC25 to low
-	}
-	else
-	{
-		PIOC->PIO_SODR	=	IGN4_OUT;			// If PC25 is low,	Set Output Data Register	-	Sets pin PC25 to high
-	}
-}

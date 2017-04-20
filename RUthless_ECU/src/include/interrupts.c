@@ -95,17 +95,30 @@ void PIOA_Handler(void)
 			struct cylinder_ *Cyl = &cylinder[i]; 
 			if (Cyl->InjToothOn == CrankToothCounter) // Compare register B is for injector (TC_RB)
 			{
-				Cyl->InjEventPending = TRUE;
-				Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOn; 
+				if (Cyl->InjCntTimingOn < PIOAHANDLERTIMEINCOUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
+				{
+					Cyl->Inj_pio->PIO_SODR = Cyl->InjOutputPin;			// Sets pin to high
+					debug_cylinder[i].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
+				}
+				else
+				{
+					// TODO: USE math_sum_with_overflow_protection !!!!!!!!!!!!!!!!!!!!!!
+					Cyl->InjEventPending = TRUE;
+					Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOn;
+				}
 			}
-			if (Cyl->InjToothOn == Cyl->InjToothOff)
+			else if (!Cyl->InjEventOnSameTooth && (Cyl->InjToothOff == CrankToothCounter)) // Compare register B is for injector (TC_RB)
 			{
-				// RAISE A FLAG WHICH IS USED IN TIMER INTERRUPT TO LOAD RB THE InjCntTimingOff
-				Cyl->InjEventOnSameTooth = TRUE;
-			}
-			else if (Cyl->InjToothOff == CrankToothCounter) // Compare register B is for injector (TC_RB)
-			{
-				Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOff;
+				if (Cyl->InjCntTimingOff < PIOAHANDLERTIMEINCOUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
+				{
+					Cyl->Inj_pio->PIO_CODR = Cyl->InjOutputPin;			// Sets pin to low
+					debug_cylinder[i].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
+				}
+				else
+				{
+					// TODO: USE math_sum_with_overflow_protection !!!!!!!!!!!!!!!!!!!!!!
+					Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOff;
+				}
 			}
 		}
 		if (CrankTooth == DwellFirstTach)
@@ -169,5 +182,7 @@ void PIOA_Handler(void)
 		CamTimerCounts			=		TimerCounterValue;
 		CamSignalFlag			=		TRUE;
 	}
+	
+	PIOAHandlerTimeInCounts = TC2->TC_CHANNEL[2].TC_CV - TimerCounterValue; 
 }
 
