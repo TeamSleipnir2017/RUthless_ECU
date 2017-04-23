@@ -45,7 +45,7 @@ uint16_t fuelcalc_GammaEnrich(void)
 	uint16_t TotalEnrich = 100;
 	uint8_t CoolantTemperature = engine_realtime.Clt;
 	// Calculate warm up enrichment
-	TotalEnrich *= math_interpolation_vector(&engine_config2.WarmUpEnrichTemp ,&engine_config2.WarmUpEnrichPct, CoolantTemperature, 1, WARMUP_ENRICH_SIZE);
+	TotalEnrich *= math_interpolation_vector(&engine_config2.WarmUpEnrichTemp ,&engine_config2.WarmUpEnrichPct, CoolantTemperature, 100, WARMUP_ENRICH_SIZE);
 	TotalEnrich /= 100;
 
 	// Calculate after start enrichment

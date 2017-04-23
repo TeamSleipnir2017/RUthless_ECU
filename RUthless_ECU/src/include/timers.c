@@ -104,20 +104,21 @@ void timer_do_cylinder(uint8_t CylinderNr)
 	uint32_t TimerStatus = Cyl->Tc_channel->TC_SR;
 	if (TimerStatus & TC_SR_CPAS) // Compare register A ignition 1
 	{
-		if (DwellFirstFlag)
-		{
-			Cyl->Ign.pio->PIO_SODR	=	Cyl->Ign.OutputPin;			// Sets pin to high
-			DwellFirstFlag = FALSE;
-		}
-		else if (DwellSecondFlag)
-		{
-			Cyl->Ign.pio->PIO_SODR	=	Cyl->Ign.OutputPin;			// Sets pin to high
-			DwellSecondFlag = FALSE;
-		}
-		else
-		{
-			Cyl->Ign.pio->PIO_CODR	=	Cyl->Ign.OutputPin;			// Sets pin PC19 to low
-		}
+		timer_do_inj_or_ign(&cylinder[CylinderNr].Ign, &cylinder[CylinderNr]);
+// 		if (DwellFirstFlag)
+// 		{
+// 			Cyl->Ign.pio->PIO_SODR	=	Cyl->Ign.OutputPin;			// Sets pin to high
+// 			DwellFirstFlag = FALSE;
+// 		}
+// 		else if (DwellSecondFlag)
+// 		{
+// 			Cyl->Ign.pio->PIO_SODR	=	Cyl->Ign.OutputPin;			// Sets pin to high
+// 			DwellSecondFlag = FALSE;
+// 		}
+// 		else
+// 		{
+// 			Cyl->Ign.pio->PIO_CODR	=	Cyl->Ign.OutputPin;			// Sets pin PC19 to low
+// 		}
 	}
 	if (TimerStatus & TC_SR_CPBS) // Compare register B injector 1
 	{

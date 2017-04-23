@@ -103,7 +103,7 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 // 		uart_print_string("IgnIndex: "); uart_print_int(IgnIndex); uart_new_line();
  		}
 	}
-
+	// TODO: INCREASE DEGREE RESOLUTION TO 360.00° = 36000 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// Injection timing calculations, OFF means turn output off and ON is output on
 	uint32_t PulseWidth = fuelcalc_pulsewidth() + InjectorOpenTime; // Hundreds of nanoseconds (1 = 0.1 µs)
 	// Degrees are calculated from current crank position(some cylinder TDC), for example 390.0° is one cycle beforehand and 330.0° before next TDC 
@@ -111,6 +111,13 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	
 	decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &InjCylEvent->Inj, PulseWidth, InjDegOFF);
 
+	// Ignition timing calculations
+	uint32_t DwellPulseWidth = igncalc_dwell_pulsewidth();
+	uint16_t DegreeAdvance = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);
+	
+	engine_realtime.DegAdvance = (uint8_t) (DegreeAdvance / 10);
+	uint16_t IgnDegOFF = CRANK_DEGREE_RESOLUTION - DegreeAdvance;	
+	decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &IgnCylEvent->Ign, DwellPulseWidth, IgnDegOFF);
 	
 // 	int16_t InjDegON = InjDegOFF - math_convert_pulsewidth_to_crank_degrees(PulseWidth);
 // 	if (InjDegON < 0) // If perhaps the calculated pulsewidth is longer than 2 crank cycles (duty cycle > 100%)

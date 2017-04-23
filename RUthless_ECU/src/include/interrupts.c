@@ -93,6 +93,7 @@ void PIOA_Handler(void)
 		for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
 		{
 			interrupts_check_timer_for_inj_or_ign(&cylinder[i].Inj, &cylinder[i]);
+			interrupts_check_timer_for_inj_or_ign(&cylinder[i].Ign, &cylinder[i]);
 // 			struct cylinder_ *Cyl = &cylinder[i]; 
 // 			if (Cyl->Inj.ToothOn == CrankToothCounter) // Compare register B is for injector (TC_RB)
 // 			{
@@ -120,56 +121,56 @@ void PIOA_Handler(void)
 // 				}
 // 			}
 		}
-		if (CrankTooth == DwellFirstTach)
-		{
-			DwellSecondFlag = TRUE;
-			if (!CamSignalFlag)
-			{
-				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
-			}
-			else
-			{
-				TC1->TC_CHANNEL[0].TC_RA	=	TC1->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
-			}
-		}
-		else if (CrankTooth == DwellSecondTach)
-		{
-			DwellFirstFlag = TRUE;
-			
-			if (!CamSignalFlag)
-			{
-				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + DwellSecondInterval;
-			}
-			else
-			{
-				TC0->TC_CHANNEL[2].TC_RA	=	TC0->TC_CHANNEL[2].TC_CV + DwellSecondInterval;
-			}			
-		}
-		
-		
-		if (CrankTooth == CrankFirstTach)
-		{
-			if (!CamSignalFlag)
-			{
-				
-				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + CrankFirstInterval;
-			}
-			else
-			{
-				TC1->TC_CHANNEL[0].TC_RA	=	TC1->TC_CHANNEL[0].TC_CV + CrankFirstInterval;
-			}
-		}
-		else if (CrankTooth == CrankSecondTach)
-		{
-			if (!CamSignalFlag)
-			{
-				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + CrankSecondInterval;
-			}
-			else
-			{
-				TC0->TC_CHANNEL[2].TC_RA	=	TC0->TC_CHANNEL[2].TC_CV + CrankSecondInterval;
-			}
-		}
+// 		if (CrankTooth == DwellFirstTach)
+// 		{
+// 			DwellSecondFlag = TRUE;
+// 			if (!CamSignalFlag)
+// 			{
+// 				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
+// 			}
+// 			else
+// 			{
+// 				TC1->TC_CHANNEL[0].TC_RA	=	TC1->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
+// 			}
+// 		}
+// 		else if (CrankTooth == DwellSecondTach)
+// 		{
+// 			DwellFirstFlag = TRUE;
+// 			
+// 			if (!CamSignalFlag)
+// 			{
+// 				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + DwellSecondInterval;
+// 			}
+// 			else
+// 			{
+// 				TC0->TC_CHANNEL[2].TC_RA	=	TC0->TC_CHANNEL[2].TC_CV + DwellSecondInterval;
+// 			}			
+// 		}
+// 		
+// 		
+// 		if (CrankTooth == CrankFirstTach)
+// 		{
+// 			if (!CamSignalFlag)
+// 			{
+// 				
+// 				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + CrankFirstInterval;
+// 			}
+// 			else
+// 			{
+// 				TC1->TC_CHANNEL[0].TC_RA	=	TC1->TC_CHANNEL[0].TC_CV + CrankFirstInterval;
+// 			}
+// 		}
+// 		else if (CrankTooth == CrankSecondTach)
+// 		{
+// 			if (!CamSignalFlag)
+// 			{
+// 				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + CrankSecondInterval;
+// 			}
+// 			else
+// 			{
+// 				TC0->TC_CHANNEL[2].TC_RA	=	TC0->TC_CHANNEL[2].TC_CV + CrankSecondInterval;
+// 			}
+// 		}
 	}
 	
 	

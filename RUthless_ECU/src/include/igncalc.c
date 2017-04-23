@@ -89,26 +89,35 @@ uint32_t igncalc_dwell_degree(void)
 // Returns dwell in hundreds of nanosecond, 1 = 100ns
 uint32_t igncalc_dwell_pulsewidth(void)
 {
-	// TODO: if cranking then use engine_config4.DwellTimeCranking
-	uint8_t correction = igncalc_dwell_correction();
-	uint32_t totalDwellus = (engine_config4.DwellTimeRunning * correction); // return microseconds
-
-	if (engine_config4.DwellLimitEnable && (totalDwellus > IgnitionDwellLimit))
+	uint16_t correction = igncalc_dwell_correction(); // 0 - 1000 represents 0 - 100.0%
+	uint32_t TotalDwellus;
+	if (engine_realtime.Rpm < engine_config2.CrankingRpm)
 	{
-		totalDwellus = IgnitionDwellLimit;
+		TotalDwellus = (engine_config4.DwellTimeCranking * correction); // return hundred of nanoseconds 
 	}
-	engine_realtime.Dwell = totalDwellus/1000;
+	else
+	{
+		TotalDwellus = (engine_config4.DwellTimeRunning * correction); // return hundred of nanoseconds
+	}
+	 
+	if (engine_config4.DwellLimitEnable && (TotalDwellus > IgnitionDwellLimit))
+	{
+		TotalDwellus = IgnitionDwellLimit;
+	}
+	engine_realtime.Dwell = TotalDwellus/1000;
 
-	return totalDwellus;
+	return TotalDwellus;
 }
 
 
 // Correction for dwell in regards to battery voltage
-// Returns the dwell correction in percentage (%) 0 - 255% depending on the parameters set in TunerStudio
-uint8_t igncalc_dwell_correction(void)
+// Returns the dwell correction in percentage (%) 0.0 - 255.0% depending on the parameters set in TunerStudio (Scaled up by 0.1), 100.0% = 1000 
+uint16_t igncalc_dwell_correction(void)
 {
 	uint8_t voltage = engine_realtime.BattVolt;
-	uint32_t totalDwell = math_interpolation_vector(&engine_config6.BattRefVoltBins, &engine_config4.DwellCorrectionValues, voltage, 1, sizeof(engine_config4.DwellCorrectionValues));
+	// Use scaler 23.4.17 JBB
+	uint32_t totalDwell = math_interpolation_vector(&engine_config6.BattRefVoltBins, &engine_config4.DwellCorrectionValues, voltage, 10, sizeof(engine_config4.DwellCorrectionValues));
+	//uint32_t totalDwell = math_interpolation_vector(&engine_config6.BattRefVoltBins, &engine_config4.DwellCorrectionValues, voltage, 1, sizeof(engine_config4.DwellCorrectionValues));
 	return totalDwell;
 }
 

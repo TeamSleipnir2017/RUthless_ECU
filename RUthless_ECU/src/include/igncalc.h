@@ -18,7 +18,7 @@ uint32_t igncalc_ign_time_interval(uint16_t ign_degree);
 
 uint32_t igncalc_dwell_degree(void);
 uint32_t igncalc_dwell_pulsewidth(void);
-uint8_t igncalc_dwell_correction(void);
+uint16_t igncalc_dwell_correction(void);
 
 
 
