@@ -85,6 +85,23 @@ uint32_t igncalc_dwell_degree(void)
 	return (3600*temp2)/LastCrankRevCounts;
 }
 
+// Calculate how much dwell is needed
+// Returns dwell in hundreds of nanosecond, 1 = 100ns
+uint32_t igncalc_dwell_pulsewidth(void)
+{
+	// TODO: if cranking then use engine_config4.DwellTimeCranking
+	uint8_t correction = igncalc_dwell_correction();
+	uint32_t totalDwellus = (engine_config4.DwellTimeRunning * correction); // return microseconds
+
+	if (engine_config4.DwellLimitEnable && (totalDwellus > IgnitionDwellLimit))
+	{
+		totalDwellus = IgnitionDwellLimit;
+	}
+	engine_realtime.Dwell = totalDwellus/1000;
+
+	return totalDwellus;
+}
+
 
 // Correction for dwell in regards to battery voltage
 // Returns the dwell correction in percentage (%) 0 - 255% depending on the parameters set in TunerStudio

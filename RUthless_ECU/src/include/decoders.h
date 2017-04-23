@@ -15,7 +15,10 @@
 void decoders_crank_primary(void);
 
 void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter);
+// Calculate timing for injector or ignition coil
+void decoders_set_inj_or_ign_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter, struct cylinder_output_manager *Inj_or_Ign, uint32_t PulseWidth, uint16_t DegreeOff);
 uint32_t decoders_find_event_tooth(uint32_t CrankDegree, uint32_t CurrentCrankToothCounter); // returns teeth numbers to next event
+
 
 
 void decoders_toggle_ign1pin(void);

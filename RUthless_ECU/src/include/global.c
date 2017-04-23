@@ -45,7 +45,7 @@ void global_init(void)
 	TachCrankDegreeInterval = 360 / TachEvents;
 	CrankToothDegreeInterval = CRANK_DEGREE_RESOLUTION / engine_config4.TriggerTeethCount;
 	InjectorOpenTime = engine_config2.injOpen * 1000; // injOpen is in 100 of µs, convert it to 100 of ns
-
+	IgnitionDwellLimit = engine_config4.DwellLimit * 10000;//DwellLimit is in 1 ms resolution, convert to 100 of ns
 
 	// TODO: NEED TO MAKE CONFIGURABLE IN TUNERSTUDIO
 	engine_config2.FiringOrder[0] = 1 - 1;
@@ -67,20 +67,20 @@ void cylinder_init(void)
 {
 	for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
 	{
-		cylinder[i].IgnCntTimingOn = 0;
-		cylinder[i].IgnCntTimingOff = 0;
-		cylinder[i].IgnToothOn = 0;
-		cylinder[i].IgnToothOff = 0;
-		cylinder[i].IgnEventPending = FALSE;
-		cylinder[i].IgnEventOnSameTooth = FALSE;
-		cylinder[i].InjCntTimingOn = 0;
-		cylinder[i].InjCntTimingOff = 0;
-		cylinder[i].InjToothOn = 0;
-		cylinder[i].InjToothOff = 0;
-		cylinder[i].InjEventPending = FALSE;
-		cylinder[i].InjEventOnSameTooth = FALSE;
-		cylinder[i].Ign_pio = PIOC;
-		cylinder[i].Inj_pio = PIOC;
+		cylinder[i].Ign.CntTimingOn = 0;
+		cylinder[i].Ign.CntTimingOff = 0;
+		cylinder[i].Ign.ToothOn = 0;
+		cylinder[i].Ign.ToothOff = 0;
+		cylinder[i].Ign.EventPending = FALSE;
+		cylinder[i].Ign.EventOnSameTooth = FALSE;
+		cylinder[i].Inj.CntTimingOn = 0;
+		cylinder[i].Inj.CntTimingOff = 0;
+		cylinder[i].Inj.ToothOn = 0;
+		cylinder[i].Inj.ToothOff = 0;
+		cylinder[i].Inj.EventPending = FALSE;
+		cylinder[i].Inj.EventOnSameTooth = FALSE;
+		cylinder[i].Ign.pio = PIOC;
+		cylinder[i].Inj.pio = PIOC;
 		
 		Tc *Timer;
 		// Initialize timer
@@ -92,31 +92,34 @@ void cylinder_init(void)
 			Timer = TC2;
 		cylinder[i].Tc_channel = &Timer->TC_CHANNEL[i%3];
 		
+		cylinder[i].Ign.TcCompareRegister = &cylinder[i].Tc_channel->TC_RA;
+		cylinder[i].Inj.TcCompareRegister = &cylinder[i].Tc_channel->TC_RB;
+		
 		timer_init(CYLINDER_1_TIMER + i, TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_EEVT_XC0, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPBS | TC_IER_CPCS, TC0_PRIORITY + i);
 		
 		debug_cylinder[i].RealTimeCylInstance = i + 1;
 	}
-	cylinder[1].Inj_pio = PIOD; // Because the board developer did not thought it through :)
-	cylinder[0].IgnOutputPin = IGN1_OUT;
-	cylinder[1].IgnOutputPin = IGN2_OUT;
-	cylinder[2].IgnOutputPin = IGN3_OUT;
-	cylinder[3].IgnOutputPin = IGN4_OUT;
-	cylinder[4].IgnOutputPin = IGN5_OUT;
-	cylinder[5].IgnOutputPin = IGN6_OUT;
-	cylinder[6].IgnOutputPin = IGN7_OUT;
-	cylinder[7].IgnOutputPin = IGN8_OUT;
-	cylinder[0].InjOutputPin = INJ1_OUT;
-	cylinder[1].InjOutputPin = INJ2_OUT;
-	cylinder[2].InjOutputPin = INJ3_OUT;
-	cylinder[3].InjOutputPin = INJ4_OUT;
-	cylinder[4].InjOutputPin = INJ5_OUT;
-	cylinder[5].InjOutputPin = INJ6_OUT;
-	cylinder[6].InjOutputPin = INJ7_OUT;
-	cylinder[7].InjOutputPin = INJ8_OUT;
+	cylinder[1].Inj.pio = PIOD; // Because the board developer did not thought it through :)
+	cylinder[0].Ign.OutputPin = IGN1_OUT;
+	cylinder[1].Ign.OutputPin = IGN2_OUT;
+	cylinder[2].Ign.OutputPin = IGN3_OUT;
+	cylinder[3].Ign.OutputPin = IGN4_OUT;
+	cylinder[4].Ign.OutputPin = IGN5_OUT;
+	cylinder[5].Ign.OutputPin = IGN6_OUT;
+	cylinder[6].Ign.OutputPin = IGN7_OUT;
+	cylinder[7].Ign.OutputPin = IGN8_OUT;
+	cylinder[0].Inj.OutputPin = INJ1_OUT;
+	cylinder[1].Inj.OutputPin = INJ2_OUT;
+	cylinder[2].Inj.OutputPin = INJ3_OUT;
+	cylinder[3].Inj.OutputPin = INJ4_OUT;
+	cylinder[4].Inj.OutputPin = INJ5_OUT;
+	cylinder[5].Inj.OutputPin = INJ6_OUT;
+	cylinder[6].Inj.OutputPin = INJ7_OUT;
+	cylinder[7].Inj.OutputPin = INJ8_OUT;
 	for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
 	{
-		pio_set_output(cylinder[i].Ign_pio, cylinder[i].IgnOutputPin, LOW, FALSE, FALSE);
-		pio_set_output(cylinder[i].Inj_pio, cylinder[i].InjOutputPin, LOW, FALSE, FALSE);
+		pio_set_output(cylinder[i].Ign.pio, cylinder[i].Ign.OutputPin, LOW, FALSE, FALSE);
+		pio_set_output(cylinder[i].Inj.pio, cylinder[i].Inj.OutputPin, LOW, FALSE, FALSE);
 	}
 }
 

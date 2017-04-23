@@ -57,6 +57,7 @@ uint32_t isDebug;
 
 volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
 volatile uint16_t InjectorOpenTime;			// Injector opening/closing time in hundreds of nanoseconds: 1 = 100 nsec
+volatile uint32_t IgnitionDwellLimit;		// Dwell limit of ignition coil in hundreds of nanoseconds: 1 = 100 nsec
 
 volatile uint32_t PIOAHandlerTimeInCounts; // Time taken in PIOA_HANDLER in timer counts
 
@@ -176,32 +177,36 @@ volatile struct engine_realtime_ engine_realtime;
 // TODO: ALLOCATE MEMORY FOR CONFIGURABLE AMOUNT OF CYLINDERS, instead of 8
 struct cylinder_output_manager
 {
-	uint32_t CntTimingOn;	// Output(ignition/injector) cylinder "x" counter ON value
-	uint32_t CntTimingOff;	// Output(ignition/injector) cylinder "x" counter OFF value
-	uint32_t ToothOn;		// Output(ignition/injector) cylinder "x" trigger wheel tooth ON value
-	uint32_t ToothOff;		// Output(ignition/injector) cylinder "x" trigger wheel tooth OFF value
-	uint8_t	 EventPending;	// A flag to indicate a Output(ignition/injector) event
-	uint8_t  EventOnSameTooth;// A flag to indicate on and off event at same crankshaft tooth
-	
+	uint32_t CntTimingOn;		// Output(ignition/injector) cylinder "x" counter ON value
+	uint32_t CntTimingOff;		// Output(ignition/injector) cylinder "x" counter OFF value
+	uint32_t ToothOn;			// Output(ignition/injector) cylinder "x" trigger wheel tooth ON value
+	uint32_t ToothOff;			// Output(ignition/injector) cylinder "x" trigger wheel tooth OFF value
+	uint8_t	 EventPending;		// A flag to indicate a Output(ignition/injector) event
+	uint8_t  EventOnSameTooth;	// A flag to indicate on and off event at same crankshaft tooth
+	uint32_t OutputPin;			// Address of Output(ignition/injector) pin
+	Pio		*pio;				// Pointer to Output(ignition/injector) Peripheral Input/Output controller
+	uint32_t*TcCompareRegister;	// Pointer to timer peripheral compare register
 };
 struct cylinder_
 {
-	uint32_t IgnCntTimingOn;	// Ignition coil cylinder "x" counter ON value
-	uint32_t IgnCntTimingOff;	// Ignition coil cylinder "x" counter OFF value
-	uint32_t IgnToothOn;		// Ignition coil cylinder "x" trigger wheel tooth ON value
-	uint32_t IgnToothOff;		// Ignition coil cylinder "x" trigger wheel tooth OFF value
-	uint8_t	 IgnEventPending;	// A flag to indicate a injection event
-	uint8_t  IgnEventOnSameTooth;// A flag to indicate on and off event at same crankshaft tooth
-	uint32_t InjCntTimingOn;	// Injector cylinder "x" counter ON value
-	uint32_t InjCntTimingOff;	// Injector cylinder "x" counter OFF value
-	uint32_t InjToothOn;		// Ignition coil cylinder "x" trigger wheel tooth ON value
-	uint32_t InjToothOff;		// Ignition coil cylinder "x" trigger wheel tooth OFF value
-	uint8_t	 InjEventPending;	// A flag to indicate a injection event
-	uint8_t  InjEventOnSameTooth;// A flag to indicate on and off event at same crankshaft tooth
-	uint32_t IgnOutputPin;		// Pointer to ignition output pin
-	Pio		*Ign_pio;			// Pointer to ignition peripheral input output controller
-	uint32_t InjOutputPin;		// Pointer to injector output pin
-	Pio		*Inj_pio;			// Pointer to injector peripheral input output controller
+// 	uint32_t IgnCntTimingOn;	// Ignition coil cylinder "x" counter ON value
+// 	uint32_t IgnCntTimingOff;	// Ignition coil cylinder "x" counter OFF value
+// 	uint32_t IgnToothOn;		// Ignition coil cylinder "x" trigger wheel tooth ON value
+// 	uint32_t IgnToothOff;		// Ignition coil cylinder "x" trigger wheel tooth OFF value
+// 	uint8_t	 IgnEventPending;	// A flag to indicate a injection event
+// 	uint8_t  IgnEventOnSameTooth;// A flag to indicate on and off event at same crankshaft tooth
+// 	uint32_t InjCntTimingOn;	// Injector cylinder "x" counter ON value
+// 	uint32_t InjCntTimingOff;	// Injector cylinder "x" counter OFF value
+// 	uint32_t InjToothOn;		// Ignition coil cylinder "x" trigger wheel tooth ON value
+// 	uint32_t InjToothOff;		// Ignition coil cylinder "x" trigger wheel tooth OFF value
+// 	uint8_t	 InjEventPending;	// A flag to indicate a injection event
+// 	uint8_t  InjEventOnSameTooth;// A flag to indicate on and off event at same crankshaft tooth
+// 	uint32_t IgnOutputPin;		// Pointer to ignition output pin
+// 	Pio		*Ign_pio;			// Pointer to ignition peripheral input output controller
+// 	uint32_t InjOutputPin;		// Pointer to injector output pin
+// 	Pio		*Inj_pio;			// Pointer to injector peripheral input output controller
+	volatile struct cylinder_output_manager Ign;
+	volatile struct cylinder_output_manager Inj;
 	TcChannel *Tc_channel;		// Pointer to appropriated timer for this cylinder
 	/* TODO: IF secondary injector                                      */
 };

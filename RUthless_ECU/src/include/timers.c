@@ -106,38 +106,39 @@ void timer_do_cylinder(uint8_t CylinderNr)
 	{
 		if (DwellFirstFlag)
 		{
-			Cyl->Ign_pio->PIO_SODR	=	Cyl->IgnOutputPin;			// Sets pin to high
+			Cyl->Ign.pio->PIO_SODR	=	Cyl->Ign.OutputPin;			// Sets pin to high
 			DwellFirstFlag = FALSE;
 		}
 		else if (DwellSecondFlag)
 		{
-			Cyl->Ign_pio->PIO_SODR	=	Cyl->IgnOutputPin;			// Sets pin to high
+			Cyl->Ign.pio->PIO_SODR	=	Cyl->Ign.OutputPin;			// Sets pin to high
 			DwellSecondFlag = FALSE;
 		}
 		else
 		{
-			Cyl->Ign_pio->PIO_CODR	=	Cyl->IgnOutputPin;			// Sets pin PC19 to low
+			Cyl->Ign.pio->PIO_CODR	=	Cyl->Ign.OutputPin;			// Sets pin PC19 to low
 		}
 	}
 	if (TimerStatus & TC_SR_CPBS) // Compare register B injector 1
 	{
-		if (Cyl->InjEventPending)
-		{
-			Cyl->Inj_pio->PIO_SODR = Cyl->InjOutputPin;			// Sets pin to high
-			Cyl->InjEventPending = FALSE;
-			debug_cylinder[CylinderNr].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
-		}
-		else
-		{
-			Cyl->Inj_pio->PIO_CODR = Cyl->InjOutputPin;			// Sets pin to low
-			debug_cylinder[CylinderNr].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
-		}
-		// TODO: NEEDS TO BE TESTED
-		if (Cyl->InjEventOnSameTooth)							// Check if Off event is at the same tooth
-		{
-			Cyl->Tc_channel->TC_RB = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Cyl->InjCntTimingOff);
-			Cyl->InjEventOnSameTooth = FALSE;
-		}
+		timer_do_inj_or_ign(&cylinder[CylinderNr].Inj, &cylinder[CylinderNr]);
+// 		if (Cyl->Inj.EventPending)
+// 		{
+// 			Cyl->Inj.pio->PIO_SODR = Cyl->Inj.OutputPin;			// Sets pin to high
+// 			Cyl->Inj.EventPending = FALSE;
+// 			debug_cylinder[CylinderNr].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
+// 		}
+// 		else
+// 		{
+// 			Cyl->Inj.pio->PIO_CODR = Cyl->Inj.OutputPin;			// Sets pin to low
+// 			debug_cylinder[CylinderNr].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
+// 		}
+// 		// TODO: NEEDS TO BE TESTED
+// 		if (Cyl->Inj.EventOnSameTooth)							// Check if Off event is at the same tooth
+// 		{
+// 			Cyl->Tc_channel->TC_RB = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Cyl->Inj.CntTimingOff);
+// 			Cyl->Inj.EventOnSameTooth = FALSE;
+// 		}
 	}
 	if (TimerStatus & TC_SR_CPCS) // Compare register C injector 2
 	{
@@ -145,6 +146,27 @@ void timer_do_cylinder(uint8_t CylinderNr)
 	if (TimerStatus & TC_SR_COVFS) // Overflow
 	{ 
 		// TODO: Necessary to handle the Overflow probably best to check when loading RA, RB and RC
+	}
+}
+
+void timer_do_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl)
+{
+	if (Inj_or_Ign->EventPending)
+	{
+		Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to high
+		Inj_or_Ign->EventPending = FALSE;
+		//debug_cylinder[CylinderNr].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
+	}
+	else
+	{
+		Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to low
+		//debug_cylinder[CylinderNr].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
+	}
+	// TODO: NEEDS TO BE TESTED
+	if (Inj_or_Ign->EventOnSameTooth)							// Check if Off event is at the same tooth
+	{
+		*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOff);
+		Inj_or_Ign->EventOnSameTooth = FALSE;
 	}
 }
 
