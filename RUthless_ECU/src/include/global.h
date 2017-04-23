@@ -100,7 +100,6 @@ volatile uint32_t DwellSecondInterval;
 /************************************************************************/
 /* Timer definitions:                                                   */
 /************************************************************************/
-
 #define CYLINDER_1_TIMER 0
 #define CYLINDER_2_TIMER 1
 #define CYLINDER_3_TIMER 2
@@ -113,7 +112,7 @@ volatile uint32_t DwellSecondInterval;
 
 #define GLOBAL_TIMER_FREQ 2625000
 
-#define PIOAHANDLERTIMEINCOUNTS 30 // Used to check if it is required to turn on timer interrupts (This time was manually measured)
+#define PIOA_HANDLER_TIME_IN_COUNTS 30 // Used to check if it is required to turn on timer interrupts (This time was manually measured)
 
 uint16_t GlobalTimerFreqADCScaler;
 uint16_t GlobalTimerFreqUARTScaler;
@@ -175,6 +174,16 @@ volatile struct engine_realtime_ engine_realtime;
 
 
 // TODO: ALLOCATE MEMORY FOR CONFIGURABLE AMOUNT OF CYLINDERS, instead of 8
+struct cylinder_output_manager
+{
+	uint32_t CntTimingOn;	// Output(ignition/injector) cylinder "x" counter ON value
+	uint32_t CntTimingOff;	// Output(ignition/injector) cylinder "x" counter OFF value
+	uint32_t ToothOn;		// Output(ignition/injector) cylinder "x" trigger wheel tooth ON value
+	uint32_t ToothOff;		// Output(ignition/injector) cylinder "x" trigger wheel tooth OFF value
+	uint8_t	 EventPending;	// A flag to indicate a Output(ignition/injector) event
+	uint8_t  EventOnSameTooth;// A flag to indicate on and off event at same crankshaft tooth
+	
+};
 struct cylinder_
 {
 	uint32_t IgnCntTimingOn;	// Ignition coil cylinder "x" counter ON value
@@ -197,6 +206,9 @@ struct cylinder_
 	/* TODO: IF secondary injector                                      */
 };
 volatile struct cylinder_ cylinder[MAX_NR_OF_CYL]; // Create an instance of the struct defined above 
+
+
+
 
 struct debug_cylinders_
 {

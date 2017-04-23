@@ -85,8 +85,8 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	uint32_t InjIndex = TachEventNumber + CylinderOffset;						// Represents current cylinder tdc or 720°
 	uint32_t IgnIndex = (TachEventNumber + CylinderOffset + NrCylinderDividedByTwo) % (engine_config2.NrCylinders); // Calculate cylinder after 360° 
 	// TODO: CHOOSE CYLINDER ACCORDING TO FIRING ORDER
-	struct cylinder_ *InjCylEvent = &cylinder[InjIndex]; // Next cylinder to calculate injection parameters for (720° from current position)
-	struct cylinder_ *IgnCylEvent = &cylinder[IgnIndex]; // Next cylinder to calculate ignition parameters for (360° from current position) TODO: Check if dwell time is longer than max rpm time then calculate 720° before
+	struct cylinder_ *InjCylEvent = &cylinder[engine_config2.FiringOrder[InjIndex]]; // Next cylinder to calculate injection parameters for (720° from current position)
+	struct cylinder_ *IgnCylEvent = &cylinder[engine_config2.FiringOrder[IgnIndex]]; // Next cylinder to calculate ignition parameters for (360° from current position) TODO: Check if dwell time is longer than max rpm time then calculate 720° before
 	
 	if (isDebug)
 	{

@@ -95,29 +95,27 @@ void PIOA_Handler(void)
 			struct cylinder_ *Cyl = &cylinder[i]; 
 			if (Cyl->InjToothOn == CrankToothCounter) // Compare register B is for injector (TC_RB)
 			{
-				if (Cyl->InjCntTimingOn < PIOAHANDLERTIMEINCOUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
+				if (Cyl->InjCntTimingOn < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
 				{
 					Cyl->Inj_pio->PIO_SODR = Cyl->InjOutputPin;			// Sets pin to high
 					debug_cylinder[i].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 				}
 				else
 				{
-					// TODO: USE math_sum_with_overflow_protection !!!!!!!!!!!!!!!!!!!!!!
 					Cyl->InjEventPending = TRUE;
-					Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOn;
+					Cyl->Tc_channel->TC_RB = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Cyl->InjCntTimingOn);
 				}
 			}
 			else if (!Cyl->InjEventOnSameTooth && (Cyl->InjToothOff == CrankToothCounter)) // Compare register B is for injector (TC_RB)
 			{
-				if (Cyl->InjCntTimingOff < PIOAHANDLERTIMEINCOUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
+				if (Cyl->InjCntTimingOff < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
 				{
 					Cyl->Inj_pio->PIO_CODR = Cyl->InjOutputPin;			// Sets pin to low
 					debug_cylinder[i].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
 				}
 				else
 				{
-					// TODO: USE math_sum_with_overflow_protection !!!!!!!!!!!!!!!!!!!!!!
-					Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOff;
+					Cyl->Tc_channel->TC_RB = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Cyl->InjCntTimingOff);
 				}
 			}
 		}

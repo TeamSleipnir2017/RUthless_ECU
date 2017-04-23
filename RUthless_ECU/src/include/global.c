@@ -48,10 +48,10 @@ void global_init(void)
 
 
 	// TODO: NEED TO MAKE CONFIGURABLE IN TUNERSTUDIO
-	engine_config2.FiringOrder[0] = 1;
-	engine_config2.FiringOrder[1] = 2;
-	engine_config2.FiringOrder[2] = 4;
-	engine_config2.FiringOrder[3] = 3;
+	engine_config2.FiringOrder[0] = 1 - 1;
+	engine_config2.FiringOrder[1] = 2 - 1;
+	engine_config2.FiringOrder[2] = 4 - 1;
+	engine_config2.FiringOrder[3] = 3 - 1;
 
 
 	storage_init_struct_to_zero(&engine_realtime, sizeof(engine_realtime));
@@ -91,6 +91,8 @@ void cylinder_init(void)
 		else // TC2
 			Timer = TC2;
 		cylinder[i].Tc_channel = &Timer->TC_CHANNEL[i%3];
+		
+		timer_init(CYLINDER_1_TIMER + i, TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_EEVT_XC0, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPBS | TC_IER_CPCS, TC0_PRIORITY + i);
 		
 		debug_cylinder[i].RealTimeCylInstance = i + 1;
 	}

@@ -590,7 +590,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3ca src/ASF/common/services/delay/sam/cycle_counter.o
  .debug_macro   0x00000000       0x22 src/ASF/common/services/delay/sam/cycle_counter.o
  .debug_line    0x00000000      0xb4e src/ASF/common/services/delay/sam/cycle_counter.o
- .debug_str     0x00000000    0x5c742 src/ASF/common/services/delay/sam/cycle_counter.o
+ .debug_str     0x00000000    0x5c756 src/ASF/common/services/delay/sam/cycle_counter.o
  .comment       0x00000000       0x5a src/ASF/common/services/delay/sam/cycle_counter.o
  .debug_frame   0x00000000       0x20 src/ASF/common/services/delay/sam/cycle_counter.o
  .ARM.attributes
@@ -1144,7 +1144,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3ca src/ASF/sam/drivers/adc/adc_sam3u.o
  .debug_macro   0x00000000       0x1c src/ASF/sam/drivers/adc/adc_sam3u.o
  .debug_line    0x00000000      0xb26 src/ASF/sam/drivers/adc/adc_sam3u.o
- .debug_str     0x00000000    0x5c60d src/ASF/sam/drivers/adc/adc_sam3u.o
+ .debug_str     0x00000000    0x5c621 src/ASF/sam/drivers/adc/adc_sam3u.o
  .comment       0x00000000       0x5a src/ASF/sam/drivers/adc/adc_sam3u.o
  .ARM.attributes
                 0x00000000       0x33 src/ASF/sam/drivers/adc/adc_sam3u.o
@@ -1648,7 +1648,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3ca src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_macro   0x00000000       0x3f src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_line    0x00000000      0xb62 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
- .debug_str     0x00000000    0x5c61e src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
+ .debug_str     0x00000000    0x5c632 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .comment       0x00000000       0x5a src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .debug_frame   0x00000000       0x30 src/ASF/common/utils/interrupt/interrupt_sam_nvic.o
  .ARM.attributes
@@ -2714,7 +2714,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x3ca src/ASF/sam/drivers/pio/pio_handler.o
  .debug_macro   0x00000000       0x8e src/ASF/sam/drivers/pio/pio_handler.o
  .debug_line    0x00000000      0xbc9 src/ASF/sam/drivers/pio/pio_handler.o
- .debug_str     0x00000000    0x5d037 src/ASF/sam/drivers/pio/pio_handler.o
+ .debug_str     0x00000000    0x5d04b src/ASF/sam/drivers/pio/pio_handler.o
  .comment       0x00000000       0x5a src/ASF/sam/drivers/pio/pio_handler.o
  .debug_frame   0x00000000       0x98 src/ASF/sam/drivers/pio/pio_handler.o
  .ARM.attributes
@@ -3322,7 +3322,7 @@ Discarded input sections
  .debug_macro   0x00000000      0x2bf src/ASF/sam/drivers/pmc/sleep.o
  .debug_macro   0x00000000      0x790 src/ASF/sam/drivers/pmc/sleep.o
  .debug_line    0x00000000      0xcbd src/ASF/sam/drivers/pmc/sleep.o
- .debug_str     0x00000000    0x5ff13 src/ASF/sam/drivers/pmc/sleep.o
+ .debug_str     0x00000000    0x5ff27 src/ASF/sam/drivers/pmc/sleep.o
  .comment       0x00000000       0x5a src/ASF/sam/drivers/pmc/sleep.o
  .debug_frame   0x00000000       0x60 src/ASF/sam/drivers/pmc/sleep.o
  .ARM.attributes
@@ -5469,7 +5469,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/eeprom.o
  .debug_macro   0x00000000       0x34 src/include/eeprom.o
  .debug_macro   0x00000000       0x16 src/include/eeprom.o
- .debug_macro   0x00000000      0x30b src/include/eeprom.o
+ .debug_macro   0x00000000      0x30a src/include/eeprom.o
  .debug_macro   0x00000000       0x10 src/include/eeprom.o
  .debug_macro   0x00000000       0x22 src/include/eeprom.o
  .debug_macro   0x00000000       0x16 src/include/eeprom.o
@@ -5751,7 +5751,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/fuelcalc.o
  .debug_macro   0x00000000       0x34 src/include/fuelcalc.o
  .debug_macro   0x00000000       0x16 src/include/fuelcalc.o
- .debug_macro   0x00000000      0x30b src/include/fuelcalc.o
+ .debug_macro   0x00000000      0x30a src/include/fuelcalc.o
  .debug_macro   0x00000000       0x10 src/include/fuelcalc.o
  .debug_macro   0x00000000       0x22 src/include/fuelcalc.o
  .debug_macro   0x00000000       0x16 src/include/fuelcalc.o
@@ -6034,7 +6034,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/global.o
  .debug_macro   0x00000000       0x34 src/include/global.o
  .debug_macro   0x00000000       0x16 src/include/global.o
- .debug_macro   0x00000000      0x30b src/include/global.o
+ .debug_macro   0x00000000      0x30a src/include/global.o
  .debug_macro   0x00000000       0x10 src/include/global.o
  .debug_macro   0x00000000       0x22 src/include/global.o
  .debug_macro   0x00000000       0x16 src/include/global.o
@@ -6317,7 +6317,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/igncalc.o
  .debug_macro   0x00000000       0x34 src/include/igncalc.o
  .debug_macro   0x00000000       0x16 src/include/igncalc.o
- .debug_macro   0x00000000      0x30b src/include/igncalc.o
+ .debug_macro   0x00000000      0x30a src/include/igncalc.o
  .debug_macro   0x00000000       0x10 src/include/igncalc.o
  .debug_macro   0x00000000       0x22 src/include/igncalc.o
  .debug_macro   0x00000000       0x16 src/include/igncalc.o
@@ -6600,7 +6600,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/interrupts.o
  .debug_macro   0x00000000       0x34 src/include/interrupts.o
  .debug_macro   0x00000000       0x16 src/include/interrupts.o
- .debug_macro   0x00000000      0x30b src/include/interrupts.o
+ .debug_macro   0x00000000      0x30a src/include/interrupts.o
  .debug_macro   0x00000000       0x10 src/include/interrupts.o
  .debug_macro   0x00000000       0x22 src/include/interrupts.o
  .debug_macro   0x00000000       0x82 src/include/interrupts.o
@@ -6748,8 +6748,6 @@ Discarded input sections
  .text          0x00000000        0x0 src/include/math.o
  .data          0x00000000        0x0 src/include/math.o
  .bss           0x00000000        0x0 src/include/math.o
- .text.math_sum_with_overflow_protection
-                0x00000000        0xa src/include/math.o
  .text.math_convert_pulsewidth_to_teeth_count
                 0x00000000       0x3c src/include/math.o
  .text.math_convert_pulsewidth_to_timer_counts
@@ -6890,7 +6888,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/math.o
  .debug_macro   0x00000000       0x34 src/include/math.o
  .debug_macro   0x00000000       0x16 src/include/math.o
- .debug_macro   0x00000000      0x30b src/include/math.o
+ .debug_macro   0x00000000      0x30a src/include/math.o
  .debug_macro   0x00000000       0x22 src/include/math.o
  .debug_macro   0x00000000       0x16 src/include/math.o
  .debug_macro   0x00000000       0x82 src/include/math.o
@@ -7172,7 +7170,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/sensors.o
  .debug_macro   0x00000000       0x34 src/include/sensors.o
  .debug_macro   0x00000000       0x16 src/include/sensors.o
- .debug_macro   0x00000000      0x30b src/include/sensors.o
+ .debug_macro   0x00000000      0x30a src/include/sensors.o
  .debug_macro   0x00000000       0x10 src/include/sensors.o
  .debug_macro   0x00000000       0x22 src/include/sensors.o
  .debug_macro   0x00000000       0x16 src/include/sensors.o
@@ -7455,7 +7453,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/storage.o
  .debug_macro   0x00000000       0x34 src/include/storage.o
  .debug_macro   0x00000000       0x16 src/include/storage.o
- .debug_macro   0x00000000      0x30b src/include/storage.o
+ .debug_macro   0x00000000      0x30a src/include/storage.o
  .debug_macro   0x00000000       0x10 src/include/storage.o
  .debug_macro   0x00000000       0x22 src/include/storage.o
  .debug_macro   0x00000000       0x16 src/include/storage.o
@@ -7738,7 +7736,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/tables.o
  .debug_macro   0x00000000       0x34 src/include/tables.o
  .debug_macro   0x00000000       0x16 src/include/tables.o
- .debug_macro   0x00000000      0x30b src/include/tables.o
+ .debug_macro   0x00000000      0x30a src/include/tables.o
  .debug_macro   0x00000000       0x10 src/include/tables.o
  .debug_macro   0x00000000       0x22 src/include/tables.o
  .debug_macro   0x00000000       0x16 src/include/tables.o
@@ -8023,7 +8021,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/timers.o
  .debug_macro   0x00000000       0x34 src/include/timers.o
  .debug_macro   0x00000000       0x16 src/include/timers.o
- .debug_macro   0x00000000      0x30b src/include/timers.o
+ .debug_macro   0x00000000      0x30a src/include/timers.o
  .debug_macro   0x00000000       0x10 src/include/timers.o
  .debug_macro   0x00000000       0x22 src/include/timers.o
  .debug_macro   0x00000000       0x16 src/include/timers.o
@@ -8312,7 +8310,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/tunerstudiocomm.o
  .debug_macro   0x00000000       0x34 src/include/tunerstudiocomm.o
  .debug_macro   0x00000000       0x16 src/include/tunerstudiocomm.o
- .debug_macro   0x00000000      0x30b src/include/tunerstudiocomm.o
+ .debug_macro   0x00000000      0x30a src/include/tunerstudiocomm.o
  .debug_macro   0x00000000       0x10 src/include/tunerstudiocomm.o
  .debug_macro   0x00000000       0x22 src/include/tunerstudiocomm.o
  .debug_macro   0x00000000       0x16 src/include/tunerstudiocomm.o
@@ -8596,7 +8594,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/include/uart.o
  .debug_macro   0x00000000       0x34 src/include/uart.o
  .debug_macro   0x00000000       0x16 src/include/uart.o
- .debug_macro   0x00000000      0x30b src/include/uart.o
+ .debug_macro   0x00000000      0x30a src/include/uart.o
  .debug_macro   0x00000000       0x10 src/include/uart.o
  .debug_macro   0x00000000       0x16 src/include/uart.o
  .debug_macro   0x00000000       0x82 src/include/uart.o
@@ -8880,7 +8878,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x70 src/main.o
  .debug_macro   0x00000000       0x34 src/main.o
  .debug_macro   0x00000000       0x16 src/main.o
- .debug_macro   0x00000000      0x311 src/main.o
+ .debug_macro   0x00000000      0x310 src/main.o
  .debug_macro   0x00000000       0x10 src/main.o
  .debug_macro   0x00000000       0x22 src/main.o
  .debug_macro   0x00000000       0x16 src/main.o
@@ -9337,7 +9335,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x00002000                __stack_size__ = DEFINED (__stack_size__)?__stack_size__:0x2000
                 0x20087ffc                __ram_end__ = ((ORIGIN (ram) + LENGTH (ram)) - 0x4)
 
-.text           0x00080000     0x4578
+.text           0x00080000     0x4568
                 0x00080000                . = ALIGN (0x4)
                 0x00080000                _sfixed = .
  *(.vectors .vectors.*)
@@ -9516,393 +9514,396 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x00080ccc       0x54 src/include/ADC.o
                 0x00080ccc                ADC_Handler
  .text.decoders_tach_event
-                0x00080d20      0x1e4 src/include/decoders.o
+                0x00080d20      0x208 src/include/decoders.o
                 0x00080d20                decoders_tach_event
  .text.decoders_crank_primary
-                0x00080f04      0x17c src/include/decoders.o
-                0x00080f04                decoders_crank_primary
+                0x00080f28      0x17c src/include/decoders.o
+                0x00080f28                decoders_crank_primary
  .text.eeprom_init
-                0x00081080       0x60 src/include/eeprom.o
-                0x00081080                eeprom_init
+                0x000810a4       0x60 src/include/eeprom.o
+                0x000810a4                eeprom_init
  .text.eeprom_read_byte
-                0x000810e0       0x60 src/include/eeprom.o
-                0x000810e0                eeprom_read_byte
+                0x00081104       0x60 src/include/eeprom.o
+                0x00081104                eeprom_read_byte
  .text.fuelcalc_GammaEnrich
-                0x00081140       0xac src/include/fuelcalc.o
-                0x00081140                fuelcalc_GammaEnrich
+                0x00081164       0xac src/include/fuelcalc.o
+                0x00081164                fuelcalc_GammaEnrich
  .text.fuelcalc_pulsewidth
-                0x000811ec       0xfc src/include/fuelcalc.o
-                0x000811ec                fuelcalc_pulsewidth
+                0x00081210       0xfc src/include/fuelcalc.o
+                0x00081210                fuelcalc_pulsewidth
  .text.cylinder_init
-                0x000812e8      0x19c src/include/global.o
-                0x000812e8                cylinder_init
+                0x0008130c      0x1a4 src/include/global.o
+                0x0008130c                cylinder_init
  .text.global_init
-                0x00081484      0x1bc src/include/global.o
-                0x00081484                global_init
+                0x000814b0      0x1c0 src/include/global.o
+                0x000814b0                global_init
  .text.global_toggle_pin
-                0x00081640        0xc src/include/global.o
-                0x00081640                global_toggle_pin
+                0x00081670        0xc src/include/global.o
+                0x00081670                global_toggle_pin
  .text.igncalc_ign_time_teeth
-                0x0008164c       0x34 src/include/igncalc.o
-                0x0008164c                igncalc_ign_time_teeth
+                0x0008167c       0x34 src/include/igncalc.o
+                0x0008167c                igncalc_ign_time_teeth
  .text.igncalc_ign_time_interval
-                0x00081680       0x8c src/include/igncalc.o
-                0x00081680                igncalc_ign_time_interval
+                0x000816b0       0x8c src/include/igncalc.o
+                0x000816b0                igncalc_ign_time_interval
  .text.igncalc_dwell_correction
-                0x0008170c       0x2c src/include/igncalc.o
-                0x0008170c                igncalc_dwell_correction
+                0x0008173c       0x2c src/include/igncalc.o
+                0x0008173c                igncalc_dwell_correction
  .text.igncalc_dwell_degree
-                0x00081738       0x7c src/include/igncalc.o
-                0x00081738                igncalc_dwell_degree
+                0x00081768       0x7c src/include/igncalc.o
+                0x00081768                igncalc_dwell_degree
  .text.interrupts_enable_interrupt_vector
-                0x000817b4       0x50 src/include/interrupts.o
-                0x000817b4                interrupts_enable_interrupt_vector
+                0x000817e4       0x50 src/include/interrupts.o
+                0x000817e4                interrupts_enable_interrupt_vector
  .text.interrupts_enable_pio
-                0x00081804       0x7c src/include/interrupts.o
-                0x00081804                interrupts_enable_pio
+                0x00081834       0x7c src/include/interrupts.o
+                0x00081834                interrupts_enable_pio
  .text.PIOA_Handler
-                0x00081880      0x2a8 src/include/interrupts.o
-                0x00081880                PIOA_Handler
+                0x000818b0      0x2a4 src/include/interrupts.o
+                0x000818b0                PIOA_Handler
  .text.math_map_adc
-                0x00081b28        0xa src/include/math.o
-                0x00081b28                math_map_adc
+                0x00081b54        0xa src/include/math.o
+                0x00081b54                math_map_adc
  .text.math_map
-                0x00081b32       0x10 src/include/math.o
-                0x00081b32                math_map
- *fill*         0x00081b42        0x2 
+                0x00081b5e       0x10 src/include/math.o
+                0x00081b5e                math_map
+ *fill*         0x00081b6e        0x2 
  .text.math_find_median
-                0x00081b44       0xc8 src/include/math.o
-                0x00081b44                math_find_median
+                0x00081b70       0xc8 src/include/math.o
+                0x00081b70                math_find_median
  .text.math_find_interpolation_index
-                0x00081c0c       0x40 src/include/math.o
-                0x00081c0c                math_find_interpolation_index
+                0x00081c38       0x40 src/include/math.o
+                0x00081c38                math_find_interpolation_index
  .text.math_interpolation
-                0x00081c4c       0x22 src/include/math.o
-                0x00081c4c                math_interpolation
- *fill*         0x00081c6e        0x2 
+                0x00081c78       0x22 src/include/math.o
+                0x00081c78                math_interpolation
+ *fill*         0x00081c9a        0x2 
  .text.math_interpolation_array
-                0x00081c70       0xe4 src/include/math.o
-                0x00081c70                math_interpolation_array
+                0x00081c9c       0xe4 src/include/math.o
+                0x00081c9c                math_interpolation_array
  .text.math_interpolation_vector
-                0x00081d54       0x88 src/include/math.o
-                0x00081d54                math_interpolation_vector
+                0x00081d80       0x88 src/include/math.o
+                0x00081d80                math_interpolation_vector
+ .text.math_sum_with_overflow_protection
+                0x00081e08        0x8 src/include/math.o
+                0x00081e08                math_sum_with_overflow_protection
  .text.math_convert_degree_to_teeth_count
-                0x00081ddc       0x24 src/include/math.o
-                0x00081ddc                math_convert_degree_to_teeth_count
+                0x00081e10       0x24 src/include/math.o
+                0x00081e10                math_convert_degree_to_teeth_count
  .text.math_convert_pulsewidth_to_crank_degrees
-                0x00081e00       0x34 src/include/math.o
-                0x00081e00                math_convert_pulsewidth_to_crank_degrees
+                0x00081e34       0x34 src/include/math.o
+                0x00081e34                math_convert_pulsewidth_to_crank_degrees
  .text.math_find_event_tooth_from_number_of_teeths
-                0x00081e34       0x58 src/include/math.o
-                0x00081e34                math_find_event_tooth_from_number_of_teeths
+                0x00081e68       0x58 src/include/math.o
+                0x00081e68                math_find_event_tooth_from_number_of_teeths
  .text.sensors_init
-                0x00081e8c       0x50 src/include/sensors.o
-                0x00081e8c                sensors_init
+                0x00081ec0       0x50 src/include/sensors.o
+                0x00081ec0                sensors_init
  .text.sensors_read_adc
-                0x00081edc       0xcc src/include/sensors.o
-                0x00081edc                sensors_read_adc
+                0x00081f10       0xcc src/include/sensors.o
+                0x00081f10                sensors_read_adc
  .text.storage_struct_read_eeprom_init
-                0x00081fa8       0x14 src/include/storage.o
-                0x00081fa8                storage_struct_read_eeprom_init
+                0x00081fdc       0x14 src/include/storage.o
+                0x00081fdc                storage_struct_read_eeprom_init
  .text.storage_init_struct_to_zero
-                0x00081fbc       0x16 src/include/storage.o
-                0x00081fbc                storage_init_struct_to_zero
- *fill*         0x00081fd2        0x2 
+                0x00081ff0       0x16 src/include/storage.o
+                0x00081ff0                storage_init_struct_to_zero
+ *fill*         0x00082006        0x2 
  .text.tables_Table3D_alloc_mem
-                0x00081fd4       0x60 src/include/tables.o
-                0x00081fd4                tables_Table3D_alloc_mem
+                0x00082008       0x60 src/include/tables.o
+                0x00082008                tables_Table3D_alloc_mem
  .text.tables_Table3D_read_eeprom
-                0x00082034       0x48 src/include/tables.o
-                0x00082034                tables_Table3D_read_eeprom
+                0x00082068       0x48 src/include/tables.o
+                0x00082068                tables_Table3D_read_eeprom
  .text.tables_Table3D_init
-                0x0008207c       0x1c src/include/tables.o
-                0x0008207c                tables_Table3D_init
+                0x000820b0       0x1c src/include/tables.o
+                0x000820b0                tables_Table3D_init
  .text.table_init
-                0x00082098       0x38 src/include/tables.o
-                0x00082098                table_init
+                0x000820cc       0x38 src/include/tables.o
+                0x000820cc                table_init
  .text.timer_init
-                0x000820d0       0xa0 src/include/timers.o
-                0x000820d0                timer_init
+                0x00082104       0xa0 src/include/timers.o
+                0x00082104                timer_init
  .text.timer_do_cylinder
-                0x00082170      0x100 src/include/timers.o
-                0x00082170                timer_do_cylinder
+                0x000821a4      0x108 src/include/timers.o
+                0x000821a4                timer_do_cylinder
  .text.TC0_Handler
-                0x00082270       0x10 src/include/timers.o
-                0x00082270                TC0_Handler
+                0x000822ac       0x10 src/include/timers.o
+                0x000822ac                TC0_Handler
  .text.TC1_Handler
-                0x00082280       0x10 src/include/timers.o
-                0x00082280                TC1_Handler
+                0x000822bc       0x10 src/include/timers.o
+                0x000822bc                TC1_Handler
  .text.TC2_Handler
-                0x00082290       0x10 src/include/timers.o
-                0x00082290                TC2_Handler
+                0x000822cc       0x10 src/include/timers.o
+                0x000822cc                TC2_Handler
  .text.TC3_Handler
-                0x000822a0       0x10 src/include/timers.o
-                0x000822a0                TC3_Handler
+                0x000822dc       0x10 src/include/timers.o
+                0x000822dc                TC3_Handler
  .text.TC4_Handler
-                0x000822b0       0x10 src/include/timers.o
-                0x000822b0                TC4_Handler
+                0x000822ec       0x10 src/include/timers.o
+                0x000822ec                TC4_Handler
  .text.TC5_Handler
-                0x000822c0       0x10 src/include/timers.o
-                0x000822c0                TC5_Handler
+                0x000822fc       0x10 src/include/timers.o
+                0x000822fc                TC5_Handler
  .text.TC6_Handler
-                0x000822d0       0x10 src/include/timers.o
-                0x000822d0                TC6_Handler
+                0x0008230c       0x10 src/include/timers.o
+                0x0008230c                TC6_Handler
  .text.TC7_Handler
-                0x000822e0       0x10 src/include/timers.o
-                0x000822e0                TC7_Handler
+                0x0008231c       0x10 src/include/timers.o
+                0x0008231c                TC7_Handler
  .text.TC8_Handler
-                0x000822f0       0xb0 src/include/timers.o
-                0x000822f0                TC8_Handler
+                0x0008232c       0xb0 src/include/timers.o
+                0x0008232c                TC8_Handler
  .text.tunerstudio_init
-                0x000823a0       0x38 src/include/tunerstudiocomm.o
-                0x000823a0                tunerstudio_init
+                0x000823dc       0x38 src/include/tunerstudiocomm.o
+                0x000823dc                tunerstudio_init
  .text.tunerstudio_send_struct
-                0x000823d8       0x28 src/include/tunerstudiocomm.o
-                0x000823d8                tunerstudio_send_struct
+                0x00082414       0x28 src/include/tunerstudiocomm.o
+                0x00082414                tunerstudio_send_struct
  .text.tunerstudio_send_Table3D
-                0x00082400       0x34 src/include/tunerstudiocomm.o
-                0x00082400                tunerstudio_send_Table3D
+                0x0008243c       0x34 src/include/tunerstudiocomm.o
+                0x0008243c                tunerstudio_send_Table3D
  .text.tunerstudio_send_page
-                0x00082434       0xa0 src/include/tunerstudiocomm.o
-                0x00082434                tunerstudio_send_page
+                0x00082470       0xa0 src/include/tunerstudiocomm.o
+                0x00082470                tunerstudio_send_page
  .text.tunerstudio_write_Table3D
-                0x000824d4       0x40 src/include/tunerstudiocomm.o
-                0x000824d4                tunerstudio_write_Table3D
+                0x00082510       0x40 src/include/tunerstudiocomm.o
+                0x00082510                tunerstudio_write_Table3D
  .text.tunerstudio_write_data
-                0x00082514       0xa4 src/include/tunerstudiocomm.o
-                0x00082514                tunerstudio_write_data
+                0x00082550       0xa4 src/include/tunerstudiocomm.o
+                0x00082550                tunerstudio_write_data
  .text.tunerstudio_burn_value_if_changed
-                0x000825b8       0x24 src/include/tunerstudiocomm.o
-                0x000825b8                tunerstudio_burn_value_if_changed
+                0x000825f4       0x24 src/include/tunerstudiocomm.o
+                0x000825f4                tunerstudio_burn_value_if_changed
  .text.tunerstudio_burn_struct
-                0x000825dc       0x44 src/include/tunerstudiocomm.o
-                0x000825dc                tunerstudio_burn_struct
+                0x00082618       0x44 src/include/tunerstudiocomm.o
+                0x00082618                tunerstudio_burn_struct
  .text.tunerstudio_burn_Table3D
-                0x00082620       0x64 src/include/tunerstudiocomm.o
-                0x00082620                tunerstudio_burn_Table3D
+                0x0008265c       0x64 src/include/tunerstudiocomm.o
+                0x0008265c                tunerstudio_burn_Table3D
  .text.tunerstudio_burn_page_eeprom
-                0x00082684       0xc0 src/include/tunerstudiocomm.o
-                0x00082684                tunerstudio_burn_page_eeprom
+                0x000826c0       0xc0 src/include/tunerstudiocomm.o
+                0x000826c0                tunerstudio_burn_page_eeprom
  .text.tunerstudio_update_calib_vect_helper
-                0x00082744       0x80 src/include/tunerstudiocomm.o
-                0x00082744                tunerstudio_update_calib_vect_helper
+                0x00082780       0x80 src/include/tunerstudiocomm.o
+                0x00082780                tunerstudio_update_calib_vect_helper
  .text.tunerstudio_update_calib_vect
-                0x000827c4       0x70 src/include/tunerstudiocomm.o
-                0x000827c4                tunerstudio_update_calib_vect
+                0x00082800       0x70 src/include/tunerstudiocomm.o
+                0x00082800                tunerstudio_update_calib_vect
  .text.tunerstudio_debug_global_function
-                0x00082834      0x124 src/include/tunerstudiocomm.o
-                0x00082834                tunerstudio_debug_global_function
+                0x00082870      0x124 src/include/tunerstudiocomm.o
+                0x00082870                tunerstudio_debug_global_function
  .text.tunerstudio_command
-                0x00082958      0x164 src/include/tunerstudiocomm.o
-                0x00082958                tunerstudio_command
+                0x00082994      0x164 src/include/tunerstudiocomm.o
+                0x00082994                tunerstudio_command
  .text.uart_init
-                0x00082abc       0x34 src/include/uart.o
-                0x00082abc                uart_init
+                0x00082af8       0x34 src/include/uart.o
+                0x00082af8                uart_init
  .text.uart_tx_interrupt_init
-                0x00082af0       0x58 src/include/uart.o
-                0x00082af0                uart_tx_interrupt_init
+                0x00082b2c       0x58 src/include/uart.o
+                0x00082b2c                uart_tx_interrupt_init
  .text.uart_interrupt_transfer
-                0x00082b48       0x5c src/include/uart.o
-                0x00082b48                uart_interrupt_transfer
+                0x00082b84       0x5c src/include/uart.o
+                0x00082b84                uart_interrupt_transfer
  .text.uart_load_tx_buffer
-                0x00082ba4       0x1c src/include/uart.o
-                0x00082ba4                uart_load_tx_buffer
+                0x00082be0       0x1c src/include/uart.o
+                0x00082be0                uart_load_tx_buffer
  .text.uart_enable_tx_interrupt
-                0x00082bc0        0xc src/include/uart.o
-                0x00082bc0                uart_enable_tx_interrupt
+                0x00082bfc        0xc src/include/uart.o
+                0x00082bfc                uart_enable_tx_interrupt
  .text.uart_enable_rx_interrupt
-                0x00082bcc       0x1c src/include/uart.o
-                0x00082bcc                uart_enable_rx_interrupt
+                0x00082c08       0x1c src/include/uart.o
+                0x00082c08                uart_enable_rx_interrupt
  .text.uart_disable_rx_interrupt
-                0x00082be8        0xc src/include/uart.o
-                0x00082be8                uart_disable_rx_interrupt
+                0x00082c24        0xc src/include/uart.o
+                0x00082c24                uart_disable_rx_interrupt
  .text.uart_rx_read_buffer
-                0x00082bf4       0x54 src/include/uart.o
-                0x00082bf4                uart_rx_read_buffer
+                0x00082c30       0x54 src/include/uart.o
+                0x00082c30                uart_rx_read_buffer
  .text.uart_transfer
-                0x00082c48       0x14 src/include/uart.o
-                0x00082c48                uart_transfer
+                0x00082c84       0x14 src/include/uart.o
+                0x00082c84                uart_transfer
  .text.uart_print_int
-                0x00082c5c       0x54 src/include/uart.o
-                0x00082c5c                uart_print_int
+                0x00082c98       0x54 src/include/uart.o
+                0x00082c98                uart_print_int
  .text.uart_new_line
-                0x00082cb0       0x10 src/include/uart.o
-                0x00082cb0                uart_new_line
+                0x00082cec       0x10 src/include/uart.o
+                0x00082cec                uart_new_line
  .text.uart_print_string
-                0x00082cc0       0x28 src/include/uart.o
-                0x00082cc0                uart_print_string
+                0x00082cfc       0x28 src/include/uart.o
+                0x00082cfc                uart_print_string
  .text.UART_Handler
-                0x00082ce8       0xa4 src/include/uart.o
-                0x00082ce8                UART_Handler
+                0x00082d24       0xa4 src/include/uart.o
+                0x00082d24                UART_Handler
  .text.uart_receive
-                0x00082d8c       0x18 src/include/uart.o
-                0x00082d8c                uart_receive
+                0x00082dc8       0x18 src/include/uart.o
+                0x00082dc8                uart_receive
  .text.uart_load_pdc_tx_buffer
-                0x00082da4       0x30 src/include/uart.o
-                0x00082da4                uart_load_pdc_tx_buffer
- .text.main     0x00082dd4      0x214 src/main.o
-                0x00082dd4                main
- .text          0x00082fe8      0x370 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
-                0x00082fe8                __aeabi_drsub
-                0x00082ff0                __aeabi_dsub
-                0x00082ff0                __subdf3
-                0x00082ff4                __aeabi_dadd
-                0x00082ff4                __adddf3
-                0x0008326c                __floatunsidf
-                0x0008326c                __aeabi_ui2d
-                0x0008328c                __floatsidf
-                0x0008328c                __aeabi_i2d
-                0x000832b0                __aeabi_f2d
-                0x000832b0                __extendsfdf2
-                0x000832ec                __floatundidf
-                0x000832ec                __aeabi_ul2d
-                0x000832fc                __floatdidf
-                0x000832fc                __aeabi_l2d
- .text          0x00083358      0x424 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_muldivdf3.o)
-                0x00083358                __aeabi_dmul
-                0x00083358                __muldf3
-                0x000835ac                __divdf3
-                0x000835ac                __aeabi_ddiv
- .text          0x0008377c       0x40 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_fixunsdfsi.o)
-                0x0008377c                __aeabi_d2uiz
-                0x0008377c                __fixunsdfsi
- .text          0x000837bc       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_aeabi_uldivmod.o)
-                0x000837bc                __aeabi_uldivmod
- .text          0x000837ec      0x2dc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
-                0x000837ec                __udivmoddi4
- .text          0x00083ac8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_dvmd_tls.o)
-                0x00083ac8                __aeabi_idiv0
-                0x00083ac8                __aeabi_ldiv0
+                0x00082de0       0x30 src/include/uart.o
+                0x00082de0                uart_load_pdc_tx_buffer
+ .text.main     0x00082e10      0x1c8 src/main.o
+                0x00082e10                main
+ .text          0x00082fd8      0x370 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
+                0x00082fd8                __aeabi_drsub
+                0x00082fe0                __aeabi_dsub
+                0x00082fe0                __subdf3
+                0x00082fe4                __aeabi_dadd
+                0x00082fe4                __adddf3
+                0x0008325c                __floatunsidf
+                0x0008325c                __aeabi_ui2d
+                0x0008327c                __floatsidf
+                0x0008327c                __aeabi_i2d
+                0x000832a0                __aeabi_f2d
+                0x000832a0                __extendsfdf2
+                0x000832dc                __floatundidf
+                0x000832dc                __aeabi_ul2d
+                0x000832ec                __floatdidf
+                0x000832ec                __aeabi_l2d
+ .text          0x00083348      0x424 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_muldivdf3.o)
+                0x00083348                __aeabi_dmul
+                0x00083348                __muldf3
+                0x0008359c                __divdf3
+                0x0008359c                __aeabi_ddiv
+ .text          0x0008376c       0x40 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_fixunsdfsi.o)
+                0x0008376c                __aeabi_d2uiz
+                0x0008376c                __fixunsdfsi
+ .text          0x000837ac       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_aeabi_uldivmod.o)
+                0x000837ac                __aeabi_uldivmod
+ .text          0x000837dc      0x2dc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
+                0x000837dc                __udivmoddi4
+ .text          0x00083ab8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_dvmd_tls.o)
+                0x00083ab8                __aeabi_idiv0
+                0x00083ab8                __aeabi_ldiv0
  .text.__libc_init_array
-                0x00083acc       0x50 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-init.o)
-                0x00083acc                __libc_init_array
- .text.malloc   0x00083b1c       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-malloc.o)
-                0x00083b1c                malloc
+                0x00083abc       0x50 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-init.o)
+                0x00083abc                __libc_init_array
+ .text.malloc   0x00083b0c       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-malloc.o)
+                0x00083b0c                malloc
  .text._malloc_r
-                0x00083b2c      0x544 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
-                0x00083b2c                _malloc_r
+                0x00083b1c      0x544 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
+                0x00083b1c                _malloc_r
  .text.__malloc_lock
-                0x00084070        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mlock.o)
-                0x00084070                __malloc_lock
+                0x00084060        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mlock.o)
+                0x00084060                __malloc_lock
  .text.__malloc_unlock
-                0x00084074        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mlock.o)
-                0x00084074                __malloc_unlock
- .text._sbrk_r  0x00084078       0x24 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-sbrkr.o)
-                0x00084078                _sbrk_r
+                0x00084064        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mlock.o)
+                0x00084064                __malloc_unlock
+ .text._sbrk_r  0x00084068       0x24 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-sbrkr.o)
+                0x00084068                _sbrk_r
  .text.startup.register_fini
-                0x0008409c       0x14 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__call_atexit.o)
- .text.atexit   0x000840b0        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-atexit.o)
-                0x000840b0                atexit
+                0x0008408c       0x14 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x000840a0        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-atexit.o)
+                0x000840a0                atexit
  .text.__libc_fini_array
-                0x000840bc       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-fini.o)
-                0x000840bc                __libc_fini_array
+                0x000840ac       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-fini.o)
+                0x000840ac                __libc_fini_array
  .text._malloc_trim_r
-                0x000840f0       0xa0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-freer.o)
-                0x000840f0                _malloc_trim_r
- .text._free_r  0x00084190      0x1cc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-freer.o)
-                0x00084190                _free_r
+                0x000840e0       0xa0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-freer.o)
+                0x000840e0                _malloc_trim_r
+ .text._free_r  0x00084180      0x1cc c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-freer.o)
+                0x00084180                _free_r
  .text.__register_exitproc
-                0x0008435c       0xac c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__atexit.o)
-                0x0008435c                __register_exitproc
+                0x0008434c       0xac c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__atexit.o)
+                0x0008434c                __register_exitproc
  *(.glue_7t)
- .glue_7t       0x00084408        0x0 linker stubs
+ .glue_7t       0x000843f8        0x0 linker stubs
  *(.glue_7)
- .glue_7        0x00084408        0x0 linker stubs
+ .glue_7        0x000843f8        0x0 linker stubs
  *(.rodata .rodata* .gnu.linkonce.r.*)
  .rodata.eeprom_read_byte.str1.4
-                0x00084408        0xb src/include/eeprom.o
- *fill*         0x00084413        0x1 
+                0x000843f8        0xb src/include/eeprom.o
+ *fill*         0x00084403        0x1 
  .rodata.tunerstudio_burn_struct.str1.4
-                0x00084414        0xd src/include/tunerstudiocomm.o
- *fill*         0x00084421        0x3 
+                0x00084404        0xd src/include/tunerstudiocomm.o
+ *fill*         0x00084411        0x3 
  .rodata.tunerstudio_command.str1.4
-                0x00084424       0x32 src/include/tunerstudiocomm.o
- *fill*         0x00084456        0x2 
+                0x00084414       0x32 src/include/tunerstudiocomm.o
+ *fill*         0x00084446        0x2 
  .rodata.tunerstudio_debug_global_function.str1.4
-                0x00084458       0xb9 src/include/tunerstudiocomm.o
- *fill*         0x00084511        0x3 
+                0x00084448       0xb9 src/include/tunerstudiocomm.o
+ *fill*         0x00084501        0x3 
  .rodata.tunerstudio_update_calib_vect.str1.4
-                0x00084514       0x19 src/include/tunerstudiocomm.o
- *fill*         0x0008452d        0x3 
- .rodata        0x00084530        0x7 src/main.o
- *fill*         0x00084537        0x1 
+                0x00084504       0x19 src/include/tunerstudiocomm.o
+ *fill*         0x0008451d        0x3 
+ .rodata        0x00084520        0x7 src/main.o
+ *fill*         0x00084527        0x1 
  .rodata.main.str1.4
-                0x00084538       0x18 src/main.o
+                0x00084528       0x18 src/main.o
                                  0x16 (size before relaxing)
  .rodata._global_impure_ptr
-                0x00084550        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-impure.o)
-                0x00084550                _global_impure_ptr
+                0x00084540        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-impure.o)
+                0x00084540                _global_impure_ptr
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00084554                . = ALIGN (0x4)
+                0x00084544                . = ALIGN (0x4)
  *(.init)
- .init          0x00084554        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crti.o
-                0x00084554                _init
- .init          0x00084558        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtn.o
-                0x00084560                . = ALIGN (0x4)
-                0x00084560                __preinit_array_start = .
+ .init          0x00084544        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crti.o
+                0x00084544                _init
+ .init          0x00084548        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtn.o
+                0x00084550                . = ALIGN (0x4)
+                0x00084550                __preinit_array_start = .
  *(.preinit_array)
-                0x00084560                __preinit_array_end = .
-                0x00084560                . = ALIGN (0x4)
-                0x00084560                __init_array_start = .
+                0x00084550                __preinit_array_end = .
+                0x00084550                . = ALIGN (0x4)
+                0x00084550                __init_array_start = .
  *(SORT(.init_array.*))
  .init_array.00000
-                0x00084560        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__call_atexit.o)
+                0x00084550        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__call_atexit.o)
  *(.init_array)
- .init_array    0x00084564        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
-                0x00084568                __init_array_end = .
-                0x00084568                . = ALIGN (0x4)
+ .init_array    0x00084554        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
+                0x00084558                __init_array_end = .
+                0x00084558                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *crtend.o(.ctors)
-                0x00084568                . = ALIGN (0x4)
+                0x00084558                . = ALIGN (0x4)
  *(.fini)
- .fini          0x00084568        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crti.o
-                0x00084568                _fini
- .fini          0x0008456c        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtn.o
-                0x00084574                . = ALIGN (0x4)
-                0x00084574                __fini_array_start = .
+ .fini          0x00084558        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crti.o
+                0x00084558                _fini
+ .fini          0x0008455c        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtn.o
+                0x00084564                . = ALIGN (0x4)
+                0x00084564                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x00084574        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
+ .fini_array    0x00084564        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
  *(SORT(.fini_array.*))
-                0x00084578                __fini_array_end = .
+                0x00084568                __fini_array_end = .
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *crtend.o(.dtors)
-                0x00084578                . = ALIGN (0x4)
-                0x00084578                _efixed = .
+                0x00084568                . = ALIGN (0x4)
+                0x00084568                _efixed = .
                 [!provide]                PROVIDE (__exidx_start, .)
 
-.vfp11_veneer   0x00084578        0x0
- .vfp11_veneer  0x00084578        0x0 linker stubs
+.vfp11_veneer   0x00084568        0x0
+ .vfp11_veneer  0x00084568        0x0 linker stubs
 
-.v4_bx          0x00084578        0x0
- .v4_bx         0x00084578        0x0 linker stubs
+.v4_bx          0x00084568        0x0
+ .v4_bx         0x00084568        0x0 linker stubs
 
-.iplt           0x00084578        0x0
- .iplt          0x00084578        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
+.iplt           0x00084568        0x0
+ .iplt          0x00084568        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
 
-.ARM.exidx      0x00084578        0x8
+.ARM.exidx      0x00084568        0x8
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
- .ARM.exidx     0x00084578        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
+ .ARM.exidx     0x00084568        0x8 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
                 [!provide]                PROVIDE (__exidx_end, .)
 
-.eh_frame       0x00084580        0x0
- .eh_frame      0x00084580        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
+.eh_frame       0x00084570        0x0
+ .eh_frame      0x00084570        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
 
-.rel.dyn        0x00084580        0x0
- .rel.iplt      0x00084580        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
+.rel.dyn        0x00084570        0x0
+ .rel.iplt      0x00084570        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
 
-.jcr            0x00084580        0x0
- .jcr           0x00084580        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
+.jcr            0x00084570        0x0
+ .jcr           0x00084570        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
 
-.igot.plt       0x00084580        0x0
- .igot.plt      0x00084580        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
-                0x00084580                . = ALIGN (0x4)
-                0x00084580                _etext = .
+.igot.plt       0x00084570        0x0
+ .igot.plt      0x00084570        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m/crtbegin.o
+                0x00084570                . = ALIGN (0x4)
+                0x00084570                _etext = .
 
-.relocate       0x20070000      0x970 load address 0x00084580
+.relocate       0x20070000      0x970 load address 0x00084570
                 0x20070000                . = ALIGN (0x4)
                 0x20070000                _srelocate = .
  *(.ramfunc .ramfunc.*)
@@ -9931,7 +9932,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x20070970                . = ALIGN (0x4)
                 0x20070970                _erelocate = .
 
-.bss            0x20070970     0x1a9c load address 0x00084ef0
+.bss            0x20070970     0x1a9c load address 0x00084ee0
                 0x20070970                . = ALIGN (0x4)
                 0x20070970                _sbss = .
                 0x20070970                _szero = .
@@ -10033,7 +10034,7 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x2007240c                _ebss = .
                 0x2007240c                _ezero = .
 
-.stack          0x2007240c     0x2004 load address 0x0008698c
+.stack          0x2007240c     0x2004 load address 0x0008697c
                 0x20072410                . = ALIGN (0x8)
  *fill*         0x2007240c        0x4 
                 0x20072410                _sstack = .
@@ -10177,7 +10178,7 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .comment       0x00000059       0x5a src/include/uart.o
  .comment       0x00000059       0x5a src/main.o
 
-.debug_info     0x00000000    0x37c8e
+.debug_info     0x00000000    0x37c21
  .debug_info    0x00000000     0x1a3b src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
  .debug_info    0x00001a3b     0x1aeb src/ASF/sam/drivers/adc/adc.o
  .debug_info    0x00003526     0x11a1 src/ASF/common/services/clock/sam3x/sysclk.o
@@ -10192,22 +10193,22 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .debug_info    0x0000d8cf      0xdb6 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
  .debug_info    0x0000e685      0xda4 src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_info    0x0000f429     0x2cd1 src/include/ADC.o
- .debug_info    0x000120fa     0x294f src/include/decoders.o
- .debug_info    0x00014a49     0x29bf src/include/eeprom.o
- .debug_info    0x00017408     0x271d src/include/fuelcalc.o
- .debug_info    0x00019b25     0x28a5 src/include/global.o
- .debug_info    0x0001c3ca     0x26d4 src/include/igncalc.o
- .debug_info    0x0001ea9e     0x2ed3 src/include/interrupts.o
- .debug_info    0x00021971     0x2c99 src/include/math.o
- .debug_info    0x0002460a     0x26fe src/include/sensors.o
- .debug_info    0x00026d08     0x261c src/include/storage.o
- .debug_info    0x00029324     0x27c9 src/include/tables.o
- .debug_info    0x0002baed     0x33ef src/include/timers.o
- .debug_info    0x0002eedc     0x326b src/include/tunerstudiocomm.o
- .debug_info    0x00032147     0x2dfe src/include/uart.o
- .debug_info    0x00034f45     0x2d49 src/main.o
+ .debug_info    0x000120fa     0x2957 src/include/decoders.o
+ .debug_info    0x00014a51     0x29bf src/include/eeprom.o
+ .debug_info    0x00017410     0x271d src/include/fuelcalc.o
+ .debug_info    0x00019b2d     0x28ce src/include/global.o
+ .debug_info    0x0001c3fb     0x26d4 src/include/igncalc.o
+ .debug_info    0x0001eacf     0x2ef6 src/include/interrupts.o
+ .debug_info    0x000219c5     0x2c9d src/include/math.o
+ .debug_info    0x00024662     0x26fe src/include/sensors.o
+ .debug_info    0x00026d60     0x261c src/include/storage.o
+ .debug_info    0x0002937c     0x27c9 src/include/tables.o
+ .debug_info    0x0002bb45     0x3405 src/include/timers.o
+ .debug_info    0x0002ef4a     0x326b src/include/tunerstudiocomm.o
+ .debug_info    0x000321b5     0x2dfe src/include/uart.o
+ .debug_info    0x00034fb3     0x2c6e src/main.o
 
-.debug_abbrev   0x00000000     0x4ef9
+.debug_abbrev   0x00000000     0x4f07
  .debug_abbrev  0x00000000      0x3d5 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
  .debug_abbrev  0x000003d5      0x337 src/ASF/sam/drivers/adc/adc.o
  .debug_abbrev  0x0000070c      0x330 src/ASF/common/services/clock/sam3x/sysclk.o
@@ -10227,17 +10228,17 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .debug_abbrev  0x00002c82      0x275 src/include/fuelcalc.o
  .debug_abbrev  0x00002ef7      0x2ba src/include/global.o
  .debug_abbrev  0x000031b1      0x285 src/include/igncalc.o
- .debug_abbrev  0x00003436      0x31e src/include/interrupts.o
- .debug_abbrev  0x00003754      0x370 src/include/math.o
- .debug_abbrev  0x00003ac4      0x256 src/include/sensors.o
- .debug_abbrev  0x00003d1a      0x281 src/include/storage.o
- .debug_abbrev  0x00003f9b      0x287 src/include/tables.o
- .debug_abbrev  0x00004222      0x32a src/include/timers.o
- .debug_abbrev  0x0000454c      0x379 src/include/tunerstudiocomm.o
- .debug_abbrev  0x000048c5      0x382 src/include/uart.o
- .debug_abbrev  0x00004c47      0x2b2 src/main.o
+ .debug_abbrev  0x00003436      0x32c src/include/interrupts.o
+ .debug_abbrev  0x00003762      0x370 src/include/math.o
+ .debug_abbrev  0x00003ad2      0x256 src/include/sensors.o
+ .debug_abbrev  0x00003d28      0x281 src/include/storage.o
+ .debug_abbrev  0x00003fa9      0x287 src/include/tables.o
+ .debug_abbrev  0x00004230      0x335 src/include/timers.o
+ .debug_abbrev  0x00004565      0x379 src/include/tunerstudiocomm.o
+ .debug_abbrev  0x000048de      0x382 src/include/uart.o
+ .debug_abbrev  0x00004c60      0x2a7 src/main.o
 
-.debug_loc      0x00000000     0x69a7
+.debug_loc      0x00000000     0x69d6
  .debug_loc     0x00000000      0x772 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
  .debug_loc     0x00000772      0x9a4 src/ASF/sam/drivers/adc/adc.o
  .debug_loc     0x00001116      0x183 src/ASF/common/services/clock/sam3x/sysclk.o
@@ -10250,20 +10251,20 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .debug_loc     0x00003a48       0x6b src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
  .debug_loc     0x00003ab3       0xfd src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_loc     0x00003bb0      0x18e src/include/ADC.o
- .debug_loc     0x00003d3e      0x3cf src/include/decoders.o
- .debug_loc     0x0000410d      0x170 src/include/eeprom.o
- .debug_loc     0x0000427d      0x1fe src/include/fuelcalc.o
- .debug_loc     0x0000447b       0xd3 src/include/global.o
- .debug_loc     0x0000454e      0x226 src/include/igncalc.o
- .debug_loc     0x00004774      0x37d src/include/interrupts.o
- .debug_loc     0x00004af1      0xaa7 src/include/math.o
- .debug_loc     0x00005598       0x79 src/include/sensors.o
- .debug_loc     0x00005611       0xe3 src/include/storage.o
- .debug_loc     0x000056f4      0x21a src/include/tables.o
- .debug_loc     0x0000590e      0x2fa src/include/timers.o
- .debug_loc     0x00005c08      0x8dd src/include/tunerstudiocomm.o
- .debug_loc     0x000064e5      0x424 src/include/uart.o
- .debug_loc     0x00006909       0x9e src/main.o
+ .debug_loc     0x00003d3e      0x3e2 src/include/decoders.o
+ .debug_loc     0x00004120      0x170 src/include/eeprom.o
+ .debug_loc     0x00004290      0x1fe src/include/fuelcalc.o
+ .debug_loc     0x0000448e       0xd3 src/include/global.o
+ .debug_loc     0x00004561      0x226 src/include/igncalc.o
+ .debug_loc     0x00004787      0x37d src/include/interrupts.o
+ .debug_loc     0x00004b04      0xaab src/include/math.o
+ .debug_loc     0x000055af       0x79 src/include/sensors.o
+ .debug_loc     0x00005628       0xe3 src/include/storage.o
+ .debug_loc     0x0000570b      0x21a src/include/tables.o
+ .debug_loc     0x00005925      0x312 src/include/timers.o
+ .debug_loc     0x00005c37      0x8dd src/include/tunerstudiocomm.o
+ .debug_loc     0x00006514      0x424 src/include/uart.o
+ .debug_loc     0x00006938       0x9e src/main.o
 
 .debug_aranges  0x00000000      0xcb0
  .debug_aranges
@@ -10323,7 +10324,7 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .debug_aranges
                 0x00000c88       0x28 src/main.o
 
-.debug_ranges   0x00000000      0xc40
+.debug_ranges   0x00000000      0xc30
  .debug_ranges  0x00000000       0x68 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
  .debug_ranges  0x00000068      0x168 src/ASF/sam/drivers/adc/adc.o
  .debug_ranges  0x000001d0       0x30 src/ASF/common/services/clock/sam3x/sysclk.o
@@ -10341,19 +10342,19 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .debug_ranges  0x00000808       0x28 src/include/decoders.o
  .debug_ranges  0x00000830       0x40 src/include/eeprom.o
  .debug_ranges  0x00000870       0x18 src/include/fuelcalc.o
- .debug_ranges  0x00000888       0x40 src/include/global.o
- .debug_ranges  0x000008c8       0x28 src/include/igncalc.o
- .debug_ranges  0x000008f0       0x58 src/include/interrupts.o
- .debug_ranges  0x00000948       0xa8 src/include/math.o
- .debug_ranges  0x000009f0       0x18 src/include/sensors.o
- .debug_ranges  0x00000a08       0x18 src/include/storage.o
- .debug_ranges  0x00000a20       0x28 src/include/tables.o
- .debug_ranges  0x00000a48       0x68 src/include/timers.o
- .debug_ranges  0x00000ab0       0x90 src/include/tunerstudiocomm.o
- .debug_ranges  0x00000b40       0xd0 src/include/uart.o
- .debug_ranges  0x00000c10       0x30 src/main.o
+ .debug_ranges  0x00000888       0x38 src/include/global.o
+ .debug_ranges  0x000008c0       0x28 src/include/igncalc.o
+ .debug_ranges  0x000008e8       0x50 src/include/interrupts.o
+ .debug_ranges  0x00000938       0xa8 src/include/math.o
+ .debug_ranges  0x000009e0       0x18 src/include/sensors.o
+ .debug_ranges  0x000009f8       0x18 src/include/storage.o
+ .debug_ranges  0x00000a10       0x28 src/include/tables.o
+ .debug_ranges  0x00000a38       0x68 src/include/timers.o
+ .debug_ranges  0x00000aa0       0x90 src/include/tunerstudiocomm.o
+ .debug_ranges  0x00000b30       0xd0 src/include/uart.o
+ .debug_ranges  0x00000c00       0x30 src/main.o
 
-.debug_macro    0x00000000    0x1ebb1
+.debug_macro    0x00000000    0x1ebaf
  .debug_macro   0x00000000      0x636 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
  .debug_macro   0x00000636      0x8c8 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
  .debug_macro   0x00000efe      0x16d src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
@@ -10518,34 +10519,34 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .debug_macro   0x00017109      0x122 src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_macro   0x0001722b      0x789 src/include/ADC.o
  .debug_macro   0x000179b4       0x16 src/include/ADC.o
- .debug_macro   0x000179ca      0x30b src/include/ADC.o
- .debug_macro   0x00017cd5       0x10 src/include/ADC.o
- .debug_macro   0x00017ce5       0x22 src/include/ADC.o
- .debug_macro   0x00017d07       0x16 src/include/ADC.o
- .debug_macro   0x00017d1d       0x1c src/include/ADC.o
- .debug_macro   0x00017d39       0x82 src/include/ADC.o
- .debug_macro   0x00017dbb       0x7c src/include/ADC.o
- .debug_macro   0x00017e37      0x77c src/include/decoders.o
- .debug_macro   0x000185b3      0x311 src/include/decoders.o
- .debug_macro   0x000188c4       0x82 src/include/decoders.o
- .debug_macro   0x00018946      0x79b src/include/eeprom.o
- .debug_macro   0x000190e1       0x7c src/include/eeprom.o
- .debug_macro   0x0001915d      0x783 src/include/fuelcalc.o
- .debug_macro   0x000198e0      0x77f src/include/global.o
- .debug_macro   0x0001a05f      0x783 src/include/igncalc.o
- .debug_macro   0x0001a7e2      0x783 src/include/interrupts.o
- .debug_macro   0x0001af65      0x783 src/include/math.o
- .debug_macro   0x0001b6e8      0x783 src/include/sensors.o
- .debug_macro   0x0001be6b      0x783 src/include/storage.o
- .debug_macro   0x0001c5ee      0x784 src/include/tables.o
- .debug_macro   0x0001cd72      0x783 src/include/timers.o
- .debug_macro   0x0001d4f5      0x789 src/include/tunerstudiocomm.o
- .debug_macro   0x0001dc7e       0x16 src/include/tunerstudiocomm.o
- .debug_macro   0x0001dc94      0x789 src/include/uart.o
- .debug_macro   0x0001e41d       0x1c src/include/uart.o
- .debug_macro   0x0001e439      0x778 src/main.o
+ .debug_macro   0x000179ca      0x30a src/include/ADC.o
+ .debug_macro   0x00017cd4       0x10 src/include/ADC.o
+ .debug_macro   0x00017ce4       0x22 src/include/ADC.o
+ .debug_macro   0x00017d06       0x16 src/include/ADC.o
+ .debug_macro   0x00017d1c       0x1c src/include/ADC.o
+ .debug_macro   0x00017d38       0x82 src/include/ADC.o
+ .debug_macro   0x00017dba       0x7c src/include/ADC.o
+ .debug_macro   0x00017e36      0x77c src/include/decoders.o
+ .debug_macro   0x000185b2      0x310 src/include/decoders.o
+ .debug_macro   0x000188c2       0x82 src/include/decoders.o
+ .debug_macro   0x00018944      0x79b src/include/eeprom.o
+ .debug_macro   0x000190df       0x7c src/include/eeprom.o
+ .debug_macro   0x0001915b      0x783 src/include/fuelcalc.o
+ .debug_macro   0x000198de      0x77f src/include/global.o
+ .debug_macro   0x0001a05d      0x783 src/include/igncalc.o
+ .debug_macro   0x0001a7e0      0x783 src/include/interrupts.o
+ .debug_macro   0x0001af63      0x783 src/include/math.o
+ .debug_macro   0x0001b6e6      0x783 src/include/sensors.o
+ .debug_macro   0x0001be69      0x783 src/include/storage.o
+ .debug_macro   0x0001c5ec      0x784 src/include/tables.o
+ .debug_macro   0x0001cd70      0x783 src/include/timers.o
+ .debug_macro   0x0001d4f3      0x789 src/include/tunerstudiocomm.o
+ .debug_macro   0x0001dc7c       0x16 src/include/tunerstudiocomm.o
+ .debug_macro   0x0001dc92      0x789 src/include/uart.o
+ .debug_macro   0x0001e41b       0x1c src/include/uart.o
+ .debug_macro   0x0001e437      0x778 src/main.o
 
-.debug_line     0x00000000    0x19cd5
+.debug_line     0x00000000    0x19cc1
  .debug_line    0x00000000      0xef1 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
  .debug_line    0x00000ef1      0xeea src/ASF/sam/drivers/adc/adc.o
  .debug_line    0x00001ddb      0xcba src/ASF/common/services/clock/sam3x/sysclk.o
@@ -10560,80 +10561,80 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .debug_line    0x000094a4      0xb9e src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
  .debug_line    0x0000a042      0x40c src/ASF/sam/utils/syscalls/gcc/syscalls.o
  .debug_line    0x0000a44e     0x102b src/include/ADC.o
- .debug_line    0x0000b479     0x107a src/include/decoders.o
- .debug_line    0x0000c4f3     0x1039 src/include/eeprom.o
- .debug_line    0x0000d52c     0x100c src/include/fuelcalc.o
- .debug_line    0x0000e538     0x1088 src/include/global.o
- .debug_line    0x0000f5c0     0x1030 src/include/igncalc.o
- .debug_line    0x000105f0     0x1090 src/include/interrupts.o
- .debug_line    0x00011680     0x1139 src/include/math.o
- .debug_line    0x000127b9     0x1010 src/include/sensors.o
- .debug_line    0x000137c9      0xfff src/include/storage.o
- .debug_line    0x000147c8     0x104a src/include/tables.o
- .debug_line    0x00015812     0x10f7 src/include/timers.o
- .debug_line    0x00016909     0x1207 src/include/tunerstudiocomm.o
- .debug_line    0x00017b10     0x1182 src/include/uart.o
- .debug_line    0x00018c92     0x1043 src/main.o
+ .debug_line    0x0000b479     0x107c src/include/decoders.o
+ .debug_line    0x0000c4f5     0x1039 src/include/eeprom.o
+ .debug_line    0x0000d52e     0x100c src/include/fuelcalc.o
+ .debug_line    0x0000e53a     0x1084 src/include/global.o
+ .debug_line    0x0000f5be     0x1030 src/include/igncalc.o
+ .debug_line    0x000105ee     0x108c src/include/interrupts.o
+ .debug_line    0x0001167a     0x1139 src/include/math.o
+ .debug_line    0x000127b3     0x1010 src/include/sensors.o
+ .debug_line    0x000137c3      0xfff src/include/storage.o
+ .debug_line    0x000147c2     0x104a src/include/tables.o
+ .debug_line    0x0001580c     0x10f2 src/include/timers.o
+ .debug_line    0x000168fe     0x1207 src/include/tunerstudiocomm.o
+ .debug_line    0x00017b05     0x1182 src/include/uart.o
+ .debug_line    0x00018c87     0x103a src/main.o
 
-.debug_str      0x00000000    0x66dff
- .debug_str     0x00000000    0x60cb0 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
-                              0x61149 (size before relaxing)
- .debug_str     0x00060cb0      0xa76 src/ASF/sam/drivers/adc/adc.o
-                              0x5d0bd (size before relaxing)
- .debug_str     0x00061726      0x352 src/ASF/common/services/clock/sam3x/sysclk.o
-                              0x6065e (size before relaxing)
- .debug_str     0x00061a78      0x6fd src/ASF/sam/boards/arduino_due_x/init.o
-                              0x60d40 (size before relaxing)
- .debug_str     0x00062175      0x188 src/ASF/sam/drivers/pdc/pdc.o
-                              0x5c791 (size before relaxing)
- .debug_str     0x000622fd      0x3fe src/ASF/sam/drivers/pio/pio.o
-                              0x5cf72 (size before relaxing)
- .debug_str     0x000626fb      0x5df src/ASF/sam/drivers/pmc/pmc.o
-                              0x5cfe8 (size before relaxing)
- .debug_str     0x00062cda      0x397 src/ASF/sam/drivers/tc/tc.o
-                              0x5c976 (size before relaxing)
- .debug_str     0x00063071      0x2cc src/ASF/sam/drivers/twi/twi.o
-                              0x5cb1f (size before relaxing)
- .debug_str     0x0006333d       0x4d src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
-                              0x5c5e7 (size before relaxing)
- .debug_str     0x0006338a       0xd9 src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
-                              0x5c6e3 (size before relaxing)
- .debug_str     0x00063463      0x195 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
-                              0x5c8bf (size before relaxing)
- .debug_str     0x000635f8      0x776 src/ASF/sam/utils/syscalls/gcc/syscalls.o
-                               0x729e (size before relaxing)
- .debug_str     0x00063d6e     0x2150 src/include/ADC.o
-                              0x63884 (size before relaxing)
- .debug_str     0x00065ebe      0x347 src/include/decoders.o
-                              0x634a6 (size before relaxing)
- .debug_str     0x00066205      0x14d src/include/eeprom.o
-                              0x634a4 (size before relaxing)
- .debug_str     0x00066352       0x97 src/include/fuelcalc.o
-                              0x63243 (size before relaxing)
- .debug_str     0x000663e9       0xa3 src/include/global.o
-                              0x63272 (size before relaxing)
- .debug_str     0x0006648c       0x69 src/include/igncalc.o
-                              0x63238 (size before relaxing)
- .debug_str     0x000664f5      0x12f src/include/interrupts.o
-                              0x63669 (size before relaxing)
- .debug_str     0x00066624      0x1c0 src/include/math.o
-                              0x63449 (size before relaxing)
- .debug_str     0x000667e4       0x37 src/include/sensors.o
-                              0x631ce (size before relaxing)
- .debug_str     0x0006681b       0x43 src/include/storage.o
-                              0x631f6 (size before relaxing)
- .debug_str     0x0006685e       0x71 src/include/tables.o
-                              0x63216 (size before relaxing)
- .debug_str     0x000668cf      0x101 src/include/timers.o
-                              0x63833 (size before relaxing)
- .debug_str     0x000669d0      0x2a8 src/include/tunerstudiocomm.o
-                              0x6350c (size before relaxing)
- .debug_str     0x00066c78      0x156 src/include/uart.o
-                              0x63703 (size before relaxing)
- .debug_str     0x00066dce       0x31 src/main.o
-                              0x63467 (size before relaxing)
+.debug_str      0x00000000    0x66daa
+ .debug_str     0x00000000    0x60cc4 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
+                              0x6115d (size before relaxing)
+ .debug_str     0x00060cc4      0xa76 src/ASF/sam/drivers/adc/adc.o
+                              0x5d0d1 (size before relaxing)
+ .debug_str     0x0006173a      0x352 src/ASF/common/services/clock/sam3x/sysclk.o
+                              0x60672 (size before relaxing)
+ .debug_str     0x00061a8c      0x6fd src/ASF/sam/boards/arduino_due_x/init.o
+                              0x60d54 (size before relaxing)
+ .debug_str     0x00062189      0x188 src/ASF/sam/drivers/pdc/pdc.o
+                              0x5c7a5 (size before relaxing)
+ .debug_str     0x00062311      0x3fe src/ASF/sam/drivers/pio/pio.o
+                              0x5cf86 (size before relaxing)
+ .debug_str     0x0006270f      0x5df src/ASF/sam/drivers/pmc/pmc.o
+                              0x5cffc (size before relaxing)
+ .debug_str     0x00062cee      0x397 src/ASF/sam/drivers/tc/tc.o
+                              0x5c98a (size before relaxing)
+ .debug_str     0x00063085      0x2cc src/ASF/sam/drivers/twi/twi.o
+                              0x5cb33 (size before relaxing)
+ .debug_str     0x00063351       0x4d src/ASF/sam/utils/cmsis/sam3x/source/templates/exceptions.o
+                              0x5c5fb (size before relaxing)
+ .debug_str     0x0006339e       0xd9 src/ASF/sam/utils/cmsis/sam3x/source/templates/gcc/startup_sam3x.o
+                              0x5c6f7 (size before relaxing)
+ .debug_str     0x00063477      0x195 src/ASF/sam/utils/cmsis/sam3x/source/templates/system_sam3x.o
+                              0x5c8d3 (size before relaxing)
+ .debug_str     0x0006360c      0x776 src/ASF/sam/utils/syscalls/gcc/syscalls.o
+                               0x72b2 (size before relaxing)
+ .debug_str     0x00063d82     0x20e7 src/include/ADC.o
+                              0x63888 (size before relaxing)
+ .debug_str     0x00065e69      0x347 src/include/decoders.o
+                              0x634aa (size before relaxing)
+ .debug_str     0x000661b0      0x14d src/include/eeprom.o
+                              0x634a8 (size before relaxing)
+ .debug_str     0x000662fd       0x97 src/include/fuelcalc.o
+                              0x63247 (size before relaxing)
+ .debug_str     0x00066394       0xae src/include/global.o
+                              0x63281 (size before relaxing)
+ .debug_str     0x00066442       0x69 src/include/igncalc.o
+                              0x6323c (size before relaxing)
+ .debug_str     0x000664ab      0x151 src/include/interrupts.o
+                              0x6368f (size before relaxing)
+ .debug_str     0x000665fc      0x19e src/include/math.o
+                              0x63460 (size before relaxing)
+ .debug_str     0x0006679a       0x37 src/include/sensors.o
+                              0x631d2 (size before relaxing)
+ .debug_str     0x000667d1       0x43 src/include/storage.o
+                              0x631fa (size before relaxing)
+ .debug_str     0x00066814       0x71 src/include/tables.o
+                              0x6321a (size before relaxing)
+ .debug_str     0x00066885       0xf6 src/include/timers.o
+                              0x63859 (size before relaxing)
+ .debug_str     0x0006697b      0x2a8 src/include/tunerstudiocomm.o
+                              0x63510 (size before relaxing)
+ .debug_str     0x00066c23      0x156 src/include/uart.o
+                              0x63707 (size before relaxing)
+ .debug_str     0x00066d79       0x31 src/main.o
+                              0x63453 (size before relaxing)
 
-.debug_frame    0x00000000     0x1fd8
+.debug_frame    0x00000000     0x1fdc
  .debug_frame   0x00000000      0x130 src/ASF/common/components/memory/eeprom/at24cxx/at24cxx.o
  .debug_frame   0x00000130      0x320 src/ASF/sam/drivers/adc/adc.o
  .debug_frame   0x00000450       0x88 src/ASF/common/services/clock/sam3x/sysclk.o
@@ -10658,26 +10659,26 @@ OUTPUT(RUthless_ECU.elf elf32-littlearm)
  .debug_frame   0x000015c8       0x54 src/include/sensors.o
  .debug_frame   0x0000161c       0x38 src/include/storage.o
  .debug_frame   0x00001654       0x88 src/include/tables.o
- .debug_frame   0x000016dc      0x13c src/include/timers.o
- .debug_frame   0x00001818      0x1d4 src/include/tunerstudiocomm.o
- .debug_frame   0x000019ec      0x180 src/include/uart.o
- .debug_frame   0x00001b6c       0x3c src/main.o
- .debug_frame   0x00001ba8       0xac c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
- .debug_frame   0x00001c54       0x50 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_muldivdf3.o)
- .debug_frame   0x00001ca4       0x24 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_fixunsdfsi.o)
- .debug_frame   0x00001cc8       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_aeabi_uldivmod.o)
- .debug_frame   0x00001cf4       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
- .debug_frame   0x00001d28       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-init.o)
- .debug_frame   0x00001d54       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-malloc.o)
- .debug_frame   0x00001d84       0x54 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
- .debug_frame   0x00001dd8       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mlock.o)
- .debug_frame   0x00001e08       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-sbrkr.o)
- .debug_frame   0x00001e34       0x50 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__call_atexit.o)
- .debug_frame   0x00001e84       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-atexit.o)
- .debug_frame   0x00001ea4       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-fini.o)
- .debug_frame   0x00001ed8       0x74 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-freer.o)
- .debug_frame   0x00001f4c       0x58 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-reent.o)
- .debug_frame   0x00001fa4       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__atexit.o)
+ .debug_frame   0x000016dc      0x140 src/include/timers.o
+ .debug_frame   0x0000181c      0x1d4 src/include/tunerstudiocomm.o
+ .debug_frame   0x000019f0      0x180 src/include/uart.o
+ .debug_frame   0x00001b70       0x3c src/main.o
+ .debug_frame   0x00001bac       0xac c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
+ .debug_frame   0x00001c58       0x50 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_muldivdf3.o)
+ .debug_frame   0x00001ca8       0x24 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_arm_fixunsdfsi.o)
+ .debug_frame   0x00001ccc       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x00001cf8       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/thumb/v7-m\libgcc.a(_udivmoddi4.o)
+ .debug_frame   0x00001d2c       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-init.o)
+ .debug_frame   0x00001d58       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-malloc.o)
+ .debug_frame   0x00001d88       0x54 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mallocr.o)
+ .debug_frame   0x00001ddc       0x30 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-mlock.o)
+ .debug_frame   0x00001e0c       0x2c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-sbrkr.o)
+ .debug_frame   0x00001e38       0x50 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x00001e88       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-atexit.o)
+ .debug_frame   0x00001ea8       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-fini.o)
+ .debug_frame   0x00001edc       0x74 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-freer.o)
+ .debug_frame   0x00001f50       0x58 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-reent.o)
+ .debug_frame   0x00001fa8       0x34 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-__atexit.o)
 
 Cross Reference Table
 
@@ -12304,6 +12305,8 @@ math_map                                          src/include/math.o
 math_map_adc                                      src/include/math.o
                                                   src/include/sensors.o
 math_sum_with_overflow_protection                 src/include/math.o
+                                                  src/include/timers.o
+                                                  src/include/interrupts.o
 memchr                                            c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-memchr-stub.o)
                                                   c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-fvwrite.o)
                                                   c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.2.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-vfiprintf.o)
@@ -12549,6 +12552,7 @@ tc_write_rc                                       src/ASF/sam/drivers/tc/tc.o
 timer_do_cylinder                                 src/include/timers.o
 timer_init                                        src/include/timers.o
                                                   src/main.o
+                                                  src/include/global.o
 timers_init1                                      src/include/timers.o
 tunerstudio_burn_Table3D                          src/include/tunerstudiocomm.o
 tunerstudio_burn_page_eeprom                      src/include/tunerstudiocomm.o
@@ -12607,7 +12611,6 @@ uart_interrupt_transfer                           src/include/uart.o
                                                   src/include/tunerstudiocomm.o
 uart_interrupt_transfer_specific                  src/include/uart.o
 uart_load_pdc_tx_buffer                           src/include/uart.o
-                                                  src/main.o
                                                   src/include/tunerstudiocomm.o
 uart_load_tx_buffer                               src/include/uart.o
                                                   src/include/tunerstudiocomm.o

@@ -129,13 +129,13 @@ void timer_do_cylinder(uint8_t CylinderNr)
 		}
 		else
 		{
-			Cyl->Inj_pio->PIO_CODR = Cyl->InjOutputPin;			// Sets pin to high
+			Cyl->Inj_pio->PIO_CODR = Cyl->InjOutputPin;			// Sets pin to low
 			debug_cylinder[CylinderNr].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
 		}
+		// TODO: NEEDS TO BE TESTED
 		if (Cyl->InjEventOnSameTooth)							// Check if Off event is at the same tooth
 		{
-			// TODO: USE math_sum_with_overflow_protection !!!!!!!!!!!!!!!!!!!!!!
-			Cyl->Tc_channel->TC_RB = Cyl->Tc_channel->TC_CV + Cyl->InjCntTimingOff;
+			Cyl->Tc_channel->TC_RB = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Cyl->InjCntTimingOff);
 			Cyl->InjEventOnSameTooth = FALSE;
 		}
 	}
