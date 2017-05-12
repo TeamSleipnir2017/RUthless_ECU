@@ -52,19 +52,19 @@ int main (void)
 	pmc_enable_periph_clk(ID_PIOC);
 	pmc_enable_periph_clk(ID_PIOD);
 	// Configure pins as output MOVED TO CYLINDER INIT 17.4.17 JBB
- 	pio_set_output(PIOC, IGN1_OUT, LOW, FALSE, FALSE); // debug pin
-	pio_set_output(PIOC, IGN2_OUT, LOW, FALSE, FALSE);
-	pio_set_output(PIOC, IGN3_OUT, LOW, FALSE, FALSE);
-	pio_set_output(PIOC, IGN4_OUT, LOW, FALSE, FALSE);
+ 	pio_set_output(PIOC, IGN1_OUT, HIGH, FALSE, FALSE); // debug pin
+	pio_set_output(PIOC, IGN2_OUT, HIGH, FALSE, FALSE);
+	pio_set_output(PIOC, IGN3_OUT, HIGH, FALSE, FALSE);
+	pio_set_output(PIOC, IGN4_OUT, HIGH, FALSE, FALSE);
 	pio_set_output(PIOC, IGN5_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, IGN6_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, IGN7_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, IGN8_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, IGN_AUX_OUT, LOW, FALSE, FALSE);
-	pio_set_output(PIOC, INJ1_OUT, LOW, FALSE, FALSE);
-	pio_set_output(PIOD, INJ2_OUT, LOW, FALSE, FALSE);
-	pio_set_output(PIOC, INJ3_OUT, LOW, FALSE, FALSE);
-	pio_set_output(PIOC, INJ4_OUT, LOW, FALSE, FALSE);
+	pio_set_output(PIOC, INJ1_OUT, HIGH, FALSE, FALSE);
+	pio_set_output(PIOD, INJ2_OUT, HIGH, FALSE, FALSE);
+	pio_set_output(PIOC, INJ3_OUT, HIGH, FALSE, FALSE);
+	pio_set_output(PIOC, INJ4_OUT, HIGH, FALSE, FALSE);
 	pio_set_output(PIOC, INJ5_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, INJ6_OUT, LOW, FALSE, FALSE);
 	pio_set_output(PIOC, INJ7_OUT, LOW, FALSE, FALSE);
@@ -118,27 +118,6 @@ int main (void)
 	
 	while (1)
 	{		
-		/*
-		PIOC->PIO_CODR	=	IGN1_OUT;
-		PIOC->PIO_CODR	=	IGN2_OUT;
-		PIOC->PIO_CODR	=	IGN3_OUT;
-		PIOC->PIO_CODR	=	IGN4_OUT;
-		PIOC->PIO_CODR	=	IGN5_OUT;
-		PIOC->PIO_CODR	=	IGN6_OUT;
-		PIOC->PIO_CODR	=	IGN7_OUT;
-		PIOC->PIO_CODR	=	IGN8_OUT;
-		PIOC->PIO_CODR	=	IGN_AUX_OUT;
-		PIOC->PIO_CODR	=	INJ1_OUT;
-		PIOD->PIO_CODR	=	INJ2_OUT;
-		PIOC->PIO_CODR	=	INJ3_OUT;
-		PIOC->PIO_CODR	=	INJ4_OUT;
-		PIOC->PIO_CODR	=	INJ5_OUT;
-		PIOC->PIO_CODR	=	INJ6_OUT;
-		PIOC->PIO_CODR	=	INJ7_OUT;
-		PIOC->PIO_CODR	=	INJ8_OUT;
-		PIOC->PIO_CODR	=	INJ_AUX_OUT;
-			*/
-		/*
 		if (AdcFlag)
 		{
  			AdcFlag = FALSE;

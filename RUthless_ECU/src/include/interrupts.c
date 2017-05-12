@@ -192,7 +192,7 @@ void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_o
 	{
 		if (Inj_or_Ign->CntTimingOn < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
 		{
-			Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to high
+			Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to high
 			//debug_cylinder[i].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 		}
 		else
@@ -205,7 +205,7 @@ void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_o
 	{
 		if (Inj_or_Ign->CntTimingOff < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
 		{
-			Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to low
+			Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to low
 			//debug_cylinder[i].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
 		}
 		else

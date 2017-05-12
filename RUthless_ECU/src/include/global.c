@@ -118,8 +118,8 @@ void cylinder_init(void)
 	cylinder[7].Inj.OutputPin = INJ8_OUT;
 	for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
 	{
-		pio_set_output(cylinder[i].Ign.pio, cylinder[i].Ign.OutputPin, LOW, FALSE, FALSE);
-		pio_set_output(cylinder[i].Inj.pio, cylinder[i].Inj.OutputPin, LOW, FALSE, FALSE);
+		pio_set_output(cylinder[i].Ign.pio, cylinder[i].Ign.OutputPin, HIGH, FALSE, FALSE);
+		pio_set_output(cylinder[i].Inj.pio, cylinder[i].Inj.OutputPin, HIGH, FALSE, FALSE);
 	}
 }
 

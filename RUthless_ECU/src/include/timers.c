@@ -154,13 +154,13 @@ void timer_do_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cyli
 {
 	if (Inj_or_Ign->EventPending)
 	{
-		Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to high
+		Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to high
 		Inj_or_Ign->EventPending = FALSE;
 		//debug_cylinder[CylinderNr].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 	}
 	else
 	{
-		Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to low
+		Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to low
 		//debug_cylinder[CylinderNr].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
 	}
 	// TODO: NEEDS TO BE TESTED
