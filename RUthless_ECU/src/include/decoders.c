@@ -81,7 +81,7 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	// Choose a cylinder to configure
 	uint8_t NrCylinderDividedByTwo =  engine_config2.NrCylinders / 2;
 	uint32_t TachEventNumber = (CurrentCrankTooth - TachEventDelayTeeths) / TachPulse; // Represents count of tach event in one revolution 
-	uint32_t CylinderOffset = CamSignalFlag * (NrCylinderDividedByTwo); // Represent first bank or second bank
+	uint32_t CylinderOffset = (engine_config4.SecondTriggerPolar ^ CamSignalFlag) * (NrCylinderDividedByTwo); // Represent first bank or second bank
 	uint32_t InjIndex = TachEventNumber + CylinderOffset;						// Represents current cylinder tdc or 720°
 	uint32_t IgnIndex = (TachEventNumber + CylinderOffset + NrCylinderDividedByTwo) % (engine_config2.NrCylinders); // Calculate cylinder after 360° 
 	// TODO: CHOOSE CYLINDER ACCORDING TO FIRING ORDER
