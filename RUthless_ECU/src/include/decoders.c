@@ -23,6 +23,7 @@ void decoders_crank_primary(void)
 // 				uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
 // 			}
 		CrankTooth = 0;
+		CrankCycleCounter++; 
 			
 		CamSignalFlag ^= TRUE;
 		IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);

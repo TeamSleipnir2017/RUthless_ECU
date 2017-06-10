@@ -27,6 +27,7 @@ void global_init(void)
 	CamTimerCounts = 0;
 	CrankTooth = 0;
 	CrankToothCounter = 0;
+	CrankCycleCounter = 0;
 	CrankSignalFlag = FALSE;
 	CamSignalFlag = FALSE;
 	CrankRevCounts = 0;

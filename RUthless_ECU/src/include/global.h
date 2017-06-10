@@ -64,6 +64,7 @@ volatile uint32_t PIOAHandlerTimeInCounts; // Time taken in PIOA_HANDLER in time
 // Crank Variables
 volatile uint8_t CrankTooth;				// Variable storing current crank tooth
 volatile uint32_t CrankToothCounter;		// Variable storing current crank tooth count from beginning, overflows after 6.9 days at 18000 RPM
+volatile uint32_t CrankCycleCounter;		// Variable storing current crank cylcles count from beginning
 volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (timer 9), for crankshaft sensor. Counts between the current tooth and the last tooth of the crank wheel
 volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
 volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor

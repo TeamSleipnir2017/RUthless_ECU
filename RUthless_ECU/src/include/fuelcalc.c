@@ -59,6 +59,7 @@ uint16_t fuelcalc_GammaEnrich(void)
 	// Calculate cranking enrichment
 	if (engine_config2.CrankingRpm * RPM_SCALER > engine_realtime.Rpm)
 	{
+		LastCrankingCycle = CrankCycleCounter;
 		TotalEnrich *= (100 + engine_config2.CrankingEnrichPct);
 		TotalEnrich /= 100;
 	}
