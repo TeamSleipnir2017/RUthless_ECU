@@ -49,8 +49,8 @@ uint16_t fuelcalc_GammaEnrich(void)
 	TotalEnrich /= 100;
 
 	// Calculate after start enrichment
-	// TODO: Make more efficient way to add after start enrichment
-	if (millis/MILLI_SEC < engine_config2.AfterStartEnrichSec)
+	//if (millis/MILLI_SEC < engine_config2.AfterStartEnrichSec)
+	if (CrankCycleCounter < (engine_config2.AfterStartEnrichSec * RPM_SCALER))
 	{
 		TotalEnrich *= (100 + engine_config2.AfterStartEnrichPct);
 		TotalEnrich /= 100;
@@ -59,9 +59,10 @@ uint16_t fuelcalc_GammaEnrich(void)
 	// Calculate cranking enrichment
 	if (engine_config2.CrankingRpm * RPM_SCALER > engine_realtime.Rpm)
 	{
-		LastCrankingCycle = CrankCycleCounter;
 		TotalEnrich *= (100 + engine_config2.CrankingEnrichPct);
 		TotalEnrich /= 100;
+		// Reset CrankCycleCounter if the rpm is below cranking, used in afterstart enrichment
+		CrankCycleCounter = 0;
 	}
 
 	// Prevent overflow
