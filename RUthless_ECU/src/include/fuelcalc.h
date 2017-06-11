@@ -15,7 +15,5 @@
 uint32_t fuelcalc_pulsewidth(void);
 uint16_t fuelcalc_GammaEnrich(void);
 
-uint32_t LastCrankingCycle;
-
 
 #endif /* FUELCALC_H_ */

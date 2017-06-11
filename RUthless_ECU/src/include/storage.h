@@ -68,7 +68,7 @@ struct engine_realtime_
 struct engine_config2_
 {
 	uint8_t	AfterStartEnrichPct;					// Afterstart enrichment [%]
-	uint8_t	AfterStartEnrichSec;					// Afterstart enrichment cycles. This is the number of ignition cycles that the afterstart enrichment % lasts for
+	uint8_t	AfterStartEnrichCycles;					// Afterstart enrichment cycles. This is the number of ignition cycles that the afterstart enrichment % lasts for
 	uint8_t	WarmUpEnrichPct[10];					// Warmup enrichment array [%]
 	uint8_t	WarmUpEnrichTemp[10];					// Warmup Enrichment bins [°C]
 	uint8_t	CrankingEnrichPct;						// Cranking enrichment [%]

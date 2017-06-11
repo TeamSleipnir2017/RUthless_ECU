@@ -41,8 +41,6 @@ void decoders_crank_primary(void)
 		// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
 		engine_realtime.Rpm = (uint16_t)CalcRpm;
 			
-		engine_realtime.PulseWidth = fuelcalc_pulsewidth() / 1000; // REMEMBER TO REMOVE !!!!!
-			
 		LastCrankRevCounts = CrankRevCounts;
 		CrankRevCounts = 0;
 			
@@ -52,12 +50,12 @@ void decoders_crank_primary(void)
 	uint32_t tempCrankToothCounter = CrankToothCounter;
 	// TODO: ENABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
 		
-	// TODO: WHAT IF THE MAIN FUNCTION MISSED AN CRANK SIGNAL EVENT !!!!!!!!!!!!!!!!!
+	// TODO: WHAT IF THE MAIN FUNCTION MISSED A CRANK SIGNAL EVENT !!!!!!!!!!!!!!!!!
 	int16_t tempCalc = (tempCrankTooth - TachEventDelayTeeths);
 	if (tempCalc % TachPulse == 0) // TODO:  Counteract if the tach event is at the missing tooth
 	{
 		decoders_tach_event(tempCrankTooth, tempCrankToothCounter);
-		global_toggle_pin(PIOC, IGN5_OUT);
+		// global_toggle_pin(PIOC, IGN5_OUT); // used for debugging purposes
 	}
 // 		else if (CrankTooth == TachPulse)
 // 		{
@@ -106,19 +104,26 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	}
 	// TODO: INCREASE DEGREE RESOLUTION TO 360.00° = 36000 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// Injection timing calculations, OFF means turn output off and ON is output on
-	uint32_t PulseWidth = fuelcalc_pulsewidth() + InjectorOpenTime; // Hundreds of nanoseconds (1 = 0.1 µs)
-	// Degrees are calculated from current crank position(some cylinder TDC), for example 390.0° is one cycle beforehand and 330.0° before next TDC 
-	uint16_t InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
+	uint32_t PulseWidth = fuelcalc_pulsewidth(); // Hundreds of nanoseconds (1 = 0.1 µs)
+	engine_realtime.PulseWidth = PulseWidth / 1000; // convert to tenths of millisecs
+	if ((PulseWidth > 0) || (engine_realtime.Rpm < (engine_config4.HardRevLimit * RPM_SCALER))) // If Flood clear OR rev limit
+	{
+		// Degrees are calculated from current crank position(some cylinder TDC), for example 390.0° is one cycle beforehand and 330.0° before next TDC
+		uint16_t InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
+		decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &InjCylEvent->Inj, PulseWidth, InjDegOFF);	
+	}
 	
-	decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &InjCylEvent->Inj, PulseWidth, InjDegOFF);
+	
 
 	// Ignition timing calculations
 	uint32_t DwellPulseWidth = igncalc_dwell_pulsewidth();
 	uint16_t DegreeAdvance = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);
-	
 	engine_realtime.DegAdvance = (uint8_t) (DegreeAdvance / 10);
-	uint16_t IgnDegOFF = CRANK_DEGREE_RESOLUTION - DegreeAdvance;	
-	decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &IgnCylEvent->Ign, DwellPulseWidth, IgnDegOFF);
+	if (engine_realtime.Rpm < (engine_config4.SoftRevLimit * RPM_SCALER))
+	{
+		uint16_t IgnDegOFF = CRANK_DEGREE_RESOLUTION - DegreeAdvance;
+		decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &IgnCylEvent->Ign, DwellPulseWidth, IgnDegOFF);
+	}
 	
 // 	int16_t InjDegON = InjDegOFF - math_convert_pulsewidth_to_crank_degrees(PulseWidth);
 // 	if (InjDegON < 0) // If perhaps the calculated pulsewidth is longer than 2 crank cycles (duty cycle > 100%)

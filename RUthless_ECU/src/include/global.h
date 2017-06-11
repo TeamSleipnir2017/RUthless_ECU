@@ -39,6 +39,8 @@ uint32_t isDebug;
 #define GAS_CONSTANT		287		// J/(Kg K)
 #define NR_OF_INJECTORS		4		// Should be a variable
 #define FUEL_CONST (CYL_DISPLACEMENT * 60 * 1000)/GASOLINE_DENSITY * 1000 / GAS_CONSTANT / NR_OF_INJECTORS * 1000 / INJECTOR_FLOW_RATE
+#define TPS_FLOOD_CLEAR		80		// Means 80%, TODO: MAKE CONFIGURABLE IN THE FUTURE
+#define FUEL_CALC_RESOLUTION	10000000	// used to convert from seconds to 100 ns, NOT USED AT THE MOMENT
 //#define AFTER_START_ENRICH_SCALER 10 // Scale up rounds after start for enrichment calculation
 
 /************************************************************************/

@@ -12,6 +12,12 @@
 uint32_t fuelcalc_pulsewidth(void)
 {
 	uint16_t Rpm = engine_realtime.Rpm, Map = engine_realtime.Map;
+	
+	if ((engine_config2.CrankingRpm * RPM_SCALER > engine_realtime.Rpm) && (engine_realtime.Tps > TPS_FLOOD_CLEAR)) // Flood clear
+	{
+		return 0;
+	}
+	
 	int16_t Temperature = engine_realtime.Iat - TEMPERATURE_OFFSET;
 	uint16_t Ve = math_interpolation_array(Rpm, Map, &VE, 1);
 	engine_realtime.VeTarget = Ve;
@@ -27,10 +33,15 @@ uint32_t fuelcalc_pulsewidth(void)
 	uint64_t Numerator = (uint64_t)Map * Ve * FUEL_CONST; 
 	uint32_t Denominator = (uint32_t)Afr * (Temperature + 273);  
 	uint64_t InjectorTime = Numerator / Denominator;
-
 	// Calculate enrichments
 	uint16_t gammaEnrich = fuelcalc_GammaEnrich();
-	InjectorTime = (InjectorTime * gammaEnrich) /100;
+	InjectorTime = ((InjectorTime * gammaEnrich) / 100) + InjectorOpenTime;
+	// TODO: CALCULATE !!!  uint32_t CorrectedInjectorOpenTime = InjectorOpenTime * 
+	uint64_t RevolutionTime = (LastCrankRevCounts * 100000) / GLOBAL_TIMER_FREQ; // SHOULD NOT BE CONSTANT HERE NOT PRETTY
+	if (InjectorOpenTime > (RevolutionTime * engine_config2.DutyLim)) {	 // Above injector duty cycle limit
+		return 0;
+	}
+	
 	return (uint32_t)InjectorTime;
 }
 
@@ -50,7 +61,7 @@ uint16_t fuelcalc_GammaEnrich(void)
 
 	// Calculate after start enrichment
 	//if (millis/MILLI_SEC < engine_config2.AfterStartEnrichSec)
-	if (CrankCycleCounter < (engine_config2.AfterStartEnrichSec * RPM_SCALER))
+	if (CrankCycleCounter < (engine_config2.AfterStartEnrichCycles * 100))
 	{
 		TotalEnrich *= (100 + engine_config2.AfterStartEnrichPct);
 		TotalEnrich /= 100;
