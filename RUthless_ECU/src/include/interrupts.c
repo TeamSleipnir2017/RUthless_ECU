@@ -188,7 +188,19 @@ void PIOA_Handler(void)
 
 void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl)
 {
-	if (Inj_or_Ign->ToothOn == CrankToothCounter) 
+	if (!Inj_or_Ign->EventOnSameTooth && (Inj_or_Ign->ToothOff == CrankToothCounter))
+	{
+		if (Inj_or_Ign->CntTimingOff < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
+		{
+			Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to low
+			//debug_cylinder[i].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
+		}
+		else
+		{
+			*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOff);
+		}
+	}
+	else if (Inj_or_Ign->ToothOn == CrankToothCounter) 
 	{
 		if (Inj_or_Ign->CntTimingOn < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
 		{
@@ -199,18 +211,6 @@ void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_o
 		{
 			Inj_or_Ign->EventPending = TRUE;
 			*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOn);
-		}
-	}
-	else if (!Inj_or_Ign->EventOnSameTooth && (Inj_or_Ign->ToothOff == CrankToothCounter))
-	{
-		if (Inj_or_Ign->CntTimingOff < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
-		{
-			Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to low
-			//debug_cylinder[i].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
-		}
-		else
-		{
-			*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOff);
 		}
 	}
 }
