@@ -71,6 +71,7 @@ volatile uint32_t CrankCurrCycleCounts;		// Current cycle counts of timer 2.2 (t
 volatile uint32_t CrankPrevCycleCounts;		// Previous cycle counts of timer 2.2 (timer 9), for crankshaft sensor.
 volatile uint32_t CrankTimerCounts;			// Last counter value of timer 2.2 (timer 9), for crankshaft sensor
 volatile uint8_t CrankSignalFlag;			// Flag indicating new counter value
+volatile uint32_t CrankSignalIntervalMillis;// Last crank signal interval in milliseconds (used to check if the motor is running)
 volatile uint8_t CrankNewCycleFlag;			// Flag indicating new crankshaft cycle
 volatile uint32_t CrankRevCounts;			// Cumsum of CrankCurrCycleCounts for TachPulse
 volatile uint32_t LastCrankRevCounts;		//
@@ -241,6 +242,7 @@ volatile struct debug_cylinder_ debug_cylinder[NR_OF_CYL];
 /************************************************************************/
 void global_init(void);
 void cylinder_init(void);		// Initialize all variables to 0
+void global_set_inj_and_ign_output_off(void);
 void global_toggle_pin(Pio *PioInterface, uint32_t Pin);
 
 

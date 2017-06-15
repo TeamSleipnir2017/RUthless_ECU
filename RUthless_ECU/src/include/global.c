@@ -117,6 +117,11 @@ void cylinder_init(void)
 	cylinder[5].Inj.OutputPin = INJ6_OUT;
 	cylinder[6].Inj.OutputPin = INJ7_OUT;
 	cylinder[7].Inj.OutputPin = INJ8_OUT;
+	global_set_inj_and_ign_output_off();
+}
+
+void global_set_inj_and_ign_output_off (void)
+{
 	for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
 	{
 		pio_set_output(cylinder[i].Ign.pio, cylinder[i].Ign.OutputPin, HIGH, FALSE, FALSE);
