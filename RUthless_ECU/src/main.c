@@ -159,6 +159,10 @@ int main (void)
 		}
 		if ((millis > CrankSignalIntervalMillis + MILLI_SEC) || engine_realtime.Rpm < 100) // Motor not running (last crank signal was last received a second ago)
 		{
+			engine_realtime.Rpm = 0;
+		}
+		if (engine_realtime.Rpm < 100)
+		{
 			global_set_inj_and_ign_output_off();
 			engine_realtime.EngineStatus |= ENGINE_RUNNING;
 		}
@@ -166,7 +170,6 @@ int main (void)
 		{
 			engine_realtime.EngineStatus &= ~ENGINE_RUNNING;
 		}
-		
 		
 		
 		// TEST
