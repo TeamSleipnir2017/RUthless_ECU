@@ -49,3 +49,11 @@ Temporary Items
 *.d
 *.o
 
+*.srec
+RUthless_ECU/Debug/RUthless_ECU.map
+*.lss
+RUthless_ECU/Debug/RUthless_ECU.hex
+*.elf
+RUthless_ECU/Debug/RUthless_ECU.eep
+RUthless_ECU/Debug/Makefile
+*.mk

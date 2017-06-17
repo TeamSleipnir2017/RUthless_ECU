@@ -109,7 +109,7 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	if ((PulseWidth > 0) || (engine_realtime.Rpm < (engine_config4.HardRevLimit * RPM_SCALER))) // If Flood clear OR rev limit
 	{
 		// Degrees are calculated from current crank position(some cylinder TDC), for example 390.0° is one cycle beforehand and 330.0° before next TDC
-		uint16_t InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
+		uint32_t InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
 		decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &InjCylEvent->Inj, PulseWidth, InjDegOFF);	
 	}
 	
@@ -121,7 +121,7 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	engine_realtime.DegAdvance = (uint8_t) (DegreeAdvance / 10);
 	if (engine_realtime.Rpm < (engine_config4.SoftRevLimit * RPM_SCALER))
 	{
-		uint16_t IgnDegOFF = CRANK_DEGREE_RESOLUTION - DegreeAdvance;
+		uint32_t IgnDegOFF = CRANK_DEGREE_RESOLUTION - DegreeAdvance;
 		decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &IgnCylEvent->Ign, DwellPulseWidth, IgnDegOFF);
 	}
 	
@@ -228,6 +228,37 @@ void decoders_set_inj_or_ign_event(uint8_t CurrentCrankTooth, uint32_t CurrentCr
 	uint32_t TimerTurnOnDegreeAfterTooth = DegreeOn % CrankToothDegreeInterval;
 	uint32_t TimerToothOnPercentage = TimerTurnOnDegreeAfterTooth * 100 / CrankToothDegreeInterval; // should give 0 - 99%, since 100% is next tooth obviously
 	Inj_or_Ign->CntTimingOn = ((TimerToothOnPercentage + NrOfMissingTeethsAtEventON * 100) * LastCrankRevCounts) / (100 * engine_config4.TriggerTeethCount); // I think this should never overflow
+
+	if (isDebug)
+	{
+		if (DebugCounter == 101)
+		{
+		
+		uart_print_string("CurrentCrankcnt: "); uart_print_int(CurrentCrankToothCounter); uart_new_line();
+			
+		uart_print_string("PulseWidth: "); uart_print_int(PulseWidth); uart_new_line();
+		uart_print_string("DegreeOn: "); uart_print_int(DegreeOn); uart_new_line();
+		uart_print_string("DegreeOff: "); uart_print_int(DegreeOff); uart_new_line();
+		uart_print_string("TeethsOFF: "); uart_print_int(TeethsOFF); uart_new_line();
+		uart_print_string("TeethsON: "); uart_print_int(TeethsON); uart_new_line();
+		
+		uart_print_string("NrOfMissingOFF: "); uart_print_int(NrOfMissingTeethsAtEventOFF); uart_new_line();
+		uart_print_string("NrOfMissingON: "); uart_print_int(NrOfMissingTeethsAtEventON); uart_new_line();
+		uart_print_string("EventToothOFF: "); uart_print_int(EventToothOFF); uart_new_line();
+		uart_print_string("EventToothON: "); uart_print_int(EventToothON); uart_new_line();
+		uart_print_string("CrankInterval: "); uart_print_int(CrankToothDegreeInterval); uart_new_line();
+		
+		
+		uart_print_string("TimerTurnOff: "); uart_print_int(TimerTurnOffDegreeAfterTooth); uart_new_line();
+		uart_print_string("TimerPerc: "); uart_print_int(TimerToothOffPercentage); uart_new_line();
+		uart_print_string("CntTimingOff: "); uart_print_int(Inj_or_Ign->CntTimingOff); uart_new_line();
+		uart_print_string("TimerTurnOn: "); uart_print_int(TimerTurnOnDegreeAfterTooth); uart_new_line();
+		uart_print_string("TimerOnPerc: "); uart_print_int(TimerToothOnPercentage); uart_new_line();
+		uart_print_string("CntTimingOn: "); uart_print_int(Inj_or_Ign->CntTimingOn); uart_new_line();
+		
+ 		DebugCounter = 0;
+		}
+	}
 }
 
 

@@ -105,41 +105,10 @@ void timer_do_cylinder(uint8_t CylinderNr)
 	if (TimerStatus & TC_SR_CPAS) // Compare register A ignition 1
 	{
 		timer_do_inj_or_ign(&cylinder[CylinderNr].Ign, &cylinder[CylinderNr]);
-// 		if (DwellFirstFlag)
-// 		{
-// 			Cyl->Ign.pio->PIO_SODR	=	Cyl->Ign.OutputPin;			// Sets pin to high
-// 			DwellFirstFlag = FALSE;
-// 		}
-// 		else if (DwellSecondFlag)
-// 		{
-// 			Cyl->Ign.pio->PIO_SODR	=	Cyl->Ign.OutputPin;			// Sets pin to high
-// 			DwellSecondFlag = FALSE;
-// 		}
-// 		else
-// 		{
-// 			Cyl->Ign.pio->PIO_CODR	=	Cyl->Ign.OutputPin;			// Sets pin PC19 to low
-// 		}
 	}
 	if (TimerStatus & TC_SR_CPBS) // Compare register B injector 1
 	{
 		timer_do_inj_or_ign(&cylinder[CylinderNr].Inj, &cylinder[CylinderNr]);
-// 		if (Cyl->Inj.EventPending)
-// 		{
-// 			Cyl->Inj.pio->PIO_SODR = Cyl->Inj.OutputPin;			// Sets pin to high
-// 			Cyl->Inj.EventPending = FALSE;
-// 			debug_cylinder[CylinderNr].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
-// 		}
-// 		else
-// 		{
-// 			Cyl->Inj.pio->PIO_CODR = Cyl->Inj.OutputPin;			// Sets pin to low
-// 			debug_cylinder[CylinderNr].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
-// 		}
-// 		// TODO: NEEDS TO BE TESTED
-// 		if (Cyl->Inj.EventOnSameTooth)							// Check if Off event is at the same tooth
-// 		{
-// 			Cyl->Tc_channel->TC_RB = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Cyl->Inj.CntTimingOff);
-// 			Cyl->Inj.EventOnSameTooth = FALSE;
-// 		}
 	}
 	if (TimerStatus & TC_SR_CPCS) // Compare register C injector 2
 	{

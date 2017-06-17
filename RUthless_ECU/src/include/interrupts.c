@@ -94,83 +94,7 @@ void PIOA_Handler(void)
 		{
 			interrupts_check_timer_for_inj_or_ign(&cylinder[i].Inj, &cylinder[i]);
 			interrupts_check_timer_for_inj_or_ign(&cylinder[i].Ign, &cylinder[i]);
-// 			struct cylinder_ *Cyl = &cylinder[i]; 
-// 			if (Cyl->Inj.ToothOn == CrankToothCounter) // Compare register B is for injector (TC_RB)
-// 			{
-// 				if (Cyl->Inj.CntTimingOn < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
-// 				{
-// 					Cyl->Inj.pio->PIO_SODR = Cyl->Inj.OutputPin;			// Sets pin to high
-// 					debug_cylinder[i].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
-// 				}
-// 				else
-// 				{
-// 					Cyl->Inj.EventPending = TRUE;
-// 					Cyl->Tc_channel->TC_RB = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Cyl->Inj.CntTimingOn);
-// 				}
-// 			}
-// 			else if (!Cyl->Inj.EventOnSameTooth && (Cyl->Inj.ToothOff == CrankToothCounter)) // Compare register B is for injector (TC_RB)
-// 			{
-// 				if (Cyl->Inj.CntTimingOff < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
-// 				{
-// 					Cyl->Inj.pio->PIO_CODR = Cyl->Inj.OutputPin;			// Sets pin to low
-// 					debug_cylinder[i].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
-// 				}
-// 				else
-// 				{
-// 					Cyl->Tc_channel->TC_RB = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Cyl->Inj.CntTimingOff);
-// 				}
-// 			}
 		}
-// 		if (CrankTooth == DwellFirstTach)
-// 		{
-// 			DwellSecondFlag = TRUE;
-// 			if (!CamSignalFlag)
-// 			{
-// 				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
-// 			}
-// 			else
-// 			{
-// 				TC1->TC_CHANNEL[0].TC_RA	=	TC1->TC_CHANNEL[0].TC_CV + DwellFirstInterval;
-// 			}
-// 		}
-// 		else if (CrankTooth == DwellSecondTach)
-// 		{
-// 			DwellFirstFlag = TRUE;
-// 			
-// 			if (!CamSignalFlag)
-// 			{
-// 				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + DwellSecondInterval;
-// 			}
-// 			else
-// 			{
-// 				TC0->TC_CHANNEL[2].TC_RA	=	TC0->TC_CHANNEL[2].TC_CV + DwellSecondInterval;
-// 			}			
-// 		}
-// 		
-// 		
-// 		if (CrankTooth == CrankFirstTach)
-// 		{
-// 			if (!CamSignalFlag)
-// 			{
-// 				
-// 				TC0->TC_CHANNEL[0].TC_RA	=	TC0->TC_CHANNEL[0].TC_CV + CrankFirstInterval;
-// 			}
-// 			else
-// 			{
-// 				TC1->TC_CHANNEL[0].TC_RA	=	TC1->TC_CHANNEL[0].TC_CV + CrankFirstInterval;
-// 			}
-// 		}
-// 		else if (CrankTooth == CrankSecondTach)
-// 		{
-// 			if (!CamSignalFlag)
-// 			{
-// 				TC0->TC_CHANNEL[1].TC_RA	=	TC0->TC_CHANNEL[1].TC_CV + CrankSecondInterval;
-// 			}
-// 			else
-// 			{
-// 				TC0->TC_CHANNEL[2].TC_RA	=	TC0->TC_CHANNEL[2].TC_CV + CrankSecondInterval;
-// 			}
-// 		}
 	}
 	
 	
@@ -188,7 +112,25 @@ void PIOA_Handler(void)
 
 void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl)
 {
-	if (!Inj_or_Ign->EventOnSameTooth && (Inj_or_Ign->ToothOff == CrankToothCounter))
+	if (Inj_or_Ign->ToothOn == CrankToothCounter) //turn output ON
+	{
+		if (Inj_or_Ign->CntTimingOn < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
+		{
+			Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to high
+			if (Inj_or_Ign->EventOnSameTooth)							// Check if Off event is at the same tooth
+			{
+				*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOff);
+				Inj_or_Ign->EventOnSameTooth = FALSE;
+			}
+			//debug_cylinder[i].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
+		}
+		else
+		{
+			Inj_or_Ign->EventPending = TRUE;
+			*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOn);
+		}
+	}
+	else if (!Inj_or_Ign->EventOnSameTooth && (Inj_or_Ign->ToothOff == CrankToothCounter)) //turn output OFF
 	{
 		if (Inj_or_Ign->CntTimingOff < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
 		{
@@ -198,19 +140,6 @@ void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_o
 		else
 		{
 			*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOff);
-		}
-	}
-	else if (Inj_or_Ign->ToothOn == CrankToothCounter) 
-	{
-		if (Inj_or_Ign->CntTimingOn < PIOA_HANDLER_TIME_IN_COUNTS) // The interrupt vector does not react when a value is stored in compare register which has been reached in the end of this function/handler
-		{
-			Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to high
-			//debug_cylinder[i].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
-		}
-		else
-		{
-			Inj_or_Ign->EventPending = TRUE;
-			*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOn);
 		}
 	}
 }

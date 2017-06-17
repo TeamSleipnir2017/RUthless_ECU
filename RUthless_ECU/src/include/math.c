@@ -221,7 +221,7 @@ uint8_t math_find_event_tooth_from_number_of_teeths(uint16_t CurrentCrankTooth, 
 		if (!(CurrentCrankTooth >= TriggerTeethMinusMiss)) // Check if current tooth is NOT a missing tooth
 		{
 			(*EventTooth)++;
-			NrOfMissingTeethsAtEvent = 0;
+			//NrOfMissingTeethsAtEvent = 0;
 		}
 		else // counting missing tooth for timer 
 		{
