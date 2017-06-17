@@ -1023,6 +1023,12 @@
     <Compile Include="src\include\ADC.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="src\include\debug.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\include\debug.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\include\decoders.c">
       <SubType>compile</SubType>
     </Compile>
