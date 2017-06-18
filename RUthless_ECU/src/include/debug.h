@@ -9,6 +9,8 @@
 #ifndef DEBUG_H_
 #define DEBUG_H_
 
+#include "global.h"
+
 /************************************************************************/
 /* The purpose of this file is to make an efficient debugging way to 
 make debugging a part of the code without taking to much processor power.
@@ -16,6 +18,8 @@ This will be implemented by PDC (Peripheral DMA Controller), and should
 therefore be able to put the data to serial                             */
 /************************************************************************/
 #define MAX_PACKET_LENGTH 65536 // 16 bit uint
+#define MAX_FILL_LENGTH 65436
+#define MAX_STRING_LENGTH 30
 
 /************************************************************************/
 /* PROGRAM DESCRIPTION
@@ -28,13 +32,13 @@ typedef struct
 {	
 	Pdc *PdcInterface;
 	
-	uint8_t CurrentTransferringPacket; // Should either be 1 or 2
+	volatile uint8_t CurrentTransferringPacket; // Should either be 1 or 2
 
-	uint8_t Packet1[MAX_PACKET_LENGTH];
-	uint8_t Packet2[MAX_PACKET_LENGTH];
+	volatile uint8_t Packet1[MAX_PACKET_LENGTH];
+	volatile uint8_t Packet2[MAX_PACKET_LENGTH];
 
-	uint16_t Packet1Counter; // Number of bytes to send from packet 1
-	uint16_t Packet2Counter; // Number of bytes to send from packet 2
+	volatile uint16_t Packet1Counter; // Number of bytes to send from packet 1
+	volatile uint16_t Packet2Counter; // Number of bytes to send from packet 2
 } debug_communication;
 
 
@@ -50,13 +54,20 @@ it should lower the flag. If the buffer is full and the PDC is
 transferring, the data will be discarded.                               */
 /************************************************************************/
 
-void debug_init_usart(debug_communication * Instance, Pdc *PdcInterface;, uint32_t BaudRate);
+void debug_init_usart(debug_communication *Instance, Usart *UsartInstance, uint32_t BaudRate);
+void debug_shitmix_init(debug_communication *Instance); // don't have time to make the general function 
+
+void debug_new_instance(debug_communication *Instance, Pdc *PdcInterface);
 
 void debug_transfer_new_message(debug_communication * Instance, uint32_t Time, char * String, uint32_t Value);
 
+void debug_add_int_to_char_array(uint8_t *array, uint32_t data, uint16_t *counter);
+
+uint8_t debug_write_usart_buffer(Usart *usart, uint32_t *buffer, uint32_t size);
+
 void debug_add_to_packet(debug_communication * Instance, uint32_t Time, char * String, uint32_t Value, uint8_t * CurrentPacket);
 
-bool debug_peripheral_is_available(debug_communication * Instance);
+uint8_t debug_peripheral_is_available(debug_communication * Instance);
 
 void debug_send_message(debug_communication * Instance, uint8_t * CurrentPacket);
 

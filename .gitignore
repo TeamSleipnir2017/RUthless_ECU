@@ -57,3 +57,4 @@ RUthless_ECU/Debug/RUthless_ECU.hex
 RUthless_ECU/Debug/RUthless_ECU.eep
 RUthless_ECU/Debug/Makefile
 *.mk
+*.bin

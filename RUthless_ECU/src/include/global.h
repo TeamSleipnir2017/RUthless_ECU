@@ -333,6 +333,7 @@ void global_toggle_pin(Pio *PioInterface, uint32_t Pin);
 #include "fuelcalc.h"
 #include "igncalc.h"
 #include "storage.h"
+#include "debug.h"
 
 
 #endif /* GLOBAL_H_ */

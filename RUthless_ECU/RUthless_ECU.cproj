@@ -34,9 +34,10 @@
           <option id="common.services.basic.gpio" value="Add" config="" content-id="Atmel.ASF" />
           <option id="common.services.ioport" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.adc" value="Add" config="" content-id="Atmel.ASF" />
+          <option id="sam.drivers.pdc" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.pio" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.drivers.tc" value="Add" config="" content-id="Atmel.ASF" />
-          <option id="sam.drivers.pdc" value="Add" config="" content-id="Atmel.ASF" />
+          <option id="sam.drivers.usart" value="Add" config="" content-id="Atmel.ASF" />
           <option id="common.applications.user_application" value="Add" config="" content-id="Atmel.ASF" />
           <option id="sam.utils.cmsis.sam3x.source.template" value="Add" config="" content-id="Atmel.ASF" />
         </options>
@@ -208,6 +209,8 @@
           <file path="src/ASF/sam/drivers/pdc/pdc.c" framework="" version="3.32.0" source="sam\drivers\pdc\pdc.c" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/sam/drivers/pdc/pdc.h" framework="" version="3.32.0" source="sam\drivers\pdc\pdc.h" changed="False" content-id="Atmel.ASF" />
           <file path="src/ASF/sam/drivers/pdc/pdc_uart_example/pdc_uart_example.h" framework="" version="3.32.0" source="sam\drivers\pdc\pdc_uart_example\pdc_uart_example.h" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam/drivers/usart/usart.c" framework="" version="3.32.0" source="sam\drivers\usart\usart.c" changed="False" content-id="Atmel.ASF" />
+          <file path="src/ASF/sam/drivers/usart/usart.h" framework="" version="3.32.0" source="sam\drivers\usart\usart.h" changed="False" content-id="Atmel.ASF" />
         </files>
         <documentation help="http://asf.atmel.com/docs/3.32.0/common.applications.user_application.arduino_due_x/html/index.html" />
         <offline-documentation help="" />
@@ -265,6 +268,7 @@
       <Value>../src/ASF/sam/drivers/twi</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -313,6 +317,7 @@
       <Value>../src/ASF/sam/drivers/twi</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=ARDUINO_DUE_X -D__SAM3X8E__ -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
@@ -344,6 +349,7 @@
       <Value>../src/ASF/sam/drivers/twi</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -395,6 +401,7 @@
       <Value>../src/ASF/sam/drivers/twi</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize (-O1)</armgcc.compiler.optimization.level>
@@ -444,6 +451,7 @@
       <Value>../src/ASF/sam/drivers/twi</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
@@ -476,6 +484,7 @@
       <Value>../src/ASF/sam/drivers/twi</Value>
       <Value>../src/ASF/sam/drivers/pdc</Value>
       <Value>../src/ASF/sam/drivers/pdc/pdc_uart_example</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -515,6 +524,7 @@
     <Folder Include="src\ASF\sam\drivers\pmc\" />
     <Folder Include="src\ASF\sam\drivers\tc\" />
     <Folder Include="src\ASF\sam\drivers\twi\" />
+    <Folder Include="src\ASF\sam\drivers\usart\" />
     <Folder Include="src\ASF\sam\utils\" />
     <Folder Include="src\ASF\sam\utils\cmsis\" />
     <Folder Include="src\ASF\sam\utils\cmsis\sam3x\" />
@@ -1003,6 +1013,12 @@
       <SubType>compile</SubType>
     </Compile>
     <None Include="src\ASF\sam\drivers\twi\twi.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\sam\drivers\usart\usart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\usart\usart.h">
       <SubType>compile</SubType>
     </None>
     <Compile Include="src\ASF\sam\utils\cmsis\sam3x\source\templates\exceptions.c">

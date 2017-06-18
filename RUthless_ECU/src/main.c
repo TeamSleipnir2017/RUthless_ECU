@@ -114,10 +114,12 @@ int main (void)
 	
 	uart_print_string("Init done"); uart_new_line();
 
-	uart_print_int(sizeof(debug_cylinder)); uart_new_line();
+	volatile debug_communication myDebug;
+	
+	debug_init_usart(&myDebug, USART0, 460800);
 	
 	while (1)
-	{		
+ 	{		
 		if (AdcFlag)
 		{
  			AdcFlag = FALSE;
@@ -130,6 +132,10 @@ int main (void)
 // 				uart_print_string("Channel"); uart_print_int(channel_number[i]);uart_print_string(" :");uart_print_int(math_find_median(AdcData[AdcChannels[i]], ADC_MEDIAN_FILTER_LENGTH)); uart_new_line();
 // 				__asm__("nop");
 // 			}
+
+			debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CNT", myDebug.Packet1Counter);
+// 			volatile uint8_t send[33] = "abcdefghijklmnoprstuqw1234567890\n";
+// 			debug_write_usart_buffer(USART0, &send, 33);
 		}
 		
 		if (RxFlag)
@@ -171,30 +177,7 @@ int main (void)
 			engine_realtime.EngineStatus &= ~ENGINE_RUNNING;
 		}
 		
-		
-		// TEST
-		/*if (CrankSignalFlag)
-		{
-			CrankSignalFlag = FALSE;
-			if (!(CrankTooth % TachPulse))
-			{
-				// TODO: Disable Interrupts
-				// ATHUGA ÞARF Að REIKNA YFIR LENGRA TÍMABIL, FLEIRRI TENNUR
-				uint64_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankCurrCycleCounts / TRIGGER_WHEEL;
-				// TODO: Enable Interrupts
-				// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
-				engine_realtime.Rpm = (uint16_t)CalcRpm / 2; // divide by 2 for testing cranking enrichment 5.6.17
-				engine_realtime.PulseWidth = fuelcalc_pulsewidth() / 1000;
-				if (CrankTooth >= 24)
-				{
-					CrankTachCycleCounts = 0;
-					CrankTooth = 1;
-				}
-			}
-			
-		}*/
-		
-	}
+ 	}
 	
 }
 
