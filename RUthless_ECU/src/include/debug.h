@@ -26,7 +26,7 @@ return(end).                                                            */
 
 typedef struct
 {	
-	Usart * UsartPeripheral;
+	Pdc *PdcInterface;
 	
 	uint8_t CurrentTransferringPacket; // Should either be 1 or 2
 
@@ -50,13 +50,13 @@ it should lower the flag. If the buffer is full and the PDC is
 transferring, the data will be discarded.                               */
 /************************************************************************/
 
-void debug_init_usart(debug_communication * Instance, Usart * USART_Controller, uint32_t BaudRate);
+void debug_init_usart(debug_communication * Instance, Pdc *PdcInterface;, uint32_t BaudRate);
 
 void debug_transfer_new_message(debug_communication * Instance, uint32_t Time, char * String, uint32_t Value);
 
 void debug_add_to_packet(debug_communication * Instance, uint32_t Time, char * String, uint32_t Value, uint8_t * CurrentPacket);
 
-bool debug_is_available(debug_communication * Instance);
+bool debug_peripheral_is_available(debug_communication * Instance);
 
 void debug_send_message(debug_communication * Instance, uint8_t * CurrentPacket);
 
