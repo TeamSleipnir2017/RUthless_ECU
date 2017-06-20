@@ -185,10 +185,55 @@ uint8_t uart_receive(void)
 	return UART->UART_RHR;
 }
 
-void uart_load_pdc_tx_buffer(uint8_t * address, uint16_t size)
+uint8_t uart_load_pdc_tx_buffer(uint8_t * address, uint16_t size)
 {
-	PdcTxPacket.ul_addr = address;
-	PdcTxPacket.ul_size = size;
-	pdc_tx_init(PdcInterface, &PdcTxPacket, NULL);
-	pdc_enable_transfer(PdcInterface, PERIPH_PTCR_TXTEN);
+	if ((PdcInterface->PERIPH_TCR == 0) && (PdcInterface->PERIPH_TNCR == 0))
+	{
+		PdcTxPacket.ul_addr = address;
+		PdcTxPacket.ul_size = size;
+		pdc_tx_init(PdcInterface, &PdcTxPacket, NULL);
+		pdc_enable_transfer(PdcInterface, PERIPH_PTCR_TXTEN);
+		return 1;
+	}
+	return 0;
+	
+}
+
+void uart_debug_transfer_new_message(uint32_t Time, char *String, uint32_t Value)
+{
+	if (TxStringHead > TXBUFFER_MAXFILL)
+	{
+		// ADD SOMETHING TO LET KNOW
+		return;
+	}
+	uart_load_tx_buffer('[');
+	uart_add_int_to_char_array(&TxString, Time, &TxStringHead);
+	uart_load_tx_buffer('[');
+	uint8_t j = 0;
+	while (String[j] != 0 && j < 30)
+	{
+		uart_load_tx_buffer(String[j++]);
+	}
+	uart_load_tx_buffer(' ');
+	uart_add_int_to_char_array(&TxString, Value, &TxStringHead);
+	uart_load_tx_buffer(10); // new line
+	
+}
+
+void uart_add_int_to_char_array(uint8_t *array, uint32_t data, uint16_t *counter) // returns counter
+{
+	uint32_t div = 1000000000;		// Divider to divide data with
+	uint8_t start = 0;
+	uint8_t cnt = 10;
+	for (int i = 1; i <= cnt; i++)
+	{
+		uint8_t send = data / div + 48; // calculate the Ascii for each number
+		if(send != 48 || start == 1 || i == cnt)
+		{
+			array[(*counter)++] = send;
+			start = 1;
+		}
+		data %= div;
+		div /= 10;
+	}
 }

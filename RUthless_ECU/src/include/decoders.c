@@ -11,6 +11,12 @@
 
 void decoders_crank_primary(void)
 {	
+	if(isDebug)
+	{
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CrankTooth", CrankTooth);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CrankToothCounter", CrankToothCounter);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CrankCycleCounter", CrankCycleCounter);
+	}
 	if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1))) // New Cycle event (Missing tooth have passed the sensor)
 	{
 		CrankNewCycleFlag = TRUE;
@@ -26,6 +32,7 @@ void decoders_crank_primary(void)
 		CrankCycleCounter++; 
 			
 		CamSignalFlag ^= TRUE;
+/*
 		IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);
 	
 		DwellDegree = IgnitionDegree + igncalc_dwell_degree();
@@ -35,7 +42,7 @@ void decoders_crank_primary(void)
 			
 		CrankSecondTach = igncalc_ign_time_teeth(IgnitionDegree);
 		CrankSecondInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
-
+*/
 		// RPM calculations
 		uint32_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
 		// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
@@ -43,6 +50,10 @@ void decoders_crank_primary(void)
 			
 		LastCrankRevCounts = CrankRevCounts;
 		CrankRevCounts = 0;
+		if(isDebug)
+		{
+			debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "LastCrankRevCounts", LastCrankRevCounts);
+		}
 			
 	}
 	// TODO: DISABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
@@ -54,6 +65,10 @@ void decoders_crank_primary(void)
 	int16_t tempCalc = (tempCrankTooth - TachEventDelayTeeths);
 	if (tempCalc % TachPulse == 0) // TODO:  Counteract if the tach event is at the missing tooth
 	{
+		if(isDebug)
+		{
+			debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "TachTooth", CrankTooth);
+		}
 		decoders_tach_event(tempCrankTooth, tempCrankToothCounter);
 		// global_toggle_pin(PIOC, IGN5_OUT); // used for debugging purposes
 	}
@@ -89,6 +104,7 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	
 	if (isDebug)
 	{
+		uart_debug_transfer_new_message(TC2->TC_CHANNEL[2].TC_CV, "InjCylEvent", engine_config2.FiringOrder[InjIndex]);
 		DebugCounter++;
 		if (DebugCounter == 101)
 		{
@@ -113,7 +129,10 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 		decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &InjCylEvent->Inj, PulseWidth, InjDegOFF);	
 	}
 	
-	
+	if (isDebug)
+	{
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "IgnCylEvent", engine_config2.FiringOrder[IgnIndex]);
+	}
 
 	// Ignition timing calculations
 	uint32_t DwellPulseWidth = igncalc_dwell_pulsewidth();
@@ -231,30 +250,47 @@ void decoders_set_inj_or_ign_event(uint8_t CurrentCrankTooth, uint32_t CurrentCr
 
 	if (isDebug)
 	{
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CurrentCrankcnt", CurrentCrankToothCounter);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "PulseWidth", PulseWidth);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "DegreeOn", DegreeOn);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "DegreeOff", DegreeOff);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "TeethsOFF", TeethsOFF);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "TeethsON", TeethsON);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "NrOfMissingOFF", NrOfMissingTeethsAtEventOFF);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "NrOfMissingON", NrOfMissingTeethsAtEventON);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "EventToothOFF", EventToothOFF);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "EventToothON", EventToothON);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CrankInterval", CurrentCrankToothCounter);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "TimerTurnOff", TimerTurnOffDegreeAfterTooth);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "TimerPerc", TimerToothOffPercentage);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CntTimingOff", Inj_or_Ign->CntTimingOff);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "TimerTurnOn", TimerTurnOnDegreeAfterTooth);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "TimerOnPerc", TimerToothOnPercentage);
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CntTimingOn", Inj_or_Ign->CntTimingOn);
 		if (DebugCounter == 101)
 		{
 		
-		uart_print_string("CurrentCrankcnt: "); uart_print_int(CurrentCrankToothCounter); uart_new_line();
-			
-		uart_print_string("PulseWidth: "); uart_print_int(PulseWidth); uart_new_line();
-		uart_print_string("DegreeOn: "); uart_print_int(DegreeOn); uart_new_line();
-		uart_print_string("DegreeOff: "); uart_print_int(DegreeOff); uart_new_line();
-		uart_print_string("TeethsOFF: "); uart_print_int(TeethsOFF); uart_new_line();
-		uart_print_string("TeethsON: "); uart_print_int(TeethsON); uart_new_line();
-		
-		uart_print_string("NrOfMissingOFF: "); uart_print_int(NrOfMissingTeethsAtEventOFF); uart_new_line();
-		uart_print_string("NrOfMissingON: "); uart_print_int(NrOfMissingTeethsAtEventON); uart_new_line();
-		uart_print_string("EventToothOFF: "); uart_print_int(EventToothOFF); uart_new_line();
-		uart_print_string("EventToothON: "); uart_print_int(EventToothON); uart_new_line();
-		uart_print_string("CrankInterval: "); uart_print_int(CrankToothDegreeInterval); uart_new_line();
-		
-		
-		uart_print_string("TimerTurnOff: "); uart_print_int(TimerTurnOffDegreeAfterTooth); uart_new_line();
-		uart_print_string("TimerPerc: "); uart_print_int(TimerToothOffPercentage); uart_new_line();
-		uart_print_string("CntTimingOff: "); uart_print_int(Inj_or_Ign->CntTimingOff); uart_new_line();
-		uart_print_string("TimerTurnOn: "); uart_print_int(TimerTurnOnDegreeAfterTooth); uart_new_line();
-		uart_print_string("TimerOnPerc: "); uart_print_int(TimerToothOnPercentage); uart_new_line();
-		uart_print_string("CntTimingOn: "); uart_print_int(Inj_or_Ign->CntTimingOn); uart_new_line();
+// 		uart_print_string("CurrentCrankcnt: "); uart_print_int(CurrentCrankToothCounter); uart_new_line();
+// 			
+// 		uart_print_string("PulseWidth: "); uart_print_int(PulseWidth); uart_new_line();
+// 		uart_print_string("DegreeOn: "); uart_print_int(DegreeOn); uart_new_line();
+// 		uart_print_string("DegreeOff: "); uart_print_int(DegreeOff); uart_new_line();
+// 		uart_print_string("TeethsOFF: "); uart_print_int(TeethsOFF); uart_new_line();
+// 		uart_print_string("TeethsON: "); uart_print_int(TeethsON); uart_new_line();
+// 		
+// 		uart_print_string("NrOfMissingOFF: "); uart_print_int(NrOfMissingTeethsAtEventOFF); uart_new_line();
+// 		uart_print_string("NrOfMissingON: "); uart_print_int(NrOfMissingTeethsAtEventON); uart_new_line();
+// 		uart_print_string("EventToothOFF: "); uart_print_int(EventToothOFF); uart_new_line();
+// 		uart_print_string("EventToothON: "); uart_print_int(EventToothON); uart_new_line();
+// 		uart_print_string("CrankInterval: "); uart_print_int(CrankToothDegreeInterval); uart_new_line();
+// 		
+// 		
+// 		uart_print_string("TimerTurnOff: "); uart_print_int(TimerTurnOffDegreeAfterTooth); uart_new_line();
+// 		uart_print_string("TimerPerc: "); uart_print_int(TimerToothOffPercentage); uart_new_line();
+// 		uart_print_string("CntTimingOff: "); uart_print_int(Inj_or_Ign->CntTimingOff); uart_new_line();
+// 		uart_print_string("TimerTurnOn: "); uart_print_int(TimerTurnOnDegreeAfterTooth); uart_new_line();
+// 		uart_print_string("TimerOnPerc: "); uart_print_int(TimerToothOnPercentage); uart_new_line();
+// 		uart_print_string("CntTimingOn: "); uart_print_int(Inj_or_Ign->CntTimingOn); uart_new_line();
 		
  		DebugCounter = 0;
 		}

@@ -10,10 +10,12 @@
 #define GLOBAL_H_
 
 #include <asf.h>
+#include "debug.h"
 
 // DEBUG PARAMETERS
 uint32_t DebugCounter;
 uint32_t isDebug;
+volatile struct debug_communication myDebug;
 
 /************************************************************************/
 /* Global definitions:                                                  */
@@ -333,7 +335,7 @@ void global_toggle_pin(Pio *PioInterface, uint32_t Pin);
 #include "fuelcalc.h"
 #include "igncalc.h"
 #include "storage.h"
-#include "debug.h"
+//#include "debug.h"
 
 
 #endif /* GLOBAL_H_ */

@@ -36,7 +36,7 @@ USART3 TXD3 PD4 B                                                       */
 #define USART_CLOCKDIVISION ATSAM3X8E_MCK/(USART_BAUDRATE*16)
 
 
-void debug_init_usart(debug_communication *Instance, Usart *UsartInstance, uint32_t BaudRate) // UsartInstance: USART0, USART1 ...
+void debug_init_usart(struct debug_communication *Instance, Usart *UsartInstance, uint32_t BaudRate) // UsartInstance: USART0, USART1 ...
 {
 	/* Initialize USART controller */
 	uint32_t ID;
@@ -90,7 +90,7 @@ void debug_init_usart(debug_communication *Instance, Usart *UsartInstance, uint3
 	debug_new_instance(Instance, MyInterface);
 }
 
-void debug_shitmix_init(debug_communication *Instance) // don't have time to make the general function 
+void debug_shitmix_init(struct debug_communication *Instance) // don't have time to make the general function 
 {
 	#define USART_SERIAL_BAUDRATE        115200
 	#define USART_RXD0 PIO_PA10A_RXD0
@@ -140,7 +140,7 @@ void debug_shitmix_init(debug_communication *Instance) // don't have time to mak
 // 	pdc_enable_transfer(PdcInterface, PERIPH_PTCR_TXTEN);
 }
 
-void debug_new_instance(debug_communication *Instance, Pdc *PdcInterface)
+void debug_new_instance(struct debug_communication *Instance, Pdc *PdcInterface)
 {
 	Instance->PdcInterface = PdcInterface;
 	Instance->CurrentTransferringPacket = 0;
@@ -148,7 +148,7 @@ void debug_new_instance(debug_communication *Instance, Pdc *PdcInterface)
 	Instance->Packet2Counter = 0;
 }
 
-void debug_transfer_new_message(debug_communication * Instance, uint32_t Time, char * String, uint32_t Value)
+void debug_transfer_new_message(struct debug_communication * Instance, uint32_t Time, char * String, uint32_t Value)
 {
 	uint8_t *NextPacket;
 	uint16_t *NextCounter;
@@ -171,25 +171,33 @@ void debug_transfer_new_message(debug_communication * Instance, uint32_t Time, c
 	if ((*NextCounter) > MAX_FILL_LENGTH)
 	{
 		// ADD SOMETHING TO LET KNOW
-		return;
+		uint8_t j = 0;
+		char *Error = "FULL !!!!";
+		while (Error[j] != 0 && j < MAX_STRING_LENGTH)
+		{
+			NextPacket[(*NextCounter)++] = Error[j++];
+		}
 	}
-	
-	NextPacket[(*NextCounter)++] = '[';
-	debug_add_int_to_char_array(NextPacket, Time, NextCounter);
-	NextPacket[(*NextCounter)++] = ']';
-	
-	uint8_t j = 0;
-	while (String[j] != 0 && j < MAX_STRING_LENGTH)
+	else
 	{
-		NextPacket[(*NextCounter)++] = String[j++];
+		NextPacket[(*NextCounter)++] = '[';
+		debug_add_int_to_char_array(NextPacket, Time, NextCounter);
+		NextPacket[(*NextCounter)++] = ']';
+		
+		uint8_t j = 0;
+		while (String[j] != 0 && j < MAX_STRING_LENGTH)
+		{
+			NextPacket[(*NextCounter)++] = String[j++];
+		}
+		NextPacket[(*NextCounter)++] = ' '; // space
+		
+		debug_add_int_to_char_array(NextPacket, Value, NextCounter);
+		
+			
 	}
-	NextPacket[(*NextCounter)++] = ' '; // space
-	
-	debug_add_int_to_char_array(NextPacket, Value, NextCounter);
-	
 	NextPacket[(*NextCounter)++] = 10; // new line
-	
 	if (debug_write_usart_buffer(USART0, NextPacket, (*NextCounter)))
+	//if (uart_load_pdc_tx_buffer(NextPacket, (*NextCounter)))
 	{
 		Instance->CurrentTransferringPacket ^= 1; //Toggle to next packet
 		(*NextCounter) = 0;
@@ -236,17 +244,17 @@ uint8_t debug_write_usart_buffer(Usart *usart, uint32_t *buffer, uint32_t size)
 
 
 
-void debug_add_to_packet(debug_communication * Instance, uint32_t Time, char * String, uint32_t Value, uint8_t * CurrentPacket)
+void debug_add_to_packet(struct debug_communication * Instance, uint32_t Time, char * String, uint32_t Value, uint8_t * CurrentPacket)
 {
 	
 }
 
-uint8_t debug_peripheral_is_available(debug_communication * Instance)
+uint8_t debug_peripheral_is_available(struct debug_communication * Instance)
 {
 	
 }
 
-void debug_send_message(debug_communication * Instance, uint8_t * CurrentPacket)
+void debug_send_message(struct debug_communication * Instance, uint8_t * CurrentPacket)
 {
 	
 }
@@ -254,7 +262,7 @@ void debug_send_message(debug_communication * Instance, uint8_t * CurrentPacket)
 void debug_TEST_component()
 {
 	// Create instance
-	volatile debug_communication myInstance;
+	volatile struct debug_communication myInstance;
 	
 	debug_init_usart(&myInstance, USART0, 115200);
 	//debug_shitmix_init(&myInstance);

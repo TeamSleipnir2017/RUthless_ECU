@@ -11,17 +11,18 @@
 
 #include "global.h"
 
-#define BAUDRATE 460800
+#define BAUDRATE 115200
 #define CLOCKDIVISION ATSAM3X8E_MCK/(BAUDRATE*16)
 #define TXBUFFERSIZE 1024
+#define TXBUFFER_MAXFILL 924
 #define RXBUFFERSIZE 1024
 
 Pdc *PdcInterface;
 pdc_packet_t PdcTxPacket;
 
 volatile uint8_t TxString[TXBUFFERSIZE];
-volatile uint16_t TxStringHead;
-volatile uint16_t TxStringTail;
+volatile uint32_t TxStringHead;
+volatile uint32_t TxStringTail;
 
 volatile uint8_t RxString[RXBUFFERSIZE];
 volatile uint16_t RxStringHead;
@@ -43,6 +44,8 @@ void uart_print_int(uint32_t data);
 void uart_new_line(void);
 void uart_print_string(char * data);
 uint8_t uart_receive(void);
-void uart_load_pdc_tx_buffer(uint8_t * address, uint16_t size);
+uint8_t uart_load_pdc_tx_buffer(uint8_t * address, uint16_t size);
+void uart_debug_transfer_new_message(uint32_t Time, char *String, uint32_t Value);
+void uart_add_int_to_char_array(uint8_t *array, uint32_t data, uint16_t *counter); 
 
 #endif /* UART_H_ */

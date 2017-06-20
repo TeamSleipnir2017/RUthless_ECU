@@ -114,9 +114,11 @@ int main (void)
 	
 	uart_print_string("Init done"); uart_new_line();
 
-	volatile debug_communication myDebug;
 	
-	debug_init_usart(&myDebug, USART0, 460800);
+	
+	debug_init_usart(&myDebug, USART0, 500000);
+	
+	// DEBUGGGGGGGGGGGGGGGG !!!!!!!!!!!!!!
 	
 	while (1)
  	{		
@@ -132,10 +134,6 @@ int main (void)
 // 				uart_print_string("Channel"); uart_print_int(channel_number[i]);uart_print_string(" :");uart_print_int(math_find_median(AdcData[AdcChannels[i]], ADC_MEDIAN_FILTER_LENGTH)); uart_new_line();
 // 				__asm__("nop");
 // 			}
-
-			debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CNT", myDebug.Packet1Counter);
-// 			volatile uint8_t send[33] = "abcdefghijklmnoprstuqw1234567890\n";
-// 			debug_write_usart_buffer(USART0, &send, 33);
 		}
 		
 		if (RxFlag)
