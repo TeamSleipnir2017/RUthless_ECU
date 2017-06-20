@@ -33,6 +33,7 @@ struct debug_communication
 	Pdc *PdcInterface;
 	
 	volatile uint8_t CurrentTransferringPacket; // Should either be 0 or 1
+	volatile uint8_t CurrentPacketFull;			// Flag
 
 	volatile uint8_t Packet1[MAX_PACKET_LENGTH];
 	volatile uint8_t Packet2[MAX_PACKET_LENGTH];

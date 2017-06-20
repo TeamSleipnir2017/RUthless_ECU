@@ -105,18 +105,18 @@ void timer_do_cylinder(uint8_t CylinderNr)
 	
 	if (TimerStatus & TC_SR_CPAS) // Compare register A ignition 1
 	{
-		if(isDebug)
+		/*if(isDebug)
 		{
 			debug_transfer_new_message(&myDebug, CounterValue, "doIgn", CylinderNr);	
-		}
+		}*/
 		timer_do_inj_or_ign(&cylinder[CylinderNr].Ign, &cylinder[CylinderNr]);
 	}
 	if (TimerStatus & TC_SR_CPBS) // Compare register B injector 1
 	{
-		if(isDebug)
+		/*if(isDebug)
 		{
 			debug_transfer_new_message(&myDebug, CounterValue, "doInj", CylinderNr);	
-		}
+		}*/
 		timer_do_inj_or_ign(&cylinder[CylinderNr].Inj, &cylinder[CylinderNr]);
 	}
 	if (TimerStatus & TC_SR_CPCS) // Compare register C injector 2
@@ -132,32 +132,32 @@ void timer_do_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cyli
 {
 	if (Inj_or_Ign->EventPending)
 	{
-		if(isDebug)
+		/*if(isDebug)
 		{
 			debug_transfer_new_message(&myDebug, Cyl->Tc_channel->TC_CV, "TurnOn", 0);	
-		}
+		}*/
 		Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to high
 		Inj_or_Ign->EventPending = FALSE;
 		//debug_cylinder[CylinderNr].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 	}
 	else
 	{
-		if(isDebug)
+		/*if(isDebug)
 		{
 			debug_transfer_new_message(&myDebug, Cyl->Tc_channel->TC_CV, "TurnOff", 0);	
-		}
+		}*/
 		Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to low
 		//debug_cylinder[CylinderNr].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
 	}
 	// TODO: NEEDS TO BE TESTED
 	if (Inj_or_Ign->EventOnSameTooth)							// Check if Off event is at the same tooth
 	{
-		*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOff);
+		*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOff - Inj_or_Ign->CntTimingOn);
 		Inj_or_Ign->EventOnSameTooth = FALSE;
-		if(isDebug)
+		/*if(isDebug)
 		{
 			debug_transfer_new_message(&myDebug, Cyl->Tc_channel->TC_CV, "TCSameTooth", *(Inj_or_Ign->TcCompareRegister));	
-		}
+		}*/
 	}
 }
 

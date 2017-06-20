@@ -45,7 +45,7 @@ void uart_new_line(void);
 void uart_print_string(char * data);
 uint8_t uart_receive(void);
 uint8_t uart_load_pdc_tx_buffer(uint8_t * address, uint16_t size);
-void uart_debug_transfer_new_message(uint32_t Time, char *String, uint32_t Value);
+//void uart_debug_transfer_new_message(uint32_t Time, char *String, uint32_t Value);
 void uart_add_int_to_char_array(uint8_t *array, uint32_t data, uint16_t *counter); 
 
 #endif /* UART_H_ */

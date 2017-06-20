@@ -20,10 +20,18 @@ uint32_t fuelcalc_pulsewidth(void)
 	
 	int16_t Temperature = engine_realtime.Iat - TEMPERATURE_OFFSET;
 	uint16_t Ve = math_interpolation_array(Rpm, Map, &VE, 1);
-	engine_realtime.VeTarget = Ve;
+	engine_realtime.VeTarget = Ve / 10;
+	if (isDebug)
+	{
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "VeTarget", Ve);
+	}
 	//uart_print_string("Ve: "); uart_print_int(Ve); uart_new_line();
 	uint16_t Afr = math_interpolation_array(Rpm, Map, &AFR, 1);
 	engine_realtime.AfrTarget = Afr;
+	if (isDebug)
+	{
+		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "AfrTarget", Afr);
+	}
 	//uart_print_string("Afr: "); uart_print_int(Afr); uart_new_line();
 	// Fuel equation:
 	// Mair = (VE *  MAP * CYL_DISP) / (R (287 J/(Kg Kelvin)) * (IAT + 273))

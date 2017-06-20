@@ -144,6 +144,7 @@ void debug_new_instance(struct debug_communication *Instance, Pdc *PdcInterface)
 {
 	Instance->PdcInterface = PdcInterface;
 	Instance->CurrentTransferringPacket = 0;
+	Instance->CurrentPacketFull = 0;
 	Instance->Packet1Counter = 0;
 	Instance->Packet2Counter = 0;
 }
@@ -156,27 +157,26 @@ void debug_transfer_new_message(struct debug_communication * Instance, uint32_t 
 	{
 		NextPacket = &Instance->Packet2;
 		NextCounter = &Instance->Packet2Counter;
-// 		NextPacket[(*NextCounter)++] = 'P';NextPacket[(*NextCounter)++] = 'A';NextPacket[(*NextCounter)++] = 'C';NextPacket[(*NextCounter)++] = 'K';NextPacket[(*NextCounter)++] = '2';
 	}
 	else
 	{
 		NextPacket = &Instance->Packet1;
 		NextCounter = &Instance->Packet1Counter;
-// 		NextPacket[(*NextCounter)++] = 'P';NextPacket[(*NextCounter)++] = 'A';NextPacket[(*NextCounter)++] = 'C';NextPacket[(*NextCounter)++] = 'K';NextPacket[(*NextCounter)++] = '1';
 	}
-	
-// 	NextPacket[(*NextCounter)++] = 'C';NextPacket[(*NextCounter)++] = 'N';NextPacket[(*NextCounter)++] = 'T';
-// 	debug_add_int_to_char_array(NextPacket, (*NextCounter), NextCounter);
 	
 	if ((*NextCounter) > MAX_FILL_LENGTH)
 	{
-		// ADD SOMETHING TO LET KNOW
-		uint8_t j = 0;
-		char *Error = "FULL !!!!";
-		while (Error[j] != 0 && j < MAX_STRING_LENGTH)
+		if (Instance->CurrentPacketFull == 0)
 		{
-			NextPacket[(*NextCounter)++] = Error[j++];
+			uint8_t j = 0;
+			char *Error = "FULL !!!!";
+			while (Error[j] != 0 && j < MAX_STRING_LENGTH)
+			{
+				NextPacket[(*NextCounter)++] = Error[j++];
+			}	
+			NextPacket[(*NextCounter)++] = 10; // new line
 		}
+		Instance->CurrentPacketFull = 1;
 	}
 	else
 	{
@@ -193,14 +193,15 @@ void debug_transfer_new_message(struct debug_communication * Instance, uint32_t 
 		
 		debug_add_int_to_char_array(NextPacket, Value, NextCounter);
 		
-			
+		NextPacket[(*NextCounter)++] = 10; // new line	
 	}
-	NextPacket[(*NextCounter)++] = 10; // new line
+	
 	if (debug_write_usart_buffer(USART0, NextPacket, (*NextCounter)))
 	//if (uart_load_pdc_tx_buffer(NextPacket, (*NextCounter)))
 	{
 		Instance->CurrentTransferringPacket ^= 1; //Toggle to next packet
 		(*NextCounter) = 0;
+		Instance->CurrentPacketFull = 0;
 	}
 }
 

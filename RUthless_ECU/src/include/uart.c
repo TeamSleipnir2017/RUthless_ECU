@@ -199,26 +199,26 @@ uint8_t uart_load_pdc_tx_buffer(uint8_t * address, uint16_t size)
 	
 }
 
-void uart_debug_transfer_new_message(uint32_t Time, char *String, uint32_t Value)
-{
-	if (TxStringHead > TXBUFFER_MAXFILL)
-	{
-		// ADD SOMETHING TO LET KNOW
-		return;
-	}
-	uart_load_tx_buffer('[');
-	uart_add_int_to_char_array(&TxString, Time, &TxStringHead);
-	uart_load_tx_buffer('[');
-	uint8_t j = 0;
-	while (String[j] != 0 && j < 30)
-	{
-		uart_load_tx_buffer(String[j++]);
-	}
-	uart_load_tx_buffer(' ');
-	uart_add_int_to_char_array(&TxString, Value, &TxStringHead);
-	uart_load_tx_buffer(10); // new line
-	
-}
+// void uart_debug_transfer_new_message(uint32_t Time, char *String, uint32_t Value)
+// {
+// 	if (TxStringHead > TXBUFFER_MAXFILL)
+// 	{
+// 		// ADD SOMETHING TO LET KNOW
+// 		return;
+// 	}
+// 	uart_load_tx_buffer('[');
+// 	uart_add_int_to_char_array(&TxString, Time, &TxStringHead);
+// 	uart_load_tx_buffer('[');
+// 	uint8_t j = 0;
+// 	while (String[j] != 0 && j < 30)
+// 	{
+// 		uart_load_tx_buffer(String[j++]);
+// 	}
+// 	uart_load_tx_buffer(' ');
+// 	uart_add_int_to_char_array(&TxString, Value, &TxStringHead);
+// 	uart_load_tx_buffer(10); // new line
+// 	
+// }
 
 void uart_add_int_to_char_array(uint8_t *array, uint32_t data, uint16_t *counter) // returns counter
 {
