@@ -219,14 +219,6 @@ struct cylinder_
 volatile struct cylinder_ cylinder[MAX_NR_OF_CYL]; // Create an instance of the struct defined above 
 
 
-
-
-struct debug_cylinders_
-{
-	uint32_t RealTimeCycleNr;
-	uint32_t RealTimeLastRevCounts;
-};
-volatile struct debug_cylinders_ debug_cylinders;
 struct debug_cylinder_ 
 {
 	uint32_t RealTimeCycleNr;
@@ -237,8 +229,22 @@ struct debug_cylinder_
 	uint32_t InjRealTimeTurnOnCount;
 	uint32_t InjRealTimeTurnOffCount;
 	uint32_t InjRealTimeCalcCount;
+	
 };
-volatile struct debug_cylinder_ debug_cylinder[NR_OF_CYL];
+
+struct debug_cylinders_
+{
+	
+	uint8_t start[4];
+	volatile struct debug_cylinder_ debug_cylinder[NR_OF_CYL];
+	uint32_t RealTimeCycleNr;
+	uint32_t RealTimeLastRevCounts;
+	uint8_t end[4];
+	
+};
+
+volatile struct debug_cylinders_ debug_cylinders;
+
 /************************************************************************/
 /* Functions:                                                           */
 /************************************************************************/
@@ -336,6 +342,7 @@ void global_toggle_pin(Pio *PioInterface, uint32_t Pin);
 #include "igncalc.h"
 #include "storage.h"
 //#include "debug.h"
+
 
 
 #endif /* GLOBAL_H_ */
