@@ -62,6 +62,7 @@ volatile struct debug_communication myDebug;
 volatile uint16_t IgnitionDegree;			// Current spark timing in degrees
 volatile uint16_t InjectorOpenTime;			// Injector opening/closing time in hundreds of nanoseconds: 1 = 100 nsec
 volatile uint32_t IgnitionDwellLimit;		// Dwell limit of ignition coil in hundreds of nanoseconds: 1 = 100 nsec
+volatile uint32_t TriggerFilterTime;		// Trigger filter time between trigger teeths
 
 volatile uint32_t PIOAHandlerTimeInCounts; // Time taken in PIOA_HANDLER in timer counts
 

@@ -57,6 +57,10 @@ void decoders_crank_primary(void)
 		}
 			
 	}
+	else
+	{
+		interrupts_set_crank_signal_filter(); // Set filter if not missing tooth
+	}
 	// TODO: DISABLE INTERRUPTS !!!!!!!!!!!!!!!!!!!!!
 	uint8_t tempCrankTooth = CrankTooth;
 	uint32_t tempCrankToothCounter = CrankToothCounter;
@@ -88,6 +92,17 @@ void decoders_crank_primary(void)
 // 			CrankFirstTach = igncalc_ign_time_teeth(IgnitionDegree);
 // 			CrankFirstInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();		
 // 		}
+}
+
+void interrupts_set_crank_signal_filter()
+{
+	switch (engine_config4.TriggerFilter)
+	{
+		case 1:	TriggerFilterTime = CrankCurrCycleCounts >> 2;			break;	// 25 % light filter
+		case 2: TriggerFilterTime = CrankCurrCycleCounts >> 1;			break;	// 50 % medium filter
+		case 3: TriggerFilterTime = (CrankCurrCycleCounts * 3) >> 2;	break;	// 75 % hard filter
+		default:TriggerFilterTime = 0;	break;
+	}
 }
 
 // The idea is to look two cycles beforhand for each cylinder
@@ -195,7 +210,6 @@ void decoders_set_inj_or_ign_event(uint8_t CurrentCrankTooth, uint32_t CurrentCr
 		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CntTimingOn", Inj_or_Ign->CntTimingOn);
 	}
 }
-
 
 
 // CURRENTLY NOT USED !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 16.4.17

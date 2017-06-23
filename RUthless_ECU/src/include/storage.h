@@ -160,7 +160,7 @@ struct engine_config4_
 	uint8_t DwellLimitEnable	: 1;				// Whether the dwell limiter is "Off",		"On"
 	uint8_t SparkOutputMode		: 1;				// "Wasted Spark", "Single Channel",   "Wasted COP", "Sequential"
 	uint8_t DfcoEnable			: 1;				// Todo: Decelleration fuel cut off
-	uint8_t TriggerFilter		: 2;				// Todo: "Off", "Weak", "Medium", "Aggressive"
+	uint8_t TriggerFilter		: 2;				// "Off", "Weak", "Medium", "Aggressive"
 	uint8_t IgnCrankLock		: 1;				// Fix cranking timing with trigger "Off",  "On"
 	//13 byrja á 1
 	uint8_t DwellTimeCranking;						// Dwell time whilst cranking [ms*10]

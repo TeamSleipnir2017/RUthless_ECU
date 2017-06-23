@@ -13,7 +13,7 @@
 #define DECODERS_H_
 
 void decoders_crank_primary(void);
-
+void interrupts_set_crank_signal_filter();
 void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter);
 // Calculate timing for injector or ignition coil
 void decoders_set_inj_or_ign_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter, struct cylinder_output_manager *Inj_or_Ign, uint32_t PulseWidth, uint16_t DegreeOff);
