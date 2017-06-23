@@ -32,6 +32,7 @@ void global_init(void)
 	CamSignalFlag = FALSE;
 	CrankRevCounts = 0;
 	LastCrankRevCounts = 0;
+	TriggerFilterTime = 0;
 
 	storage_struct_read_eeprom_init(&engine_config2, sizeof(engine_config2), EEPROM_CONFIG2_INDEX);
 	storage_struct_read_eeprom_init(&engine_config4, sizeof(engine_config4), EEPROM_CONFIG4_INDEX);

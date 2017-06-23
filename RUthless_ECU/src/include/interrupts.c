@@ -83,33 +83,38 @@ void PIOA_Handler(void)
 	// Check if the interrupt source is from the crankshaft sensor
 	if (status_register & CRANK_SIGNAL)
 	{
-		CrankPrevCycleCounts	=		CrankCurrCycleCounts;
-		CrankCurrCycleCounts	=		TimerCounterValue - CrankTimerCounts;
-		CrankTimerCounts		=		TimerCounterValue;
-		CrankRevCounts			+=		CrankCurrCycleCounts;
-		CrankTooth++;
-		CrankToothCounter++;
-		CrankSignalFlag			=		TRUE;
+		// Start to filter out short pulses
+		uint32_t tempGapTimeBetweenTeeths = TimerCounterValue - CrankTimerCounts;
+		if (tempGapTimeBetweenTeeths >= TriggerFilterTime) // If pulses ar less than filter time it means a false trigger
+		{
+			CrankPrevCycleCounts	=		CrankCurrCycleCounts;
+			CrankCurrCycleCounts	=		TimerCounterValue - CrankTimerCounts;
+			CrankTimerCounts		=		TimerCounterValue;
+			CrankRevCounts			+=		CrankCurrCycleCounts;
+			CrankTooth++;
+			CrankToothCounter++;
+			CrankSignalFlag			=		TRUE;
+			for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
+			{
+				/*if(isDebug)
+				{
+					debug_transfer_new_message(&myDebug, TimerCounterValue, "CylInj", i);	
+				}*/
+				interrupts_check_timer_for_inj_or_ign(&cylinder[i].Inj, &cylinder[i]);
+				/*if(isDebug)
+				{
+					debug_transfer_new_message(&myDebug, TimerCounterValue, "CylIgn", i);	
+				}*/
+				interrupts_check_timer_for_inj_or_ign(&cylinder[i].Ign, &cylinder[i]);
+			}
+		}
+		
 		/*if(isDebug)
 		{
 			debug_transfer_new_message(&myDebug, TimerCounterValue, "Crank", 0);	
 		}*/
-		for (uint8_t i = 0; i < engine_config2.NrCylinders; i++)
-		{
-			/*if(isDebug)
-			{
-				debug_transfer_new_message(&myDebug, TimerCounterValue, "CylInj", i);	
-			}*/
-			interrupts_check_timer_for_inj_or_ign(&cylinder[i].Inj, &cylinder[i]);
-			/*if(isDebug)
-			{
-				debug_transfer_new_message(&myDebug, TimerCounterValue, "CylIgn", i);	
-			}*/
-			interrupts_check_timer_for_inj_or_ign(&cylinder[i].Ign, &cylinder[i]);
-		}
+		
 	}
-	
-	
 	
 	// Check if the interrupt source is from the camshaft sensor
 	if (status_register & CAM_SIGNAL)
