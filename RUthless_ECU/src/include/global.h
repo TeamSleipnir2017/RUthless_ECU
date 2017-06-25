@@ -186,6 +186,7 @@ struct cylinder_output_manager
 {
 	uint32_t CntTimingOn;		// Output(ignition/injector) cylinder "x" counter ON value
 	uint32_t CntTimingOff;		// Output(ignition/injector) cylinder "x" counter OFF value
+	uint32_t CntTimeOutOff;		// Output(ignition/injector) cylinder "x" counter OFF value preventing endless on state of output (when engine stalls or starting or someone manually turning the crankshaft)
 	uint32_t ToothOn;			// Output(ignition/injector) cylinder "x" trigger wheel tooth ON value
 	uint32_t ToothOff;			// Output(ignition/injector) cylinder "x" trigger wheel tooth OFF value
 	uint8_t	 EventPending;		// A flag to indicate a Output(ignition/injector) event

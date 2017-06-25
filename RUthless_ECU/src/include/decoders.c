@@ -189,6 +189,8 @@ void decoders_set_inj_or_ign_event(uint8_t CurrentCrankTooth, uint32_t CurrentCr
 	uint32_t TimerToothOnPercentage = TimerTurnOnDegreeAfterTooth * 100 / CrankToothDegreeInterval; // should give 0 - 99%, since 100% is next tooth obviously
 	Inj_or_Ign->CntTimingOn = ((TimerToothOnPercentage + NrOfMissingTeethsAtEventON * 100) * LastCrankRevCounts) / (100 * engine_config4.TriggerTeethCount); // I think this should never overflow
 
+	Inj_or_Ign->CntTimeOutOff = Inj_or_Ign->CntTimingOff + (Inj_or_Ign->ToothOff - Inj_or_Ign->ToothOn) * LastCrankRevCounts + GLOBAL_TIMER_FREQ/MILLI_SEC; // Timeout to prevent ignition coil burnt or cylinder full of gas (A millisecond is added to prevent fucking with correct timing)
+	
 	if (isDebug)
 	{
 		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CurrentCrankcnt", CurrentCrankToothCounter);
