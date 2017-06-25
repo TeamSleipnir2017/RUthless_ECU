@@ -151,6 +151,10 @@ void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_o
 					debug_transfer_new_message(&myDebug, Cyl->Tc_channel->TC_CV, "SameTooth", *(Inj_or_Ign->TcCompareRegister));	
 				}*/
 			}
+			else // Initiate output timeout
+			{
+				*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimeOutOff);
+			}
 			//debug_cylinder[i].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 		}
 		else

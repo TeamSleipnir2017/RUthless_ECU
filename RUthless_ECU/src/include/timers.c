@@ -138,6 +138,8 @@ void timer_do_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cyli
 		}*/
 		Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to high
 		Inj_or_Ign->EventPending = FALSE;
+		// Initiate output timeout
+		*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimeOutOff);
 		//debug_cylinder[CylinderNr].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 	}
 	else
