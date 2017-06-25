@@ -21,10 +21,10 @@ void decoders_crank_primary(void)
 	if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1))) // New Cycle event (Missing tooth have passed the sensor)
 	{
 		CrankNewCycleFlag = TRUE;
-		debug_cylinder[0].RealTimeCycleNr++;
-		debug_cylinder[1].RealTimeCycleNr++;
-		debug_cylinder[2].RealTimeCycleNr++;
-		debug_cylinder[3].RealTimeCycleNr++;
+// 		debug_cylinder[0].RealTimeCycleNr++;
+// 		debug_cylinder[1].RealTimeCycleNr++;
+// 		debug_cylinder[2].RealTimeCycleNr++;
+// 		debug_cylinder[3].RealTimeCycleNr++;
 // 			if (isDebug)
 // 			{
 // 				uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();

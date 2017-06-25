@@ -153,10 +153,10 @@ int main (void)
 			CrankNewCycleFlag = FALSE;
 			if (isDebug)
 			{
-				debug_cylinder[0].RealTimeLastRevCounts = LastCrankRevCounts;
-				debug_cylinder[1].RealTimeLastRevCounts = LastCrankRevCounts;
-				debug_cylinder[2].RealTimeLastRevCounts = LastCrankRevCounts;
-				debug_cylinder[3].RealTimeLastRevCounts = LastCrankRevCounts;
+// 				debug_cylinder[0].RealTimeLastRevCounts = LastCrankRevCounts;
+// 				debug_cylinder[1].RealTimeLastRevCounts = LastCrankRevCounts;
+// 				debug_cylinder[2].RealTimeLastRevCounts = LastCrankRevCounts;
+// 				debug_cylinder[3].RealTimeLastRevCounts = LastCrankRevCounts;
 				//uart_load_pdc_tx_buffer(&debug_cylinder, sizeof(debug_cylinder));
 				//uart_print_string("PIOAHandlerTimeInCounts"); uart_print_int(PIOAHandlerTimeInCounts); uart_new_line();
 			}
@@ -169,6 +169,11 @@ int main (void)
 		{
 			global_set_inj_and_ign_output_off();
 			engine_realtime.EngineStatus |= ENGINE_RUNNING;
+		}
+		
+		if (CrankCycleCounter % 2 == 0)
+		{
+			
 		}
 		else
 		{

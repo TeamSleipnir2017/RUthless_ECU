@@ -59,9 +59,9 @@ void global_init(void)
 	storage_init_struct_to_zero(&engine_realtime, sizeof(engine_realtime));
 
 	table_init();
-	uint32_t *debug_cylinder_pointer = &debug_cylinder; 
-	for (uint32_t i = 0; i < sizeof(debug_cylinder); i++)
-		*(debug_cylinder_pointer + i) = 0;
+// 	uint32_t *debug_cylinder_pointer = &debug_cylinder; 
+// 	for (uint32_t i = 0; i < sizeof(debug_cylinder); i++)
+// 		*(debug_cylinder_pointer + i) = 0;
 	cylinder_init();
 }
 
@@ -99,7 +99,7 @@ void cylinder_init(void)
 		
 		timer_init(CYLINDER_1_TIMER + i, TC_CMR_WAVE | TC_CMR_TCCLKS_TIMER_CLOCK3 | TC_CMR_EEVT_XC0, TC_IER_COVFS | TC_IER_CPAS | TC_IER_CPBS | TC_IER_CPCS, TC0_PRIORITY + i);
 		
-		debug_cylinder[i].RealTimeCylInstance = i + 1;
+/*		debug_cylinder[i].RealTimeCylInstance = i + 1;*/
 	}
 	cylinder[1].Inj.pio = PIOD; // Because the board developer did not thought it through :)
 	cylinder[0].Ign.OutputPin = IGN1_OUT;
