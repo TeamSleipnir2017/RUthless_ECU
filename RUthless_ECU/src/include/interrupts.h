@@ -41,6 +41,6 @@
 
 void interrupts_enable_interrupt_vector(uint32_t IRQN, uint32_t Priority);
 void interrupts_enable_pio(uint32_t PeripheralID, uint32_t Pin, uint32_t Priority, uint8_t Mode);
-void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl);
+void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl, struct debug_cylinder_output_ *Debug_Output);
 
 #endif /* INTERRUPTS_H_ */

@@ -21,40 +21,22 @@ void decoders_crank_primary(void)
 	if(CrankCurrCycleCounts > (3 * (CrankPrevCycleCounts >> 1))) // New Cycle event (Missing tooth have passed the sensor)
 	{
 		CrankNewCycleFlag = TRUE;
-// 		debug_cylinder[0].RealTimeCycleNr++;
-// 		debug_cylinder[1].RealTimeCycleNr++;
-// 		debug_cylinder[2].RealTimeCycleNr++;
-// 		debug_cylinder[3].RealTimeCycleNr++;
-// 			if (isDebug)
-// 			{
-// 				uart_print_string("C "); uart_print_int(CrankTooth); uart_new_line();
-// 			}
 		CrankTooth = 0;
 		CrankCycleCounter++; 
-			
 		CamSignalFlag ^= TRUE;
-/*
-		IgnitionDegree = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);
-	
-		DwellDegree = IgnitionDegree + igncalc_dwell_degree();
-			
-		DwellSecondTach = igncalc_ign_time_teeth(DwellDegree);
-		DwellSecondInterval = igncalc_ign_time_interval(DwellDegree) + decoders_tooth_degree_correction();
-			
-		CrankSecondTach = igncalc_ign_time_teeth(IgnitionDegree);
-		CrankSecondInterval = igncalc_ign_time_interval(IgnitionDegree) + decoders_tooth_degree_correction();
-*/
+
 		// RPM calculations
 		uint32_t CalcRpm = GLOBAL_TIMER_FREQ * 60 / CrankRevCounts;
-		// TODO: CHECK if calculated RPM is crap, well above redline (high frequency filter)
 		engine_realtime.Rpm = (uint16_t)CalcRpm;
 			
 		LastCrankRevCounts = CrankRevCounts;
-		CrankRevCounts = 0;
+		CrankRevCounts = 0; // This is cumulated sum in interrupt handler
 		if(isDebug)
 		{
 			debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "LastCrankRevCounts", LastCrankRevCounts);
 		}
+		debug_cylinders.RealTimeCycleNr = CrankCycleCounter;
+		debug_cylinders.RealTimeLastRevCounts = LastCrankRevCounts;
 			
 	}
 	else
@@ -114,9 +96,12 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	uint32_t CylinderOffset = (engine_config4.SecondTriggerPolar ^ CamSignalFlag) * (NrCylinderDividedByTwo); // Represent first bank or second bank
 	uint32_t InjIndex = TachEventNumber + CylinderOffset;						// Represents current cylinder tdc or 720°
 	uint32_t IgnIndex = (TachEventNumber + CylinderOffset + NrCylinderDividedByTwo) % (engine_config2.NrCylinders); // Calculate cylinder after 360° 
-	// TODO: CHOOSE CYLINDER ACCORDING TO FIRING ORDER
 	struct cylinder_ *InjCylEvent = &cylinder[engine_config2.FiringOrder[InjIndex]]; // Next cylinder to calculate injection parameters for (720° from current position)
 	struct cylinder_ *IgnCylEvent = &cylinder[engine_config2.FiringOrder[IgnIndex]]; // Next cylinder to calculate ignition parameters for (360° from current position) TODO: Check if dwell time is longer than max rpm time then calculate 720° before
+	// Debug
+	struct debug_cylinder_output_ *debugInjEvent = &debug_cylinders.inj_output_debug[engine_config2.FiringOrder[InjIndex]];
+	struct debug_cylinder_output_ *debugIgnEvent = &debug_cylinders.inj_output_debug[engine_config2.FiringOrder[IgnIndex]];
+	
 	
 	if (isDebug)
 	{
@@ -126,12 +111,15 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	// Injection timing calculations, OFF means turn output off and ON is output on
 	uint32_t PulseWidth = fuelcalc_pulsewidth(); // Hundreds of nanoseconds (1 = 0.1 µs)
 	engine_realtime.PulseWidth = PulseWidth / 1000; // convert to tenths of millisecs
+	uint32_t InjDegOFF = 0;
 	if ((PulseWidth > 0) || (engine_realtime.Rpm < (engine_config4.HardRevLimit * RPM_SCALER))) // If Flood clear OR rev limit
 	{
 		// Degrees are calculated from current crank position(some cylinder TDC), for example 390.0° is one cycle beforehand and 330.0° before next TDC
-		uint32_t InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
+		InjDegOFF = engine_config2.InjAng[InjIndex] * 10 + CRANK_DEGREE_RESOLUTION; // configured injector closing angle
 		decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &InjCylEvent->Inj, PulseWidth, InjDegOFF);	
 	}
+	debugInjEvent->TargetPulseWidth = PulseWidth;
+	debugInjEvent->TargetTurnOffDegree = InjDegOFF;
 	
 	if (isDebug)
 	{
@@ -142,11 +130,14 @@ void decoders_tach_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCo
 	uint32_t DwellPulseWidth = igncalc_dwell_pulsewidth();
 	uint16_t DegreeAdvance = math_interpolation_array(engine_realtime.Rpm, engine_realtime.Map, &IGN, 1);
 	engine_realtime.DegAdvance = (uint8_t) (DegreeAdvance / 10);
+	uint32_t IgnDegOFF = 0;
 	if (engine_realtime.Rpm < (engine_config4.SoftRevLimit * RPM_SCALER))
 	{
-		uint32_t IgnDegOFF = CRANK_DEGREE_RESOLUTION - DegreeAdvance;
+		IgnDegOFF = CRANK_DEGREE_RESOLUTION - DegreeAdvance;
 		decoders_set_inj_or_ign_event(CurrentCrankTooth, CurrentCrankToothCounter, &IgnCylEvent->Ign, DwellPulseWidth, IgnDegOFF);
 	}
+	debugIgnEvent->TargetPulseWidth = DwellPulseWidth;
+	debugIgnEvent->TargetTurnOffDegree = IgnDegOFF;
 }
 
 void decoders_set_inj_or_ign_event(uint8_t CurrentCrankTooth, uint32_t CurrentCrankToothCounter, struct cylinder_output_manager *Inj_or_Ign, uint32_t PulseWidth, uint16_t DegreeOff)
@@ -211,6 +202,7 @@ void decoders_set_inj_or_ign_event(uint8_t CurrentCrankTooth, uint32_t CurrentCr
 		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "TimerOnPerc", TimerToothOnPercentage);
 		debug_transfer_new_message(&myDebug, TC2->TC_CHANNEL[2].TC_CV, "CntTimingOn", Inj_or_Ign->CntTimingOn);
 	}
+	
 }
 
 

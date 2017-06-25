@@ -61,6 +61,8 @@ void debug_new_instance(struct debug_communication *Instance, Pdc *PdcInterface)
 
 void debug_transfer_new_message(struct debug_communication * Instance, uint32_t Time, char * String, uint32_t Value);
 
+void debug_transfer_struct(struct debug_communication * Instance, uint32_t *Pointer, uint32_t Size);
+
 void debug_add_int_to_char_array(uint8_t *array, uint32_t data, uint16_t *counter);
 
 uint8_t debug_write_usart_buffer(Usart *usart, uint32_t *buffer, uint32_t size);

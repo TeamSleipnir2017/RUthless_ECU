@@ -160,6 +160,7 @@ int main (void)
 				//uart_load_pdc_tx_buffer(&debug_cylinder, sizeof(debug_cylinder));
 				//uart_print_string("PIOAHandlerTimeInCounts"); uart_print_int(PIOAHandlerTimeInCounts); uart_new_line();
 			}
+			debug_transfer_struct(&myDebug, &debug_cylinders, sizeof(debug_cylinders));
 		}
 		if ((millis > CrankSignalIntervalMillis + MILLI_SEC) || engine_realtime.Rpm < 100) // Motor not running (last crank signal was last received a second ago)
 		{

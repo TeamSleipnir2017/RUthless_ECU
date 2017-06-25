@@ -243,6 +243,50 @@ uint8_t debug_write_usart_buffer(Usart *usart, uint32_t *buffer, uint32_t size)
 	return 0;
 }
 
+void debug_transfer_struct(struct debug_communication * Instance, uint32_t *Pointer, uint32_t Size)
+{
+	uint8_t *NextPacket;
+	uint16_t *NextCounter;
+	if (Instance->CurrentTransferringPacket == 0)
+	{
+		NextPacket = &Instance->Packet2;
+		NextCounter = &Instance->Packet2Counter;
+	}
+	else
+	{
+		NextPacket = &Instance->Packet1;
+		NextCounter = &Instance->Packet1Counter;
+	}
+	if ((*NextCounter) > MAX_FILL_LENGTH)
+	{
+		if (Instance->CurrentPacketFull == 0)
+		{
+			uint8_t j = 0;
+			char *Error = "FULL !!!!";
+			while (Error[j] != 0 && j < MAX_STRING_LENGTH)
+			{
+				NextPacket[(*NextCounter)++] = Error[j++];
+			}
+			NextPacket[(*NextCounter)++] = 10; // new line
+		}
+		Instance->CurrentPacketFull = 1;
+	}
+	else
+	{
+		for (uint32_t i = 0; i < Size; i++)
+		{
+			NextPacket[(*NextCounter)++] = *(Pointer + i);
+		}
+	}
+	if (debug_write_usart_buffer(USART0, NextPacket, (*NextCounter)))
+	//if (uart_load_pdc_tx_buffer(NextPacket, (*NextCounter)))
+	{
+		Instance->CurrentTransferringPacket ^= 1; //Toggle to next packet
+		(*NextCounter) = 0;
+		Instance->CurrentPacketFull = 0;
+	}
+}
+
 
 
 void debug_add_to_packet(struct debug_communication * Instance, uint32_t Time, char * String, uint32_t Value, uint8_t * CurrentPacket)

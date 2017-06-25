@@ -59,10 +59,16 @@ void global_init(void)
 	storage_init_struct_to_zero(&engine_realtime, sizeof(engine_realtime));
 
 	table_init();
-// 	uint32_t *debug_cylinder_pointer = &debug_cylinder; 
-// 	for (uint32_t i = 0; i < sizeof(debug_cylinder); i++)
-// 		*(debug_cylinder_pointer + i) = 0;
 	cylinder_init();
+	
+	uint32_t *debug_cylinder_pointer = &debug_cylinders;
+	for (uint32_t i = 0; i < sizeof(debug_cylinders); i++)
+		*(debug_cylinder_pointer + i) = 0;
+	debug_cylinders.Start[0] = 'S'; debug_cylinders.Start[1] = 'T';
+	debug_cylinders.Start[2] = 'A'; debug_cylinders.Start[3] = 'R';
+	debug_cylinders.End[0] = 'E'; debug_cylinders.End[1] = 'N';
+	debug_cylinders.End[2] = 'D'; debug_cylinders.End[3] = '.';
+	
 }
 
 void cylinder_init(void)

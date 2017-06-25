@@ -109,7 +109,7 @@ void timer_do_cylinder(uint8_t CylinderNr)
 		{
 			debug_transfer_new_message(&myDebug, CounterValue, "doIgn", CylinderNr);	
 		}*/
-		timer_do_inj_or_ign(&cylinder[CylinderNr].Ign, &cylinder[CylinderNr]);
+		timer_do_inj_or_ign(&cylinder[CylinderNr].Ign, &cylinder[CylinderNr], &debug_cylinders.ign_output_debug[CylinderNr]);
 	}
 	if (TimerStatus & TC_SR_CPBS) // Compare register B injector 1
 	{
@@ -117,7 +117,7 @@ void timer_do_cylinder(uint8_t CylinderNr)
 		{
 			debug_transfer_new_message(&myDebug, CounterValue, "doInj", CylinderNr);	
 		}*/
-		timer_do_inj_or_ign(&cylinder[CylinderNr].Inj, &cylinder[CylinderNr]);
+		timer_do_inj_or_ign(&cylinder[CylinderNr].Inj, &cylinder[CylinderNr], &debug_cylinders.ign_output_debug[CylinderNr]);
 	}
 	if (TimerStatus & TC_SR_CPCS) // Compare register C injector 2
 	{
@@ -128,7 +128,7 @@ void timer_do_cylinder(uint8_t CylinderNr)
 	}
 }
 
-void timer_do_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl)
+void timer_do_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl, struct debug_cylinder_output_ *Debug_Output)
 {
 	if (Inj_or_Ign->EventPending)
 	{
@@ -140,7 +140,7 @@ void timer_do_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cyli
 		Inj_or_Ign->EventPending = FALSE;
 		// Initiate output timeout
 		*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimeOutOff);
-		//debug_cylinder[CylinderNr].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
+		Debug_Output->RealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 	}
 	else
 	{
@@ -149,7 +149,7 @@ void timer_do_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cyli
 			debug_transfer_new_message(&myDebug, Cyl->Tc_channel->TC_CV, "TurnOff", 0);	
 		}*/
 		Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to low
-		//debug_cylinder[CylinderNr].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
+		Debug_Output->RealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
 	}
 	// TODO: NEEDS TO BE TESTED
 	if (Inj_or_Ign->EventOnSameTooth)							// Check if Off event is at the same tooth

@@ -85,7 +85,7 @@ void PIOA_Handler(void)
 	{
 		// Start to filter out short pulses
 		uint32_t tempGapTimeBetweenTeeths = TimerCounterValue - CrankTimerCounts;
-		if (tempGapTimeBetweenTeeths >= TriggerFilterTime) // If pulses ar less than filter time it means a false trigger
+		if (tempGapTimeBetweenTeeths >= TriggerFilterTime) // If pulses are less than filter time it means a false trigger
 		{
 			CrankPrevCycleCounts	=		CrankCurrCycleCounts;
 			CrankCurrCycleCounts	=		TimerCounterValue - CrankTimerCounts;
@@ -100,13 +100,15 @@ void PIOA_Handler(void)
 				{
 					debug_transfer_new_message(&myDebug, TimerCounterValue, "CylInj", i);	
 				}*/
-				interrupts_check_timer_for_inj_or_ign(&cylinder[i].Inj, &cylinder[i]);
+				interrupts_check_timer_for_inj_or_ign(&cylinder[i].Inj, &cylinder[i], &debug_cylinders.inj_output_debug[i]);
 				/*if(isDebug)
 				{
 					debug_transfer_new_message(&myDebug, TimerCounterValue, "CylIgn", i);	
 				}*/
-				interrupts_check_timer_for_inj_or_ign(&cylinder[i].Ign, &cylinder[i]);
+				interrupts_check_timer_for_inj_or_ign(&cylinder[i].Ign, &cylinder[i], &debug_cylinders.ign_output_debug[i]);
 			}
+			debug_cylinders.RealTimeCrank[debug_cylinders.RealTimeCrankCnt] = TimerCounterValue;
+			debug_cylinders.RealTimeCrankCnt = (debug_cylinders.RealTimeCrankCnt + 1) % 50;
 		}
 		
 		/*if(isDebug)
@@ -126,12 +128,15 @@ void PIOA_Handler(void)
 		CamCurrCycleCounts		=		TimerCounterValue - CamTimerCounts;
 		CamTimerCounts			=		TimerCounterValue;
 		CamSignalFlag			=		TRUE;
+		
+		debug_cylinders.RealTimeCam[debug_cylinders.RealTimeCamCnt] = TimerCounterValue;
+		debug_cylinders.RealTimeCamCnt = (debug_cylinders.RealTimeCamCnt + 1) % 2;
 	}
 	
 	PIOAHandlerTimeInCounts = TC2->TC_CHANNEL[2].TC_CV - TimerCounterValue;
 }
 
-void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl)
+void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_or_Ign, struct cylinder_ *Cyl, struct debug_cylinder_output_ *Debug_Output)
 {
 	if (Inj_or_Ign->ToothOn == CrankToothCounter) //turn output ON
 	{
@@ -142,6 +147,7 @@ void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_o
 				debug_transfer_new_message(&myDebug, Cyl->Tc_channel->TC_CV, "On", Inj_or_Ign->CntTimingOn);
 			}*/
 			Inj_or_Ign->pio->PIO_CODR = Inj_or_Ign->OutputPin;			// Sets pin to high
+			Debug_Output->RealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 			if (Inj_or_Ign->EventOnSameTooth)							// Check if Off event is at the same tooth
 			{
 				*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimingOff - Inj_or_Ign->CntTimingOn);
@@ -155,7 +161,6 @@ void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_o
 			{
 				*(Inj_or_Ign->TcCompareRegister) = math_sum_with_overflow_protection(Cyl->Tc_channel->TC_CV, Inj_or_Ign->CntTimeOutOff);
 			}
-			//debug_cylinder[i].InjRealTimeTurnOnCount = Cyl->Tc_channel->TC_CV;
 		}
 		else
 		{
@@ -176,7 +181,7 @@ void interrupts_check_timer_for_inj_or_ign(struct cylinder_output_manager *Inj_o
 				debug_transfer_new_message(&myDebug, Cyl->Tc_channel->TC_CV, "Off", 0);	
 			}*/
 			Inj_or_Ign->pio->PIO_SODR = Inj_or_Ign->OutputPin;			// Sets pin to low
-			//debug_cylinder[i].InjRealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
+			Debug_Output->RealTimeTurnOffCount = Cyl->Tc_channel->TC_CV;
 		}
 		else
 		{

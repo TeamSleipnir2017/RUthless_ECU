@@ -221,30 +221,29 @@ struct cylinder_
 volatile struct cylinder_ cylinder[MAX_NR_OF_CYL]; // Create an instance of the struct defined above 
 
 
-struct debug_cylinder_ 
+struct debug_cylinder_output_ 
 {
-	uint32_t RealTimeCycleNr;
-	uint32_t RealTimeLastRevCounts;
-	uint32_t RealTimeCylInstance;
-	uint32_t InjTargetPulseWidth;
-	uint32_t InjTargetTurnOffDegree;
-	uint32_t InjRealTimeTurnOnCount;
-	uint32_t InjRealTimeTurnOffCount;
-	uint32_t InjRealTimeCalcCount;
-	
+//	uint32_t RealTimeCylInstance; // Should not be needed if we always start at 1 and end at 4
+	uint32_t TargetPulseWidth;
+	uint32_t TargetTurnOffDegree;
+	uint32_t RealTimeTurnOnCount;
+	uint32_t RealTimeTurnOffCount;
+//	uint32_t InjRealTimeCalcCount;	// Not sure what this was meant to be
 };
 
 struct debug_cylinders_
 {
-	
-	uint8_t start[4];
-	volatile struct debug_cylinder_ debug_cylinder[NR_OF_CYL];
+	uint8_t Start[4];	// A start of message
 	uint32_t RealTimeCycleNr;
 	uint32_t RealTimeLastRevCounts;
-	uint8_t end[4];
-	
+	uint32_t RealTimeCrank[50]; // should be 44 pulses per two cycles (using 24-2 trigger wheel)
+	uint32_t RealTimeCrankCnt;
+	uint32_t RealTimeCam[2];
+	uint32_t RealTimeCamCnt;
+	volatile struct debug_cylinder_output_ inj_output_debug[NR_OF_CYL];
+	volatile struct debug_cylinder_output_ ign_output_debug[NR_OF_CYL];	
+	uint8_t End[4];		// A end of message
 };
-
 volatile struct debug_cylinders_ debug_cylinders;
 
 /************************************************************************/
